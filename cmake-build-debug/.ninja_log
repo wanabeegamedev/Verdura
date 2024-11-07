@@ -1,0 +1,22 @@
+# ninja log v6
+3988	5995	1730979322769406606	CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o	30761b9d4b60082
+4	7069	1730979318785211931	CMakeFiles/imgui.dir/imgui/imgui.cpp.o	6f641af91d0c2e3c
+5	3988	1730979318787212029	CMakeFiles/imgui.dir/imgui/imgui_demo.cpp.o	42fcfdb51e1901a3
+6	46	1730991063503577546	CMakeFiles/Verdura.dir/Engine/VAO/VAO.cpp.o	b09c2cff43fc4c5a
+3	710	1730979318785211931	CMakeFiles/imgui.dir/imgui/backends/imgui_impl_opengl3.cpp.o	924437a64eca0277
+2	689	1730979318783211834	CMakeFiles/imgui.dir/imgui/backends/imgui_impl_glfw.cpp.o	6252b74bac3c55e0
+46	551	1730991063543577619	CMakeFiles/Verdura.dir/Engine/Light/AmbientLight/AmbientLight.cpp.o	4979311a320239c6
+859	1170	1730991064356579105	Verdura	bb542c793baaff0a
+6	5181	1730979318788212078	CMakeFiles/imgui.dir/imgui/imgui_draw.cpp.o	9d47a1654fc6a78d
+45	748	1730991063542577617	CMakeFiles/Verdura.dir/Engine/Light/BaseLight/BaseLight.cpp.o	a7752b478e27c707
+8	4354	1730979318789212127	CMakeFiles/imgui.dir/imgui/imgui_tables.cpp.o	882bdacb690ade50
+6	46	1730991063503577546	CMakeFiles/Verdura.dir/Engine/Texture/Texture.cpp.o	9e361380a289fe3
+7	47	1730991063504577548	CMakeFiles/Verdura.dir/Engine/Camera/Camera.cpp.o	d70a0d24d851f32f
+46	570	1730991063543577619	CMakeFiles/Verdura.dir/Engine/Light/DirectionalLight/DirectionalLight.cpp.o	ffcb9ebc68a9b4dd
+7	47	1730991063504577548	CMakeFiles/Verdura.dir/Engine/ShaderManager/ShaderManager.cpp.o	afe8832ada7c9c33
+6	45	1730991063503577546	CMakeFiles/Verdura.dir/Engine/VBO/VBO.cpp.o	9d9da042948c69c8
+5	859	1730991063502577544	CMakeFiles/Verdura.dir/main.cpp.o	c9cf2a11a6b77b3f
+690	6510	1730979319471245452	CMakeFiles/imgui.dir/imgui/imgui_widgets.cpp.o	9a23fa3f056fda02
+7069	7505	1730979325850557156	libimgui.a	5eec3590def2fc5b
+1	37	1730991068825587280	build.ninja	dca9b66624ec403c
+1815	4417	1730979320596300424	CMakeFiles/Verdura.dir/dependencies_code/glad.c.o	d4ff025bf2d15efc

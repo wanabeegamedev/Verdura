@@ -1,0 +1,4 @@
+/home/hous/CLionProjects/Verdura/cmake-build-debug/CMakeFiles/imgui.dir
+/home/hous/CLionProjects/Verdura/cmake-build-debug/CMakeFiles/Verdura.dir
+/home/hous/CLionProjects/Verdura/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/hous/CLionProjects/Verdura/cmake-build-debug/CMakeFiles/rebuild_cache.dir
