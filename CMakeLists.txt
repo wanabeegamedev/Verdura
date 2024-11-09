@@ -1,14 +1,15 @@
 cmake_minimum_required(VERSION 3.29)
 project(Verdura)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 
 include_directories(${CMAKE_SOURCE_DIR}/inc)
-link_directories(${CMAKE_SOURCE_DIR}/lib) # Enlever sur linux
+link_directories(${CMAKE_SOURCE_DIR}/lib)
 include_directories(${CMAKE_SOURCE_DIR}/imgui)
 include_directories(${CMAKE_SOURCE_DIR}/imgui/backends)
+include_directories(${CMAKE_SOURCE_DIR}/dependencies_code)
 
-# -------------- IMGUI static library creation`
+# IMGUI static library creation
 set(IMGUI_PATH ${CMAKE_SOURCE_DIR}/imgui)
 file(GLOB IMGUI_GLOB
         ${IMGUI_PATH}/imgui.h
@@ -23,7 +24,7 @@ file(GLOB IMGUI_GLOB
         ${IMGUI_PATH}/imgui_tables.cpp
         ${IMGUI_PATH}/imgui_widgets.cpp
 
-        # specific bindings...
+        # specific bindings, if you use Direct3D or Vulkan, change this...
         ${IMGUI_PATH}/backends/imgui_impl_glfw.h
         ${IMGUI_PATH}/backends/imgui_impl_glfw.cpp
         ${IMGUI_PATH}/backends/imgui_impl_opengl3.h
@@ -56,6 +57,8 @@ add_executable(
         Helpers/data_types.h
         Engine/Mesh/Mesh.cpp
         Engine/Mesh/Mesh.h
+        GLBHandlers/GLBMesh/GLBMesh.cpp
+        GLBHandlers/GLBMesh/GLBMesh.h
 )
 
 target_include_directories( ${PROJECT_NAME} PUBLIC ${IMGUI_PATH})

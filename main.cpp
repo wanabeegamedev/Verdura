@@ -1,10 +1,5 @@
-#include <iostream>
-#include <sstream>
-#include <algorithm>
-#include <vector>
-#include <set>
 #include <glad/glad.h>
-
+// IMGUI INCLUDES
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui//backends/imgui_impl_opengl3.h"
@@ -22,6 +17,39 @@
 #ifdef __EMSCRIPTEN__
 #include "../libs/emscripten/emscripten_mainloop_stub.h"
 #endif
+
+// MY INCLUDES
+#include <iostream>
+#include <sstream>
+#include <algorithm>
+#include <vector>
+#include <set>
+
+#include <tiny_gltf.h>
+#include <stb/stb_image.h>
+
+bool loadModel(tinygltf::Model &model, const char *filename) {
+    tinygltf::TinyGLTF loader;
+    std::string err;
+    std::string warn;
+
+    // bool res = loader.LoadASCIIFromFile(&model, &err, &warn, filename);
+    bool res = loader.LoadBinaryFromFile(&model, &err, &warn, filename);
+    if (!warn.empty()) {
+        std::cout << "WARN: " << warn << std::endl;
+    }
+
+    if (!err.empty()) {
+        std::cout << "ERR: " << err << std::endl;
+    }
+
+    if (!res)
+        std::cout << "Failed to load glTF: " << filename << std::endl;
+    else
+        std::cout << "Loaded glTF: " << filename << std::endl;
+
+    return res;
+}
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -69,6 +97,9 @@ const char* fragmentShaderSource = R"(
         color = vec4(1.0, 0.5, 0.2, 1.0); // Orange color
     }
 )";
+// Test
+tinygltf::Model mageModel;
+bool res = loadModel(mageModel,"/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/Mage.glb");
 
 // Main code
 int main(int, char**)

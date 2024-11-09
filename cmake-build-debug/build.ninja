@@ -51,50 +51,50 @@ build cmake_object_order_depends_target_imgui: phony || .
 
 build CMakeFiles/imgui.dir/imgui/backends/imgui_impl_glfw.cpp.o: CXX_COMPILER__imgui_unscanned_Debug /home/hous/CLionProjects/Verdura/imgui/backends/imgui_impl_glfw.cpp || cmake_object_order_depends_target_imgui
   DEP_FILE = CMakeFiles/imgui.dir/imgui/backends/imgui_impl_glfw.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/imgui.dir
   OBJECT_FILE_DIR = CMakeFiles/imgui.dir/imgui/backends
 
 build CMakeFiles/imgui.dir/imgui/backends/imgui_impl_opengl3.cpp.o: CXX_COMPILER__imgui_unscanned_Debug /home/hous/CLionProjects/Verdura/imgui/backends/imgui_impl_opengl3.cpp || cmake_object_order_depends_target_imgui
   DEP_FILE = CMakeFiles/imgui.dir/imgui/backends/imgui_impl_opengl3.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/imgui.dir
   OBJECT_FILE_DIR = CMakeFiles/imgui.dir/imgui/backends
 
 build CMakeFiles/imgui.dir/imgui/imgui.cpp.o: CXX_COMPILER__imgui_unscanned_Debug /home/hous/CLionProjects/Verdura/imgui/imgui.cpp || cmake_object_order_depends_target_imgui
   DEP_FILE = CMakeFiles/imgui.dir/imgui/imgui.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/imgui.dir
   OBJECT_FILE_DIR = CMakeFiles/imgui.dir/imgui
 
 build CMakeFiles/imgui.dir/imgui/imgui_demo.cpp.o: CXX_COMPILER__imgui_unscanned_Debug /home/hous/CLionProjects/Verdura/imgui/imgui_demo.cpp || cmake_object_order_depends_target_imgui
   DEP_FILE = CMakeFiles/imgui.dir/imgui/imgui_demo.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/imgui.dir
   OBJECT_FILE_DIR = CMakeFiles/imgui.dir/imgui
 
 build CMakeFiles/imgui.dir/imgui/imgui_draw.cpp.o: CXX_COMPILER__imgui_unscanned_Debug /home/hous/CLionProjects/Verdura/imgui/imgui_draw.cpp || cmake_object_order_depends_target_imgui
   DEP_FILE = CMakeFiles/imgui.dir/imgui/imgui_draw.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/imgui.dir
   OBJECT_FILE_DIR = CMakeFiles/imgui.dir/imgui
 
 build CMakeFiles/imgui.dir/imgui/imgui_tables.cpp.o: CXX_COMPILER__imgui_unscanned_Debug /home/hous/CLionProjects/Verdura/imgui/imgui_tables.cpp || cmake_object_order_depends_target_imgui
   DEP_FILE = CMakeFiles/imgui.dir/imgui/imgui_tables.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/imgui.dir
   OBJECT_FILE_DIR = CMakeFiles/imgui.dir/imgui
 
 build CMakeFiles/imgui.dir/imgui/imgui_widgets.cpp.o: CXX_COMPILER__imgui_unscanned_Debug /home/hous/CLionProjects/Verdura/imgui/imgui_widgets.cpp || cmake_object_order_depends_target_imgui
   DEP_FILE = CMakeFiles/imgui.dir/imgui/imgui_widgets.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/imgui.dir
   OBJECT_FILE_DIR = CMakeFiles/imgui.dir/imgui
 
@@ -125,80 +125,87 @@ build cmake_object_order_depends_target_Verdura: phony || cmake_object_order_dep
 
 build CMakeFiles/Verdura.dir/main.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/main.cpp || cmake_object_order_depends_target_Verdura
   DEP_FILE = CMakeFiles/Verdura.dir/main.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir
 
 build CMakeFiles/Verdura.dir/dependencies_code/glad.c.o: C_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/dependencies_code/glad.c || cmake_object_order_depends_target_Verdura
   DEP_FILE = CMakeFiles/Verdura.dir/dependencies_code/glad.c.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/dependencies_code
 
 build CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/dependencies_code/stb.cpp || cmake_object_order_depends_target_Verdura
   DEP_FILE = CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/dependencies_code
 
 build CMakeFiles/Verdura.dir/Engine/VBO/VBO.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Engine/VBO/VBO.cpp || cmake_object_order_depends_target_Verdura
   DEP_FILE = CMakeFiles/Verdura.dir/Engine/VBO/VBO.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Engine/VBO
 
 build CMakeFiles/Verdura.dir/Engine/Texture/Texture.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Engine/Texture/Texture.cpp || cmake_object_order_depends_target_Verdura
   DEP_FILE = CMakeFiles/Verdura.dir/Engine/Texture/Texture.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Engine/Texture
 
 build CMakeFiles/Verdura.dir/Engine/ShaderManager/ShaderManager.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Engine/ShaderManager/ShaderManager.cpp || cmake_object_order_depends_target_Verdura
   DEP_FILE = CMakeFiles/Verdura.dir/Engine/ShaderManager/ShaderManager.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Engine/ShaderManager
 
 build CMakeFiles/Verdura.dir/Engine/Camera/Camera.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Engine/Camera/Camera.cpp || cmake_object_order_depends_target_Verdura
   DEP_FILE = CMakeFiles/Verdura.dir/Engine/Camera/Camera.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Engine/Camera
 
 build CMakeFiles/Verdura.dir/Engine/Light/BaseLight/BaseLight.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Engine/Light/BaseLight/BaseLight.cpp || cmake_object_order_depends_target_Verdura
   DEP_FILE = CMakeFiles/Verdura.dir/Engine/Light/BaseLight/BaseLight.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Engine/Light/BaseLight
 
 build CMakeFiles/Verdura.dir/Engine/Light/AmbientLight/AmbientLight.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Engine/Light/AmbientLight/AmbientLight.cpp || cmake_object_order_depends_target_Verdura
   DEP_FILE = CMakeFiles/Verdura.dir/Engine/Light/AmbientLight/AmbientLight.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Engine/Light/AmbientLight
 
 build CMakeFiles/Verdura.dir/Engine/Light/DirectionalLight/DirectionalLight.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Engine/Light/DirectionalLight/DirectionalLight.cpp || cmake_object_order_depends_target_Verdura
   DEP_FILE = CMakeFiles/Verdura.dir/Engine/Light/DirectionalLight/DirectionalLight.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Engine/Light/DirectionalLight
 
 build CMakeFiles/Verdura.dir/Engine/Mesh/Mesh.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Engine/Mesh/Mesh.cpp || cmake_object_order_depends_target_Verdura
   DEP_FILE = CMakeFiles/Verdura.dir/Engine/Mesh/Mesh.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Engine/Mesh
+
+build CMakeFiles/Verdura.dir/GLBHandlers/GLBMesh/GLBMesh.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/GLBHandlers/GLBMesh/GLBMesh.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/GLBHandlers/GLBMesh/GLBMesh.cpp.o.d
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/GLBHandlers/GLBMesh
 
 
 # =============================================================================
@@ -208,7 +215,7 @@ build CMakeFiles/Verdura.dir/Engine/Mesh/Mesh.cpp.o: CXX_COMPILER__Verdura_unsca
 #############################################
 # Link the executable Verdura
 
-build Verdura: CXX_EXECUTABLE_LINKER__Verdura_Debug CMakeFiles/Verdura.dir/main.cpp.o CMakeFiles/Verdura.dir/dependencies_code/glad.c.o CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o CMakeFiles/Verdura.dir/Engine/VBO/VBO.cpp.o CMakeFiles/Verdura.dir/Engine/Texture/Texture.cpp.o CMakeFiles/Verdura.dir/Engine/ShaderManager/ShaderManager.cpp.o CMakeFiles/Verdura.dir/Engine/Camera/Camera.cpp.o CMakeFiles/Verdura.dir/Engine/Light/BaseLight/BaseLight.cpp.o CMakeFiles/Verdura.dir/Engine/Light/AmbientLight/AmbientLight.cpp.o CMakeFiles/Verdura.dir/Engine/Light/DirectionalLight/DirectionalLight.cpp.o CMakeFiles/Verdura.dir/Engine/Mesh/Mesh.cpp.o | libimgui.a /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so || libimgui.a
+build Verdura: CXX_EXECUTABLE_LINKER__Verdura_Debug CMakeFiles/Verdura.dir/main.cpp.o CMakeFiles/Verdura.dir/dependencies_code/glad.c.o CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o CMakeFiles/Verdura.dir/Engine/VBO/VBO.cpp.o CMakeFiles/Verdura.dir/Engine/Texture/Texture.cpp.o CMakeFiles/Verdura.dir/Engine/ShaderManager/ShaderManager.cpp.o CMakeFiles/Verdura.dir/Engine/Camera/Camera.cpp.o CMakeFiles/Verdura.dir/Engine/Light/BaseLight/BaseLight.cpp.o CMakeFiles/Verdura.dir/Engine/Light/AmbientLight/AmbientLight.cpp.o CMakeFiles/Verdura.dir/Engine/Light/DirectionalLight/DirectionalLight.cpp.o CMakeFiles/Verdura.dir/Engine/Mesh/Mesh.cpp.o CMakeFiles/Verdura.dir/GLBHandlers/GLBMesh/GLBMesh.cpp.o | libimgui.a /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so || libimgui.a
   FLAGS = -g
   LINK_LIBRARIES = -Wl,-rpath,/home/hous/CLionProjects/Verdura/lib  libimgui.a  -lglfw  /usr/lib/x86_64-linux-gnu/libOpenGL.so  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libGLU.so
   LINK_PATH = -L/home/hous/CLionProjects/Verdura/lib
