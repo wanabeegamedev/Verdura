@@ -39,8 +39,6 @@ add_executable(
         ${PROJECT_NAME} main.cpp
         dependencies_code/glad.c
         dependencies_code/stb.cpp
-        Engine/VAO/VAO.cpp
-        Engine/VAO/VAO.h
         Engine/VBO/VBO.cpp
         Engine/VBO/VBO.h
         Engine/Texture/Texture.cpp
@@ -55,6 +53,9 @@ add_executable(
         Engine/Light/AmbientLight/AmbientLight.h
         Engine/Light/DirectionalLight/DirectionalLight.cpp
         Engine/Light/DirectionalLight/DirectionalLight.h
+        Helpers/data_types.h
+        Engine/Mesh/Mesh.cpp
+        Engine/Mesh/Mesh.h
 )
 
 target_include_directories( ${PROJECT_NAME} PUBLIC ${IMGUI_PATH})

@@ -4,7 +4,7 @@
 
 #ifndef VBO_H
 #define VBO_H
-
+#include <cstddef> // std offsetof
 
 
 class VBO {

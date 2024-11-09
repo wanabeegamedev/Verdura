@@ -144,13 +144,6 @@ build CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o: CXX_COMPILER__Verdura_
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/dependencies_code
 
-build CMakeFiles/Verdura.dir/Engine/VAO/VAO.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Engine/VAO/VAO.cpp || cmake_object_order_depends_target_Verdura
-  DEP_FILE = CMakeFiles/Verdura.dir/Engine/VAO/VAO.cpp.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
-  OBJECT_DIR = CMakeFiles/Verdura.dir
-  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Engine/VAO
-
 build CMakeFiles/Verdura.dir/Engine/VBO/VBO.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Engine/VBO/VBO.cpp || cmake_object_order_depends_target_Verdura
   DEP_FILE = CMakeFiles/Verdura.dir/Engine/VBO/VBO.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
@@ -200,6 +193,13 @@ build CMakeFiles/Verdura.dir/Engine/Light/DirectionalLight/DirectionalLight.cpp.
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Engine/Light/DirectionalLight
 
+build CMakeFiles/Verdura.dir/Engine/Mesh/Mesh.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Engine/Mesh/Mesh.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Engine/Mesh/Mesh.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Engine/Mesh
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Verdura
@@ -208,7 +208,7 @@ build CMakeFiles/Verdura.dir/Engine/Light/DirectionalLight/DirectionalLight.cpp.
 #############################################
 # Link the executable Verdura
 
-build Verdura: CXX_EXECUTABLE_LINKER__Verdura_Debug CMakeFiles/Verdura.dir/main.cpp.o CMakeFiles/Verdura.dir/dependencies_code/glad.c.o CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o CMakeFiles/Verdura.dir/Engine/VAO/VAO.cpp.o CMakeFiles/Verdura.dir/Engine/VBO/VBO.cpp.o CMakeFiles/Verdura.dir/Engine/Texture/Texture.cpp.o CMakeFiles/Verdura.dir/Engine/ShaderManager/ShaderManager.cpp.o CMakeFiles/Verdura.dir/Engine/Camera/Camera.cpp.o CMakeFiles/Verdura.dir/Engine/Light/BaseLight/BaseLight.cpp.o CMakeFiles/Verdura.dir/Engine/Light/AmbientLight/AmbientLight.cpp.o CMakeFiles/Verdura.dir/Engine/Light/DirectionalLight/DirectionalLight.cpp.o | libimgui.a /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so || libimgui.a
+build Verdura: CXX_EXECUTABLE_LINKER__Verdura_Debug CMakeFiles/Verdura.dir/main.cpp.o CMakeFiles/Verdura.dir/dependencies_code/glad.c.o CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o CMakeFiles/Verdura.dir/Engine/VBO/VBO.cpp.o CMakeFiles/Verdura.dir/Engine/Texture/Texture.cpp.o CMakeFiles/Verdura.dir/Engine/ShaderManager/ShaderManager.cpp.o CMakeFiles/Verdura.dir/Engine/Camera/Camera.cpp.o CMakeFiles/Verdura.dir/Engine/Light/BaseLight/BaseLight.cpp.o CMakeFiles/Verdura.dir/Engine/Light/AmbientLight/AmbientLight.cpp.o CMakeFiles/Verdura.dir/Engine/Light/DirectionalLight/DirectionalLight.cpp.o CMakeFiles/Verdura.dir/Engine/Mesh/Mesh.cpp.o | libimgui.a /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so || libimgui.a
   FLAGS = -g
   LINK_LIBRARIES = -Wl,-rpath,/home/hous/CLionProjects/Verdura/lib  libimgui.a  -lglfw  /usr/lib/x86_64-linux-gnu/libOpenGL.so  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libGLU.so
   LINK_PATH = -L/home/hous/CLionProjects/Verdura/lib

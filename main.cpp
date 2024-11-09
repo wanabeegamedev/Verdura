@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <vector>
 #include <set>
+#include <glad/glad.h>
 
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
@@ -26,6 +27,48 @@ static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
+
+
+
+void checkShaderCompileStatus(GLuint shader)
+{
+    GLint success;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        char infoLog[512];
+        glGetShaderInfoLog(shader, 512, NULL, infoLog);
+        std::cerr << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
+}
+
+void checkProgramLinkStatus(GLuint program) {
+    GLint success;
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    if (!success) {
+        char infoLog[512];
+        glGetProgramInfoLog(program, 512, nullptr, infoLog);
+        std::cerr << "ERROR::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+    }
+}
+// Vertex Shader source code
+const char* vertexShaderSource = R"(
+    #version 330 core
+    layout (location = 0) in vec3 position;
+
+    void main() {
+        gl_Position = vec4(position, 1.0);
+    }
+)";
+
+// Fragment Shader source code
+const char* fragmentShaderSource = R"(
+    #version 330 core
+    out vec4 color;
+
+    void main() {
+        color = vec4(1.0, 0.5, 0.2, 1.0); // Orange color
+    }
+)";
 
 // Main code
 int main(int, char**)
@@ -86,6 +129,64 @@ int main(int, char**)
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+
+
+    // Load OpenGL functions with GLAD
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cerr << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+    // Vertex data for a triangle
+    float vertices[] = {
+        0.0f,  0.5f, 0.0f, // Top
+       -0.5f, -0.5f, 0.0f, // Bottom left
+        0.5f, -0.5f, 0.0f  // Bottom right
+   };
+
+    // Vertex Array Object (VAO), Vertex Buffer Object (VBO)
+    GLuint VAO, VBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+
+    // Bind VAO and VBO, and upload the vertices data
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // Vertex attribute pointer configuration
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Unbind the VBO and VAO
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
+    // Compile vertex shader
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+    checkShaderCompileStatus(vertexShader);
+
+    // Compile fragment shader
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+    checkShaderCompileStatus(fragmentShader);
+
+    // Create shader program and link shaders
+    GLuint shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+    checkProgramLinkStatus(shaderProgram);
+
+    // Delete the shaders as they’re linked into our program now and no longer necessary
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+
+
     // Main loop
 #ifdef __EMSCRIPTEN__
     // For an Emscripten build we are disabling file-system access, so let's not attempt to do a fopen() of the imgui.ini file.
@@ -101,6 +202,7 @@ int main(int, char**)
         // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
         // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
         // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
+
         glfwPollEvents();
 
         // Start the Dear ImGui frame
@@ -152,6 +254,18 @@ int main(int, char**)
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        // opengl render here, when DearImGUI is done
+
+
+        // Use the shader program and bind the VAO
+        glUseProgram(shaderProgram);
+        glBindVertexArray(VAO);
+
+        // Draw the triangle
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        // Unbind the VAO (optional)
+        glBindVertexArray(0);
 
         glfwSwapBuffers(window);
     }
