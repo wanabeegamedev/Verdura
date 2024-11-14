@@ -25,31 +25,8 @@
 #include <vector>
 #include <set>
 
-#include <tiny_gltf.h>
-#include <stb/stb_image.h>
+#include "GLBHandlers/GLBLoader/glb_loader.h"
 
-bool loadModel(tinygltf::Model &model, const char *filename) {
-    tinygltf::TinyGLTF loader;
-    std::string err;
-    std::string warn;
-
-    // bool res = loader.LoadASCIIFromFile(&model, &err, &warn, filename);
-    bool res = loader.LoadBinaryFromFile(&model, &err, &warn, filename);
-    if (!warn.empty()) {
-        std::cout << "WARN: " << warn << std::endl;
-    }
-
-    if (!err.empty()) {
-        std::cout << "ERR: " << err << std::endl;
-    }
-
-    if (!res)
-        std::cout << "Failed to load glTF: " << filename << std::endl;
-    else
-        std::cout << "Loaded glTF: " << filename << std::endl;
-
-    return res;
-}
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -99,6 +76,7 @@ const char* fragmentShaderSource = R"(
 )";
 // Test
 tinygltf::Model mageModel;
+//TODO doit utiliser os.getCurrentDirectory
 bool res = loadModel(mageModel,"/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/Mage.glb");
 
 // Main code
@@ -162,11 +140,16 @@ int main(int, char**)
 
 
 
-    // Load OpenGL functions with GLAD
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+    /*if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to initialize GLAD" << std::endl;
         return -1;
-    }
+    }*/
+    if(!gladLoadGL())// simplement
+        {
+            std::cerr << "Failed to initialize GLAD" << std::endl;
+            return -1;
+        }
+
     // Vertex data for a triangle
     float vertices[] = {
         0.0f,  0.5f, 0.0f, // Top
@@ -277,13 +260,20 @@ int main(int, char**)
             ImGui::End();
         }
 */
-        // Rendering
+
         ImGui::Render();
+
+
+        //TODO Rendering; ICI Le Renderer GLFW Intervient
+
         int display_w, display_h;
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        //TODO Le Renderer GLFW a terminé
+
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         // opengl render here, when DearImGUI is done
 
@@ -309,7 +299,7 @@ int main(int, char**)
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
-    glfwDestroyWindow(window);
+    glfwDestroyWindow(window); // Renderer.window
     glfwTerminate();
 
     return 0;

@@ -59,6 +59,7 @@ add_executable(
         Engine/Mesh/Mesh.h
         GLBHandlers/GLBMesh/GLBMesh.cpp
         GLBHandlers/GLBMesh/GLBMesh.h
+        GLBHandlers/GLBLoader/glb_loader.h
 )
 
 target_include_directories( ${PROJECT_NAME} PUBLIC ${IMGUI_PATH})
