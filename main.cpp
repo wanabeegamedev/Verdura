@@ -25,7 +25,8 @@
 #include <vector>
 #include <set>
 
-#include "GLBHandlers/GLBLoader/glb_loader.h"
+#include "GLBLoader/glb_loader.h"
+#include "../Engine/Mesh/AssimpFbxLoader.h"
 
 
 static void glfw_error_callback(int error, const char* description)
@@ -78,10 +79,24 @@ const char* fragmentShaderSource = R"(
 tinygltf::Model mageModel;
 //TODO doit utiliser os.getCurrentDirectory
 bool res = loadModel(mageModel,"/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/Mage.glb");
+// if (!loadModel(model, filename.c_str())) return;
+/*
+AssimpFbxLoader loader;
+
+if (!(loader.LoadModel("path/to/your/model.fbx")))
+{
+    std::cerr << "Failed to load FBX model." << std::endl;
+    return -1;
+}
+*/
 
 // Main code
 int main(int, char**)
 {
+    AssimpFbxLoader loader;
+
+
+
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return 1;
@@ -149,6 +164,13 @@ int main(int, char**)
             std::cerr << "Failed to initialize GLAD" << std::endl;
             return -1;
         }
+    // After Initialization of glew and glfw
+    if (!loader.LoadModel("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Barbarian/Barbarian.fbx",
+        "/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Barbarian/barbarian_texture.png"))
+    {
+        std::cerr << "Failed to load FBX model." << std::endl;
+        return -1;
+    }
 
     // Vertex data for a triangle
     float vertices[] = {
@@ -272,23 +294,28 @@ int main(int, char**)
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //TODO Le Renderer GLFW a terminé
+
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         // opengl render here, when DearImGUI is done
 
 
         // Use the shader program and bind the VAO
-        glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
+        //glUseProgram(shaderProgram);
+        //glBindVertexArray(VAO);
 
         // Draw the triangle
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        //glDrawArrays(GL_TRIANGLES, 0, 3);
 
+        loader.Render();
+
+        //std::pair<GLuint, std::map<int, GLuint>> vaoAndEbos = bindModel(mageModel);
+        //drawModel(vaoAndEbos, mageModel);
         // Unbind the VAO (optional)
         glBindVertexArray(0);
 
         glfwSwapBuffers(window);
+        //TODO ICI Le Renderer GLFW a terminé
     }
 #ifdef __EMSCRIPTEN__
     EMSCRIPTEN_MAINLOOP_END;

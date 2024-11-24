@@ -4,10 +4,9 @@
 
 #ifndef AMBIENTLIGHT_H
 #define AMBIENTLIGHT_H
-#include "../BaseLight/BaseLight.h"
 
 
-class AmbientLight:BaseLight {
+class AmbientLight {
 
 };
 

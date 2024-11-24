@@ -35,6 +35,7 @@ add_library("imgui" STATIC ${IMGUI_GLOB}) # build a libimgui.a
 
 # Linux
 find_package(OpenGL REQUIRED)
+find_package(assimp REQUIRED)
 
 add_executable(
         ${PROJECT_NAME} main.cpp
@@ -48,19 +49,13 @@ add_executable(
         Engine/ShaderManager/ShaderManager.h
         Engine/Camera/Camera.cpp
         Engine/Camera/Camera.h
-        Engine/Light/BaseLight/BaseLight.cpp
-        Engine/Light/BaseLight/BaseLight.h
         Engine/Light/AmbientLight/AmbientLight.cpp
         Engine/Light/AmbientLight/AmbientLight.h
-        Engine/Light/DirectionalLight/DirectionalLight.cpp
-        Engine/Light/DirectionalLight/DirectionalLight.h
         Helpers/data_types.h
-        Engine/Mesh/Mesh.cpp
-        Engine/Mesh/Mesh.h
-        GLBHandlers/GLBMesh/GLBMesh.cpp
-        GLBHandlers/GLBMesh/GLBMesh.h
-        GLBHandlers/GLBLoader/glb_loader.h
+        GLBLoader/glb_loader.h
+        Engine/Mesh/AssimpFbxLoader.h
+        Engine/Mesh/AssimpFbxMesh.h
 )
 
 target_include_directories( ${PROJECT_NAME} PUBLIC ${IMGUI_PATH})
-target_link_libraries(${PROJECT_NAME} PUBLIC imgui glfw ${OPENGL_LIBRARIES}) # windows glfw3, avec un 3, linux sans 3
+target_link_libraries(${PROJECT_NAME} PUBLIC imgui glfw ${OPENGL_LIBRARIES} assimp::assimp) # windows glfw3, avec un 3, linux sans 3
