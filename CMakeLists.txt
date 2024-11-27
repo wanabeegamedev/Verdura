@@ -55,6 +55,8 @@ add_executable(
         GLBLoader/glb_loader.h
         Engine/Mesh/AssimpFbxLoader.h
         Engine/Mesh/AssimpFbxMesh.h
+        Engine/Mesh/OBJLoader.h
+        Engine/Mesh/OBJMesh.h
 )
 
 target_include_directories( ${PROJECT_NAME} PUBLIC ${IMGUI_PATH})

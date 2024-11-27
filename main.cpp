@@ -24,9 +24,17 @@
 #include <algorithm>
 #include <vector>
 #include <set>
+#include <glm/glm.hpp>
+
+#include <glm/matrix.hpp>
+#include <glm/gtx/string_cast.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "GLBLoader/glb_loader.h"
 #include "../Engine/Mesh/AssimpFbxLoader.h"
+#include "Engine/Mesh/OBJLoader.h"
+#include "Engine/Mesh/OBJMesh.h"
 
 
 static void glfw_error_callback(int error, const char* description)
@@ -56,45 +64,93 @@ void checkProgramLinkStatus(GLuint program) {
         std::cerr << "ERROR::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
 }
-// Vertex Shader source code
-const char* vertexShaderSource = R"(
-    #version 330 core
-    layout (location = 0) in vec3 position;
 
-    void main() {
-        gl_Position = vec4(position, 1.0);
-    }
-)";
-
-// Fragment Shader source code
-const char* fragmentShaderSource = R"(
-    #version 330 core
-    out vec4 color;
-
-    void main() {
-        color = vec4(1.0, 0.5, 0.2, 1.0); // Orange color
-    }
-)";
 // Test
 tinygltf::Model mageModel;
 //TODO doit utiliser os.getCurrentDirectory
-bool res = loadModel(mageModel,"/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/Mage.glb");
-// if (!loadModel(model, filename.c_str())) return;
-/*
-AssimpFbxLoader loader;
+//bool res = loadModel(mageModel,"/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/Mage.glb");
 
-if (!(loader.LoadModel("path/to/your/model.fbx")))
-{
-    std::cerr << "Failed to load FBX model." << std::endl;
-    return -1;
+
+GLuint CompileShader(const std::string& source, GLenum shaderType) {
+    GLuint shader = glCreateShader(shaderType);
+    const char* sourceCStr = source.c_str();
+    glShaderSource(shader, 1, &sourceCStr, nullptr);
+    glCompileShader(shader);
+
+    // Check for compilation errors
+    GLint success;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        char infoLog[512];
+        glGetShaderInfoLog(shader, 512, nullptr, infoLog);
+        std::cerr << "Shader Compilation Failed: " << infoLog << std::endl;
+    }
+    return shader;
 }
-*/
+
+GLuint CreateShaderProgram() {
+    std::string vertexSource = R"(
+#version 330 core
+layout(location = 0) in vec3 aPos;
+layout(location = 1) in vec3 aNormal;
+layout(location = 2) in vec2 aTexCoord;
+
+out vec2 TexCoord;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
+void main(){
+
+    gl_Position = projection * view * model * vec4(aPos, 1.0);
+    TexCoord = aTexCoord;
+}
+    )";
+
+    std::string fragmentSource = R"(
+#version 330 core
+out vec4 FragColor;
+
+in vec2 TexCoord;
+
+uniform sampler2D texture1;
+
+void main(){
+    FragColor = texture(texture1, TexCoord); // vec4(1.0, 0.0, 0.0, 1.0);//
+
+    //FragColor = vec4(TexCoord, 0.0, 1.0); // Map UV coordinates to RG colors
+
+}
+    )";
+
+    GLuint vertexShader = CompileShader(vertexSource, GL_VERTEX_SHADER);
+    GLuint fragmentShader = CompileShader(fragmentSource, GL_FRAGMENT_SHADER);
+
+    GLuint program = glCreateProgram();
+    glAttachShader(program, vertexShader);
+    glAttachShader(program, fragmentShader);
+    glLinkProgram(program);
+
+    // Check for linking errors
+    GLint success;
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    if (!success) {
+        char infoLog[512];
+        glGetProgramInfoLog(program, 512, nullptr, infoLog);
+        std::cerr << "Program Linking Failed: " << infoLog << std::endl;
+    }
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    return program;
+}
 
 // Main code
 int main(int, char**)
 {
-    AssimpFbxLoader loader;
-
+    //AssimpFbxLoader loader;
 
 
     glfwSetErrorCallback(glfw_error_callback);
@@ -165,62 +221,64 @@ int main(int, char**)
             return -1;
         }
     // After Initialization of glew and glfw
-    if (!loader.LoadModel("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Barbarian/Barbarian.fbx",
-        "/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Barbarian/barbarian_texture.png"))
-    {
-        std::cerr << "Failed to load FBX model." << std::endl;
-        return -1;
+
+
+    std::vector<glm::vec3> vertices;
+    std::vector<glm::vec3> normals;
+    std::vector<glm::vec2> texCoords;
+    std::vector<unsigned int> indices;
+    OBJMesh mesh;
+    OBJLoader loader;
+    if (loader.Load(
+        "/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj",
+        vertices, normals, texCoords, indices))
+        {
+        // Use the first material texture in the list
+        loader.LoadTexture("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/texture_1.png",
+            mesh.textureID);
+        mesh.Initialize(vertices, normals, texCoords, indices);
+
+            }
+
+
+
+
+    GLuint shaderProgram = CreateShaderProgram(); // Implement your shader setup
+
+    glUseProgram(shaderProgram);
+    // Texture uniform
+     GLint textureLoc = glGetUniformLocation(shaderProgram, "texture1");
+    glUniform1i(textureLoc, 0); // Texture unit 0
+    glm::mat4 model = glm::mat4(1.0f);
+    // Camera position
+    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 6.0f); // Positioned 3 units along the Z-axis
+    // Camera direction (Front)
+    glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f); // Looking toward negative Z-axis
+    // Camera Up vector
+    glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f); // Positive Y-axis is "up"
+    glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)1280 / 720, 0.1f, 100.0f);
+
+    GLint modelLoc = glGetUniformLocation(shaderProgram, "model");
+    GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
+    GLint projectionLoc = glGetUniformLocation(shaderProgram, "projection");
+
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+    //glUseProgram(shaderProgram);
+
+
+    if (modelLoc == -1 || viewLoc == -1 || projectionLoc == -1 || textureLoc == -1) {
+        std::cerr << "One or more uniforms not found in the shader program!" << std::endl;
     }
 
-    // Vertex data for a triangle
-    float vertices[] = {
-        0.0f,  0.5f, 0.0f, // Top
-       -0.5f, -0.5f, 0.0f, // Bottom left
-        0.5f, -0.5f, 0.0f  // Bottom right
-   };
+    // Bind the texture
+    //glActiveTexture(GL_TEXTURE0);
+    //glBindTexture(GL_TEXTURE_2D, loader.textureID);
 
-    // Vertex Array Object (VAO), Vertex Buffer Object (VBO)
-    GLuint VAO, VBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
 
-    // Bind VAO and VBO, and upload the vertices data
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // Vertex attribute pointer configuration
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // Unbind the VBO and VAO
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
-    // Compile vertex shader
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-    checkShaderCompileStatus(vertexShader);
-
-    // Compile fragment shader
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-    checkShaderCompileStatus(fragmentShader);
-
-    // Create shader program and link shaders
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    checkProgramLinkStatus(shaderProgram);
-
-    // Delete the shaders as they’re linked into our program now and no longer necessary
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
+    glEnable(GL_DEPTH_TEST); // Enable depth testing
 
 
     // Main loop
@@ -292,27 +350,17 @@ int main(int, char**)
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-        glClear(GL_COLOR_BUFFER_BIT);
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         // opengl render here, when DearImGUI is done
 
+        mesh.Render();
 
-        // Use the shader program and bind the VAO
-        //glUseProgram(shaderProgram);
-        //glBindVertexArray(VAO);
-
-        // Draw the triangle
-        //glDrawArrays(GL_TRIANGLES, 0, 3);
-
-        loader.Render();
-
-        //std::pair<GLuint, std::map<int, GLuint>> vaoAndEbos = bindModel(mageModel);
-        //drawModel(vaoAndEbos, mageModel);
-        // Unbind the VAO (optional)
-        glBindVertexArray(0);
+        //glBindVertexArray(0);
 
         glfwSwapBuffers(window);
         //TODO ICI Le Renderer GLFW a terminé

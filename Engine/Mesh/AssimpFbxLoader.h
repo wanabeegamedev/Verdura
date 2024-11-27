@@ -4,7 +4,6 @@
 #ifndef ASSIMPFBXLOADER_H
 #define ASSIMPFBXLOADER_H
 
-
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -34,33 +33,38 @@ public:
             return false;
         }
 
-        ProcessNode(scene->mRootNode, scene, texturePath);
+        this->texturePath = texturePath; // Store texture path for all meshes
+        ProcessNode(scene->mRootNode, scene);
         return true;
     }
 
-    void Render() const {
+    void Render() const
+    {
+        int i{};
         for (const auto& mesh : meshes) {
             mesh->Render();
+            std::cout << i++ << std::endl;
         }
     }
 
 private:
     std::vector<AssimpFbxMesh*> meshes;
+    std::string texturePath;
 
-    void ProcessNode(aiNode* node, const aiScene* scene, const std::string& texturePath) {
+    void ProcessNode(aiNode* node, const aiScene* scene) {
         // Process all meshes in this node
         for (unsigned int i = 0; i < node->mNumMeshes; i++) {
             aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-            meshes.push_back(ProcessMesh(mesh, scene, texturePath));
+            meshes.push_back(ProcessMesh(mesh, scene));
         }
 
         // Recursively process all child nodes
         for (unsigned int i = 0; i < node->mNumChildren; i++) {
-            ProcessNode(node->mChildren[i], scene, texturePath);
+            ProcessNode(node->mChildren[i], scene);
         }
     }
 
-    static AssimpFbxMesh* ProcessMesh(aiMesh* mesh, const aiScene* scene, const std::string& texturePath) {
+    AssimpFbxMesh* ProcessMesh(aiMesh* mesh, const aiScene* scene) {
         std::vector<float> vertices;
         std::vector<unsigned int> indices;
 
@@ -84,6 +88,8 @@ private:
                 vertices.push_back(0.0f);
                 vertices.push_back(0.0f);
             }
+            //std::cout << mesh->mTextureCoords[0][i].x << " , "
+            //          << mesh->mTextureCoords[0][i].y << std::endl;
         }
 
         // Process indices
@@ -95,7 +101,7 @@ private:
         }
 
         // Create AssimpFbxMesh instance
-        AssimpFbxMesh* assimpMesh = new AssimpFbxMesh(vertices, indices);
+        auto* assimpMesh = new AssimpFbxMesh(vertices, indices);
 
         // Load texture
         if (!assimpMesh->LoadTexture(texturePath)) {
@@ -106,4 +112,4 @@ private:
     }
 };
 
-#endif //ASSIMPFBXLOADER_H
+#endif // ASSIMPFBXLOADER_H

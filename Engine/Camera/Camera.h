@@ -9,15 +9,11 @@
 
 class Camera {
 public:
-
-    // changent rarement
     float fov;
     float aspectRatio;
     float near;
     float far;
-
-    // changent toujours
-    glm::vec3 cameraUp; // change dans un engin volant en first-person
+    glm::vec3 cameraUp;
     glm::vec3 cameraFront;
     glm::vec3 cameraRight;
     glm::vec3 cameraPosition;
