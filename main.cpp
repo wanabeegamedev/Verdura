@@ -33,6 +33,7 @@
 
 #include "GLBLoader/glb_loader.h"
 #include "../Engine/Mesh/AssimpFbxLoader.h"
+#include "Engine/Camera/Camera.h"
 #include "Engine/Mesh/OBJLoader.h"
 #include "Engine/Mesh/OBJMesh.h"
 
@@ -146,6 +147,11 @@ void main(){
 
     return program;
 }
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
+
+// Global variables for timing
+float lastFrame = 0.0f; // Time of the last frame
+float deltaTime = 0.0f; // Time between current and last frame
 
 // Main code
 int main(int, char**)
@@ -250,14 +256,18 @@ int main(int, char**)
      GLint textureLoc = glGetUniformLocation(shaderProgram, "texture1");
     glUniform1i(textureLoc, 0); // Texture unit 0
     glm::mat4 model = glm::mat4(1.0f);
-    // Camera position
-    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 6.0f); // Positioned 3 units along the Z-axis
-    // Camera direction (Front)
-    glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f); // Looking toward negative Z-axis
-    // Camera Up vector
-    glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f); // Positive Y-axis is "up"
+    // Camera position (diagonal from the origin)
+    glm::vec3 cameraPos = glm::vec3(5.0f, 5.0f, 12.0f); // Positioned diagonally for isometric view
+
+    // Camera direction (looking toward the origin)
+    glm::vec3 cameraFront = glm::vec3(-1.0f, -1.0f, -1.0f); // Looking at the origin
+
+    // Camera Up vector (keep the positive Y-axis as up)
+    glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f); // Y-axis is up
     glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)1280 / 720, 0.1f, 100.0f);
+    glm::mat4 projection = glm::perspective(glm::radians(60.0f), (float)1280 / 720, 0.1f, 100.0f);
+    // Define the orthographic projection (left, right, bottom, top, near, far)
+    //glm::mat4 projection = glm::ortho(-5.0f, 5.0f, -5.0f, 5.0f, 0.1f, 100.0f);
 
     GLint modelLoc = glGetUniformLocation(shaderProgram, "model");
     GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
@@ -273,9 +283,6 @@ int main(int, char**)
         std::cerr << "One or more uniforms not found in the shader program!" << std::endl;
     }
 
-    // Bind the texture
-    //glActiveTexture(GL_TEXTURE0);
-    //glBindTexture(GL_TEXTURE_2D, loader.textureID);
 
 
     glEnable(GL_DEPTH_TEST); // Enable depth testing
@@ -357,6 +364,23 @@ int main(int, char**)
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         // opengl render here, when DearImGUI is done
+        lastFrame = glfwGetTime();
+         deltaTime = glfwGetTime() - lastFrame;
+
+
+        // Handle keyboard input for camera movement
+        camera.HandleInputs(window, deltaTime);
+
+        // Update view and projection matrices
+        /*camera.update();
+
+        // Set the view and projection matrices for your shaders
+//        shader.setMat4("view", camera.viewMatrix);
+  //      shader.setMat4("projection", camera.projectionMatrix);
+
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera.viewMatrix));
+        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(camera.projectionMatrix));
+*/
 
         mesh.Render();
 
