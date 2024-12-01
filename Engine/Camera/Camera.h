@@ -8,54 +8,43 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include <GLFW/glfw3.h>
 
+#include <imgui.h>
+#define INITIAL_SPEED 500000.0f
+#define INITIAL_NEAR 0.1f
+#define INITIAL_SENSITIVITY 0.1f
+#define INITIAL_FOV 60.0f
+#define INITIAL_FAR 100.0f
+#define INITIAL_NEAR 0.1f
+#define INITIAL_POS glm::vec3(5.0f, 5.0f, 12.0f)
+#define INITIAL_FRONT glm::vec3(-1.0f, -1.0f, -1.0f)// Vers l'origine
+#define INITIAL_UP glm::vec3(0.0f, 1.0f, 0.0f)
 class Camera {
-public:
-    // Camera attributes
+
     float fov;
     float aspectRatio;
     float near;
     float far;
-    glm::vec3 cameraUp;
-    glm::vec3 cameraFront;
-    glm::vec3 cameraRight;
-    glm::vec3 cameraPosition;
-    float cameraRotationInRadius;
 
-    glm::mat4 viewMatrix;
-    glm::mat4 projectionMatrix;
 
+
+    float cameraRotationInRadius{};
     float speed;
     float sensitivity;
+public:
+    glm::vec3 cameraUp;
+    glm::vec3 cameraFront;
+    glm::vec3 cameraRight{};
+    glm::vec3 cameraPosition;
+    glm::mat4 viewMatrix{};
+    glm::mat4 projectionMatrix{};
 
-    Camera(glm::vec3 startPosition, glm::vec3 startUp)
-        : cameraPosition(startPosition), cameraUp(startUp),
-          speed(2.5f), sensitivity(0.1f), fov(45.0f), near(0.1f), far(100.0f) {
-        updateCameraVectors();
-    }
-    void update() {
-        projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, near, far);
-        viewMatrix = glm::lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp);
-    }
-    void HandleInputs(GLFWwindow *window, float deltaTime) {
-        float velocity = speed * deltaTime;
 
-        /*
-        if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
-            cameraPosition += cameraFront * velocity;
-        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-            cameraPosition -= cameraFront * velocity;
-        */
-        if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-            cameraPosition -= cameraRight * velocity;
-        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-            cameraPosition += cameraRight * velocity;
-    }
     void set_position(glm::vec3 newPosition) {
         cameraPosition = newPosition;
     }
-
     void set_fov(float newFov) {
         fov = newFov;
     }
@@ -89,13 +78,83 @@ public:
     void set_projection_matrix(const glm::mat4& newProjectionMatrix) {
         projectionMatrix = newProjectionMatrix;
     }
+    float aspect_ratio() const {
+        return aspectRatio;
+    }
+    glm::vec3 camera_up() const {
+        return cameraUp;
+    }
+    glm::vec3 camera_front() const {
+        return cameraFront;
+    }
+    glm::vec3 camera_right() const {
+        return cameraRight;
+    }
+    glm::vec3 camera_position() const {
+        return cameraPosition;
+    }
+    glm::mat4 view_matrix() const {
+        return viewMatrix;
+    }
+    glm::mat4 projection_matrix() const {
+        return projectionMatrix;
+    }
+    float camera_rotation_in_radius() const {
+        return cameraRotationInRadius;
+    }
 
-private:
+    void HandleInputs(GLFWwindow *window, double deltaTime) {
+        ImGuiIO& io = ImGui::GetIO(); // Get the ImGui input/output state
+
+        float velocity = speed*deltaTime;
+
+        // Check if ImGui does not want to capture the keyboard
+        //if (!io.WantCaptureKeyboard)
+
+            // ImGui key codes match GLFW key codes
+            if (ImGui::IsKeyPressed(ImGuiKey_Q))
+
+            {
+                cameraPosition -= cameraRight * velocity;
+            }
+            if (ImGui::IsKeyPressed(ImGuiKey_D))
+
+            {
+                cameraPosition += cameraRight * velocity;
+            }
+            // Update camera matrices
+            update();
+
+    }
+    void update() {
+        projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, near, far);
+        viewMatrix = glm::lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp);
+    }
     void updateCameraVectors() {
-        glm::vec3 front;
-        cameraFront = glm::normalize(front);
         cameraRight = glm::normalize(glm::cross(cameraFront, cameraUp));
         cameraUp = glm::normalize(glm::cross(cameraRight, cameraFront));
+    }
+
+    Camera():
+      speed(INITIAL_SPEED),
+      sensitivity(INITIAL_SENSITIVITY),
+      fov(INITIAL_FOV),
+      near(INITIAL_NEAR),
+      far(INITIAL_FAR),
+      cameraFront(INITIAL_FRONT),
+      cameraPosition(INITIAL_POS),
+      cameraUp(INITIAL_UP),
+    aspectRatio(float(1280.0/720.0)) // TODO, utiliser des variables
+    /*
+        int width, height;
+        glfwGetFramebufferSize(window, &width, &height);
+        aspectRatio = static_cast<float>(width) / static_cast<float>(height);
+        projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, near, far);
+     */
+    {
+        updateCameraVectors();
+        update();
+        //std::cout << glm::to_string(cameraFront) << std::endl << glm::to_string(projection_matrix()) << std::endl;
     }
 };
 

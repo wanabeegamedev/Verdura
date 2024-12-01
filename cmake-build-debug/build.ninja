@@ -144,20 +144,6 @@ build CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o: CXX_COMPILER__Verdura_
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/dependencies_code
 
-build CMakeFiles/Verdura.dir/Engine/Texture/Texture.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Engine/Texture/Texture.cpp || cmake_object_order_depends_target_Verdura
-  DEP_FILE = CMakeFiles/Verdura.dir/Engine/Texture/Texture.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
-  OBJECT_DIR = CMakeFiles/Verdura.dir
-  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Engine/Texture
-
-build CMakeFiles/Verdura.dir/Engine/ShaderManager/ShaderManager.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Engine/ShaderManager/ShaderManager.cpp || cmake_object_order_depends_target_Verdura
-  DEP_FILE = CMakeFiles/Verdura.dir/Engine/ShaderManager/ShaderManager.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
-  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
-  OBJECT_DIR = CMakeFiles/Verdura.dir
-  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Engine/ShaderManager
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Verdura
@@ -166,7 +152,7 @@ build CMakeFiles/Verdura.dir/Engine/ShaderManager/ShaderManager.cpp.o: CXX_COMPI
 #############################################
 # Link the executable Verdura
 
-build Verdura: CXX_EXECUTABLE_LINKER__Verdura_Debug CMakeFiles/Verdura.dir/main.cpp.o CMakeFiles/Verdura.dir/dependencies_code/glad.c.o CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o CMakeFiles/Verdura.dir/Engine/Texture/Texture.cpp.o CMakeFiles/Verdura.dir/Engine/ShaderManager/ShaderManager.cpp.o | libimgui.a /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so /usr/lib/x86_64-linux-gnu/libassimp.so.5.3.0 || libimgui.a
+build Verdura: CXX_EXECUTABLE_LINKER__Verdura_Debug CMakeFiles/Verdura.dir/main.cpp.o CMakeFiles/Verdura.dir/dependencies_code/glad.c.o CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o | libimgui.a /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so /usr/lib/x86_64-linux-gnu/libassimp.so.5.3.0 || libimgui.a
   FLAGS = -g
   LINK_LIBRARIES = -Wl,-rpath,/home/hous/CLionProjects/Verdura/lib  libimgui.a  -lglfw  /usr/lib/x86_64-linux-gnu/libOpenGL.so  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libGLU.so  /usr/lib/x86_64-linux-gnu/libassimp.so.5.3.0  -lpugixml
   LINK_PATH = -L/home/hous/CLionProjects/Verdura/lib

@@ -53,7 +53,6 @@ void checkShaderCompileStatus(GLuint shader)
         std::cerr << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 }
-
 void checkProgramLinkStatus(GLuint program) {
     GLint success;
     glGetProgramiv(program, GL_LINK_STATUS, &success);
@@ -63,7 +62,6 @@ void checkProgramLinkStatus(GLuint program) {
         std::cerr << "ERROR::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
 }
-
 GLuint CompileShader(const std::string& source, GLenum shaderType) {
     GLuint shader = glCreateShader(shaderType);
     const char* sourceCStr = source.c_str();
@@ -80,7 +78,6 @@ GLuint CompileShader(const std::string& source, GLenum shaderType) {
     }
     return shader;
 }
-
 GLuint CreateShaderProgram() {
     std::string vertexSource = R"(
 #version 330 core
@@ -139,11 +136,11 @@ void main(){
 
     return program;
 }
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
+Camera camera; // Belongs to RENDERER
 // Global variables for timing (RENDERER)
-float lastFrame = 0.0f; // Time of the last frame
-float deltaTime = 0.0f; // Time between current and last frame
+double lastFrame = 0.0; // Time of the last frame
+double deltaTime = 0.0; // Time between current and last frame
 
 // Main code
 int main(int, char**)
@@ -186,7 +183,7 @@ int main(int, char**)
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-
+    //io.WantCaptureKeyboard = false;
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
     //ImGui::StyleColorsLight();
@@ -252,11 +249,13 @@ int main(int, char**)
     GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
     GLint projectionLoc = glGetUniformLocation(shaderProgram, "projection");
 
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
+    /*glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));*/
     //glUseProgram(shaderProgram);
-
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera.viewMatrix));
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(camera.projectionMatrix));
 
     if (modelLoc == -1 || viewLoc == -1 || projectionLoc == -1 || textureLoc == -1) {
         std::cerr << "One or more uniforms not found in the shader program!" << std::endl;
@@ -344,25 +343,24 @@ int main(int, char**)
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         // opengl render here, when DearImGUI is done
         lastFrame = glfwGetTime();
-         deltaTime = glfwGetTime() - lastFrame;
+        deltaTime = glfwGetTime() - lastFrame;
 
-
-        // Handle keyboard input for camera movement
         camera.HandleInputs(window, deltaTime);
-
-        // Update view and projection matrices
-        /*camera.update();
-
-        // Set the view and projection matrices for your shaders
-//        shader.setMat4("view", camera.viewMatrix);
-  //      shader.setMat4("projection", camera.projectionMatrix);
-
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera.viewMatrix));
         glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(camera.projectionMatrix));
-*/
+        //camera.updateCameraVectors();
+        //camera.update();
+
 
         mesh.Render();
+        /*
+                // Set the view and projection matrices for your shaders
+        //        shader.setMat4("view", camera.viewMatrix);
+          //      shader.setMat4("projection", camera.projectionMatrix);
 
+                glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera.viewMatrix));
+                glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(camera.projectionMatrix));
+        */
         //glBindVertexArray(0);
 
         glfwSwapBuffers(window);

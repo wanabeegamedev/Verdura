@@ -68,7 +68,8 @@ public:
         outTexCoords = tempTexCoords;
         return true;
     }
-
+    // Permet de switcher de texture indépendemment des vertex data
+    // et de sauver plusieurs Textures pour ne pas recharger
     static bool LoadTexture(const std::string& texturePath,
               GLuint& textureID) {
         int width, height, nrChannels;

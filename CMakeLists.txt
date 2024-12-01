@@ -41,9 +41,7 @@ add_executable(
         ${PROJECT_NAME} main.cpp
         dependencies_code/glad.c
         dependencies_code/stb.cpp
-        Engine/Texture/Texture.cpp
         Engine/Texture/Texture.h
-        Engine/ShaderManager/ShaderManager.cpp
         Engine/ShaderManager/ShaderManager.h
         Engine/Camera/Camera.h
         Engine/Mesh/OBJLoader.h
