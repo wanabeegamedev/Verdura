@@ -9,16 +9,13 @@
 #include <sstream>
 #include <vector>
 #include <string>
-#include <map>
 #include <glm/glm.hpp>
 #include <stb_image.h>
-
-//"/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/texture_1.png"
 class OBJLoader {
 public:
     OBJLoader() = default;
 
-    bool Load(const std::string& filename,
+    static bool Load(const std::string& filename,
               std::vector<glm::vec3>& outVertices,
               std::vector<glm::vec3>& outNormals,
               std::vector<glm::vec2>& outTexCoords,
@@ -43,19 +40,16 @@ public:
             if (prefix == "v") {
                 glm::vec3 vertex;
                 ss >> vertex.x >> vertex.y >> vertex.z;
-                //std::cout << vertex.x << " " << vertex.y << " " << vertex.z << std::endl;
                 tempVertices.push_back(vertex);
             }
             else if (prefix == "vt") {
                 glm::vec2 texCoord;
                 ss >> texCoord.x >> texCoord.y;
-                //std::cout << texCoord.x << " " << texCoord.y << std::endl;
                 tempTexCoords.push_back(texCoord);
             }
             else if (prefix == "vn") {
                 glm::vec3 normal;
                 ss >> normal.x >> normal.y >> normal.z;
-                //std::cout << normal.x << " " << normal.y << " " << normal.z << std::endl;
                 tempNormals.push_back(normal);
             }
             else if (prefix == "f") {
@@ -75,10 +69,10 @@ public:
         return true;
     }
 
-    bool LoadTexture(const std::string& texturePath,
+    static bool LoadTexture(const std::string& texturePath,
               GLuint& textureID) {
         int width, height, nrChannels;
-        stbi_set_flip_vertically_on_load(true); // Flip vertically for OpenGL
+        stbi_set_flip_vertically_on_load(true); // OpenGL specifique
         unsigned char* data = stbi_load(texturePath.c_str(), &width, &height, &nrChannels, 0);
         if (!data) {
             std::cerr << "Failed to load texture: " << texturePath << std::endl;

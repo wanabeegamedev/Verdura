@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.29)
+cmake_minimum_required(VERSION 3.15)
 project(Verdura)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -24,14 +24,14 @@ file(GLOB IMGUI_GLOB
         ${IMGUI_PATH}/imgui_tables.cpp
         ${IMGUI_PATH}/imgui_widgets.cpp
 
-        # specific bindings, if you use Direct3D or Vulkan, change this...
+        # Les fichiers spcifiques à OpenGL
         ${IMGUI_PATH}/backends/imgui_impl_glfw.h
         ${IMGUI_PATH}/backends/imgui_impl_glfw.cpp
         ${IMGUI_PATH}/backends/imgui_impl_opengl3.h
         ${IMGUI_PATH}/backends/imgui_impl_opengl3.cpp
         ${IMGUI_PATH}/backends/imgui_impl_opengl3_loader.cpp)
 
-add_library("imgui" STATIC ${IMGUI_GLOB}) # build a libimgui.a
+add_library("imgui" STATIC ${IMGUI_GLOB}) # build libimgui.a
 
 # Linux
 find_package(OpenGL REQUIRED)
@@ -41,23 +41,14 @@ add_executable(
         ${PROJECT_NAME} main.cpp
         dependencies_code/glad.c
         dependencies_code/stb.cpp
-        Engine/VBO/VBO.cpp
-        Engine/VBO/VBO.h
         Engine/Texture/Texture.cpp
         Engine/Texture/Texture.h
         Engine/ShaderManager/ShaderManager.cpp
         Engine/ShaderManager/ShaderManager.h
-        Engine/Camera/Camera.cpp
         Engine/Camera/Camera.h
-        Engine/Light/AmbientLight/AmbientLight.cpp
-        Engine/Light/AmbientLight/AmbientLight.h
-        Helpers/data_types.h
-        GLBLoader/glb_loader.h
-        Engine/Mesh/AssimpFbxLoader.h
-        Engine/Mesh/AssimpFbxMesh.h
         Engine/Mesh/OBJLoader.h
         Engine/Mesh/OBJMesh.h
 )
 
 target_include_directories( ${PROJECT_NAME} PUBLIC ${IMGUI_PATH})
-target_link_libraries(${PROJECT_NAME} PUBLIC imgui glfw ${OPENGL_LIBRARIES} assimp::assimp) # windows glfw3, avec un 3, linux sans 3
+target_link_libraries(${PROJECT_NAME} PUBLIC imgui glfw ${OPENGL_LIBRARIES} assimp::assimp) # windows 'glfw3', avec un 3, linux sans 3

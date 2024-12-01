@@ -31,8 +31,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "GLBLoader/glb_loader.h"
-#include "../Engine/Mesh/AssimpFbxLoader.h"
 #include "Engine/Camera/Camera.h"
 #include "Engine/Mesh/OBJLoader.h"
 #include "Engine/Mesh/OBJMesh.h"
@@ -65,12 +63,6 @@ void checkProgramLinkStatus(GLuint program) {
         std::cerr << "ERROR::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
 }
-
-// Test
-tinygltf::Model mageModel;
-//TODO doit utiliser os.getCurrentDirectory
-//bool res = loadModel(mageModel,"/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/Mage.glb");
-
 
 GLuint CompileShader(const std::string& source, GLenum shaderType) {
     GLuint shader = glCreateShader(shaderType);
@@ -147,18 +139,15 @@ void main(){
 
     return program;
 }
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-// Global variables for timing
+// Global variables for timing (RENDERER)
 float lastFrame = 0.0f; // Time of the last frame
 float deltaTime = 0.0f; // Time between current and last frame
 
 // Main code
 int main(int, char**)
 {
-    //AssimpFbxLoader loader;
-
-
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return 1;
@@ -182,18 +171,16 @@ int main(int, char**)
     const char* glsl_version = "#version 130";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
 
-    // Create window with graphics context
+    // Create window with graphics context (RENDERER)
     GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL3 example", nullptr, nullptr);
     if (window == nullptr)
         return 1;
     glfwMakeContextCurrent(window);
-    glfwSwapInterval(1); // Enable vsync
+    glfwSwapInterval(1);
 
-    // Setup Dear ImGui context
+    //  Dear ImGui
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -216,31 +203,25 @@ int main(int, char**)
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 
-
-    /*if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cerr << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }*/
-    if(!gladLoadGL())// simplement
+    if(!gladLoadGL())
         {
             std::cerr << "Failed to initialize GLAD" << std::endl;
             return -1;
         }
     // After Initialization of glew and glfw
-
-
-    std::vector<glm::vec3> vertices;
-    std::vector<glm::vec3> normals;
-    std::vector<glm::vec2> texCoords;
-    std::vector<unsigned int> indices;
-    OBJMesh mesh;
-    OBJLoader loader;
+    // MESH
+    std::vector<glm::vec3> vertices;//MESH class attributes
+    std::vector<glm::vec3> normals;//MESH class attributes
+    std::vector<glm::vec2> texCoords;//MESH class attributes
+    std::vector<unsigned int> indices; //MESH class attributes
+    OBJMesh mesh; //MESH class attributes
+    OBJLoader loader; //RENDERER class attributes
     if (loader.Load(
-        "/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj",
-        vertices, normals, texCoords, indices))
+        "/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj", //MESH class attributes
+        vertices, normals, texCoords, indices))//MESH class attributes
         {
         // Use the first material texture in the list
-        loader.LoadTexture("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/texture_1.png",
+        loader.LoadTexture("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/texture_1.png", //MESH class attributes
             mesh.textureID);
         mesh.Initialize(vertices, normals, texCoords, indices);
 
@@ -249,9 +230,9 @@ int main(int, char**)
 
 
 
-    GLuint shaderProgram = CreateShaderProgram(); // Implement your shader setup
+    GLuint shaderProgram = CreateShaderProgram();
 
-    glUseProgram(shaderProgram);
+    glUseProgram(shaderProgram); //RENDERER class method
     // Texture uniform
      GLint textureLoc = glGetUniformLocation(shaderProgram, "texture1");
     glUniform1i(textureLoc, 0); // Texture unit 0
@@ -266,8 +247,6 @@ int main(int, char**)
     glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f); // Y-axis is up
     glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     glm::mat4 projection = glm::perspective(glm::radians(60.0f), (float)1280 / 720, 0.1f, 100.0f);
-    // Define the orthographic projection (left, right, bottom, top, near, far)
-    //glm::mat4 projection = glm::ortho(-5.0f, 5.0f, -5.0f, 5.0f, 0.1f, 100.0f);
 
     GLint modelLoc = glGetUniformLocation(shaderProgram, "model");
     GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
@@ -393,12 +372,11 @@ int main(int, char**)
     EMSCRIPTEN_MAINLOOP_END;
 #endif
 
-    // Cleanup
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
-    glfwDestroyWindow(window); // Renderer.window
+    glfwDestroyWindow(window); // Renderer.window, //RENDERER class attributes
     glfwTerminate();
 
     return 0;
