@@ -41,12 +41,14 @@ add_executable(
         ${PROJECT_NAME} main.cpp
         dependencies_code/glad.c
         dependencies_code/stb.cpp
-        Engine/Texture/Texture.h
-        Engine/ShaderManager/ShaderManager.h
         Engine/Camera/Camera.h
         Engine/Mesh/OBJLoader.h
         Engine/Mesh/OBJMesh.h
+        Engine/Shader/shader.h
+        Engine/Shader/program.h
+        Engine/Renderer/Renderer.h
 )
 
 target_include_directories( ${PROJECT_NAME} PUBLIC ${IMGUI_PATH})
-target_link_libraries(${PROJECT_NAME} PUBLIC imgui glfw ${OPENGL_LIBRARIES} assimp::assimp) # windows 'glfw3', avec un 3, linux sans 3
+target_link_libraries(${PROJECT_NAME} PUBLIC imgui glfw ${OPENGL_LIBRARIES} assimp::assimp) # windows 'glfw3', with a 3, linux 'glfw' no 3,
+                                                                                            # but you still install libglfw3 with apt (debian family)

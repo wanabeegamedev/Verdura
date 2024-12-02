@@ -34,6 +34,8 @@
 #include "Engine/Camera/Camera.h"
 #include "Engine/Mesh/OBJLoader.h"
 #include "Engine/Mesh/OBJMesh.h"
+#include "Engine/Shader/program.h"
+#include "Engine/Shader/shader.h"
 
 
 static void glfw_error_callback(int error, const char* description)
