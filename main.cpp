@@ -43,106 +43,10 @@ static void glfw_error_callback(int error, const char* description)
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
 
-
-
-void checkShaderCompileStatus(GLuint shader)
-{
-    GLint success;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        char infoLog[512];
-        glGetShaderInfoLog(shader, 512, NULL, infoLog);
-        std::cerr << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-}
-void checkProgramLinkStatus(GLuint program) {
-    GLint success;
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
-    if (!success) {
-        char infoLog[512];
-        glGetProgramInfoLog(program, 512, nullptr, infoLog);
-        std::cerr << "ERROR::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-    }
-}
-GLuint CompileShader(const std::string& source, GLenum shaderType) {
-    GLuint shader = glCreateShader(shaderType);
-    const char* sourceCStr = source.c_str();
-    glShaderSource(shader, 1, &sourceCStr, nullptr);
-    glCompileShader(shader);
-
-    // Check for compilation errors
-    GLint success;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        char infoLog[512];
-        glGetShaderInfoLog(shader, 512, nullptr, infoLog);
-        std::cerr << "Shader Compilation Failed: " << infoLog << std::endl;
-    }
-    return shader;
-}
-GLuint CreateShaderProgram() {
-    std::string vertexSource = R"(
-#version 330 core
-layout(location = 0) in vec3 aPos;
-layout(location = 1) in vec3 aNormal;
-layout(location = 2) in vec2 aTexCoord;
-
-out vec2 TexCoord;
-
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
-
-void main(){
-
-    gl_Position = projection * view * model * vec4(aPos, 1.0);
-    TexCoord = aTexCoord;
-}
-    )";
-
-    std::string fragmentSource = R"(
-#version 330 core
-out vec4 FragColor;
-
-in vec2 TexCoord;
-
-uniform sampler2D texture1;
-
-void main(){
-    FragColor = texture(texture1, TexCoord); // vec4(1.0, 0.0, 0.0, 1.0);//
-
-    //FragColor = vec4(TexCoord, 0.0, 1.0); // Map UV coordinates to RG colors
-
-}
-    )";
-
-    GLuint vertexShader = CompileShader(vertexSource, GL_VERTEX_SHADER);
-    GLuint fragmentShader = CompileShader(fragmentSource, GL_FRAGMENT_SHADER);
-
-    GLuint program = glCreateProgram();
-    glAttachShader(program, vertexShader);
-    glAttachShader(program, fragmentShader);
-    glLinkProgram(program);
-
-    // Check for linking errors
-    GLint success;
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
-    if (!success) {
-        char infoLog[512];
-        glGetProgramInfoLog(program, 512, nullptr, infoLog);
-        std::cerr << "Program Linking Failed: " << infoLog << std::endl;
-    }
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    return program;
-}
-
 Camera camera; // Belongs to RENDERER
 // Global variables for timing (RENDERER)
-double lastFrame = 0.0; // Time of the last frame
-double deltaTime = 0.0; // Time between current and last frame
+double lastFrame = 0.0; // Time of the last frame // Belongs to RENDERER
+double deltaTime = 0.0; // Time between current and last frame // Belongs to RENDERER
 
 // Main code
 int main(int, char**)
@@ -185,7 +89,7 @@ int main(int, char**)
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-    //io.WantCaptureKeyboard = false;
+
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
     //ImGui::StyleColorsLight();
@@ -213,55 +117,34 @@ int main(int, char**)
     std::vector<glm::vec3> normals;//MESH class attributes
     std::vector<glm::vec2> texCoords;//MESH class attributes
     std::vector<unsigned int> indices; //MESH class attributes
-    OBJMesh mesh; //MESH class attributes
-    OBJLoader loader; //RENDERER class attributes
-    if (loader.Load(
+    OBJMesh mesh; //MESH class attributesà
+    if (OBJLoader::Load(
         "/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj", //MESH class attributes
         vertices, normals, texCoords, indices))//MESH class attributes
         {
-        // Use the first material texture in the list
-        loader.LoadTexture("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/texture_1.png", //MESH class attributes
-            mesh.textureID);
-        mesh.Initialize(vertices, normals, texCoords, indices);
-
-            }
-
+            // Use the first material texture in the list
+            if (OBJLoader::LoadTexture("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/texture_1.png", //MESH class attributes
+            mesh.textureID));
+            mesh.Initialize(vertices, normals, texCoords, indices);
+        }
 
 
+    Shader vShader("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex.txt",GL_VERTEX_SHADER);
+    Shader fShader("/home/hous/CLionProjects/Verdura/Game/Shaders/fragment.txt",GL_FRAGMENT_SHADER);
+    Program program(vShader.shader_id(),fShader.shader_id());
+    program.bind();
 
-    GLuint shaderProgram = CreateShaderProgram();
+    program.setUniform1i("texture1", 0);
+    glm::mat4 model = glm::mat4(1.0f); // Belongs to MESH
+    program.setUniformMat4("model",model);
+    program.setUniformMat4("view",camera.viewMatrix);
+    program.setUniformMat4("projection",camera.projectionMatrix);
 
-    glUseProgram(shaderProgram); //RENDERER class method
-    // Texture uniform
-     GLint textureLoc = glGetUniformLocation(shaderProgram, "texture1");
-    glUniform1i(textureLoc, 0); // Texture unit 0
-    glm::mat4 model = glm::mat4(1.0f);
-    // Camera position (diagonal from the origin)
-    glm::vec3 cameraPos = glm::vec3(5.0f, 5.0f, 12.0f); // Positioned diagonally for isometric view
 
-    // Camera direction (looking toward the origin)
-    glm::vec3 cameraFront = glm::vec3(-1.0f, -1.0f, -1.0f); // Looking at the origin
-
-    // Camera Up vector (keep the positive Y-axis as up)
-    glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f); // Y-axis is up
-    glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-    glm::mat4 projection = glm::perspective(glm::radians(60.0f), (float)1280 / 720, 0.1f, 100.0f);
-
-    GLint modelLoc = glGetUniformLocation(shaderProgram, "model");
-    GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
-    GLint projectionLoc = glGetUniformLocation(shaderProgram, "projection");
-
-    /*glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));*/
-    //glUseProgram(shaderProgram);
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera.viewMatrix));
-    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(camera.projectionMatrix));
-
-    if (modelLoc == -1 || viewLoc == -1 || projectionLoc == -1 || textureLoc == -1) {
+    /*TODO Move to checkProgram, all values in uniformCache must be Positive
+     *if (modelLoc == -1 || viewLoc == -1 || projectionLoc == -1 || textureLoc == -1) {
         std::cerr << "One or more uniforms not found in the shader program!" << std::endl;
-    }
+    }*/
 
 
 
@@ -343,27 +226,22 @@ int main(int, char**)
 
 
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        // opengl render here, when DearImGUI is done
+        // opengl render ici, when DearImGUI is done
+
+        // RENDERER TAKE OVER
         lastFrame = glfwGetTime();
         deltaTime = glfwGetTime() - lastFrame;
 
         camera.HandleInputs(window, deltaTime);
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera.viewMatrix));
-        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(camera.projectionMatrix));
-        //camera.updateCameraVectors();
-        //camera.update();
+        program.setUniformMat4("view", camera.viewMatrix);
+        program.setUniformMat4("view", camera.viewMatrix);
+        camera.updateCameraVectors();
+        camera.update();
 
 
         mesh.Render();
-        /*
-                // Set the view and projection matrices for your shaders
-        //        shader.setMat4("view", camera.viewMatrix);
-          //      shader.setMat4("projection", camera.projectionMatrix);
 
-                glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera.viewMatrix));
-                glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(camera.projectionMatrix));
-        */
-        //glBindVertexArray(0);
+        glBindVertexArray(0);
 
         glfwSwapBuffers(window);
         //TODO ICI Le Renderer GLFW a terminé

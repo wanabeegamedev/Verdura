@@ -123,7 +123,7 @@ public:
                 cameraPosition += cameraRight * velocity;
             }
             // Update camera matrices
-            update();
+            //update();
 
     }
     void update() {
