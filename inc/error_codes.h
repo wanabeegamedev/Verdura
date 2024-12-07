@@ -8,5 +8,6 @@
 #define OK 0
 #define SHADER_COMPILE_ERROR -3
 #define PROGRAM_LINK_ERROR -4
+#define WINDOW_INIT_FAILURE -5
 
 #endif //ERROR_CODES_H

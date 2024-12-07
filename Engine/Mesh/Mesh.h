@@ -4,7 +4,10 @@
 
 #ifndef MESH_H
 #define MESH_H
-
+#include <map>
+enum MeshType {
+    OBJ = 0,
+};
 class Mesh
 {
 protected:
@@ -14,11 +17,14 @@ protected:
     GLuint currentProgramID{};
     std::map<std::string, GLuint> MeshTextures ;
     std::map<std::string, GLuint> MeshPrograms ;
+
 public:
-    Mesh();
-    void addProgram(GLuint programID, std::string vertexShaderFile, std::string fragmentShaderFile);
-    void setProgram(GLuint programID);
-    void addTexture(std::string textureFile, GLuint textureID);
+
+    Mesh()= default;
+    MeshType meshType{};
+    void addProgram(GLuint programID,const std::string& _programName) {
+        MeshPrograms[_programName] = programID;
+    };
     void setTexture(GLuint textureID);
 
 };

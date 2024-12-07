@@ -32,8 +32,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Engine/Camera/Camera.h"
-#include "Engine/Mesh/OBJLoader.h"
+#include "Engine/Mesh/MeshLoader.h"
 #include "Engine/Mesh/OBJMesh.h"
+#include "Engine/Renderer/Renderer.h"
 #include "Engine/Shader/program.h"
 #include "Engine/Shader/shader.h"
 
@@ -54,7 +55,7 @@ int main(int, char**)
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return 1;
-
+    // PARTIE IMGUI
     // Decide GL+GLSL versions
 #if defined(IMGUI_IMPL_OPENGL_ES2)
     // GL ES 2.0 + GLSL 100
@@ -77,10 +78,8 @@ int main(int, char**)
 #endif
 
     // Create window with graphics context (RENDERER)
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL3 example", nullptr, nullptr);
-    if (window == nullptr)
-        return 1;
-    glfwMakeContextCurrent(window);
+    Renderer renderer;
+    glfwMakeContextCurrent(renderer.window);
     glfwSwapInterval(1);
 
     //  Dear ImGui
@@ -95,7 +94,7 @@ int main(int, char**)
     //ImGui::StyleColorsLight();
 
     // Setup Platform/Renderer backends
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplGlfw_InitForOpenGL(renderer.window, true);
 #ifdef __EMSCRIPTEN__
     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
 #endif
@@ -112,21 +111,16 @@ int main(int, char**)
             return -1;
         }
     // After Initialization of glew and glfw
-    // MESH
-    std::vector<glm::vec3> vertices;//MESH class attributes
-    std::vector<glm::vec3> normals;//MESH class attributes
-    std::vector<glm::vec2> texCoords;//MESH class attributes
-    std::vector<unsigned int> indices; //MESH class attributes
-    OBJMesh mesh("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj"); //MESH class attributes
-    if (OBJLoader::Load(
-        "/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj", //MESH class attributes
-        vertices, normals, texCoords, indices))//MESH class attributes
-        {
-            // Use the first material texture in the list
-            if (OBJLoader::LoadTexture("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/texture_1.png", //MESH class attributes
-            mesh.getCurrentTextureID));
-            mesh.Initialize(vertices, normals, texCoords, indices);
-        }
+
+    MeshLoader loader;
+    OBJMesh mesh("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj");
+    mesh.set_current_texture_path("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/texture_1.png");
+    loader.LoadObjMesh(mesh);
+
+    OBJMesh mesh2("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj");
+    mesh2.set_current_texture_path("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/texture_1.png");
+    mesh2.set_position(glm::vec3(1.0f,1.0f,1.0f));
+    loader.LoadObjMesh(mesh2);
 
 
     Shader vShader("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex.txt",GL_VERTEX_SHADER);
@@ -135,10 +129,21 @@ int main(int, char**)
     program.bind();
 
     program.setUniform1i("texture1", 0);
-    glm::mat4 model = glm::mat4(1.0f); // Belongs to MESH
+    glm::mat4 model = glm::mat4(1.0f);
     program.setUniformMat4("model",model);
     program.setUniformMat4("view",camera.viewMatrix);
     program.setUniformMat4("projection",camera.projectionMatrix);
+
+    // just a test
+    Shader vShader2("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex2.txt",GL_VERTEX_SHADER);
+    Shader fShader2("/home/hous/CLionProjects/Verdura/Game/Shaders/fragment2.txt",GL_FRAGMENT_SHADER);
+    Program program2(vShader2.shader_id(),fShader.shader_id());
+    program2.bind();
+
+    program2.setUniform1i("texture1", 0);
+    program2.setUniformMat4("model",model);
+    program2.setUniformMat4("view",camera.viewMatrix);
+    program2.setUniformMat4("projection",camera.projectionMatrix);
 
 
     /*TODO Move to checkProgram, all values in uniformCache must be Positive
@@ -158,7 +163,7 @@ int main(int, char**)
     io.IniFilename = nullptr;
     EMSCRIPTEN_MAINLOOP_BEGIN
 #else
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(renderer.window))
 #endif
     {
         // Poll and handle events (inputs, window resize, etc.)
@@ -217,7 +222,7 @@ int main(int, char**)
         //TODO Rendering; ICI Le Renderer GLFW Intervient
 
         int display_w, display_h;
-        glfwGetFramebufferSize(window, &display_w, &display_h);
+        glfwGetFramebufferSize(renderer.window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
 
@@ -232,18 +237,28 @@ int main(int, char**)
         lastFrame = glfwGetTime();
         deltaTime = glfwGetTime() - lastFrame;
 
-        camera.HandleInputs(window, deltaTime);
+        camera.HandleInputs(renderer.window, deltaTime);
+
+        program.bind();
         program.setUniformMat4("view", camera.viewMatrix);
-        program.setUniformMat4("view", camera.viewMatrix);
+        program.setUniformMat4("projection", camera.projectionMatrix);
+
+        program2.bind();
+        program2.setUniformMat4("view", camera.viewMatrix);
+        program2.setUniformMat4("projection", camera.projectionMatrix);
+
         camera.updateCameraVectors();
         camera.update();
 
-
+        program.bind();
         mesh.Render();
+
+        program2.bind();
+        mesh2.Render();
 
         glBindVertexArray(0);
 
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(renderer.window);
         //TODO ICI Le Renderer GLFW a terminé
     }
 #ifdef __EMSCRIPTEN__
@@ -254,7 +269,7 @@ int main(int, char**)
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
-    glfwDestroyWindow(window); // Renderer.window, //RENDERER class attributes
+    glfwDestroyWindow(renderer.window); // Renderer.window, //RENDERER class attributes
     glfwTerminate();
 
     return 0;
