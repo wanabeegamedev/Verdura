@@ -117,14 +117,14 @@ int main(int, char**)
     std::vector<glm::vec3> normals;//MESH class attributes
     std::vector<glm::vec2> texCoords;//MESH class attributes
     std::vector<unsigned int> indices; //MESH class attributes
-    OBJMesh mesh; //MESH class attributesà
+    OBJMesh mesh("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj"); //MESH class attributes
     if (OBJLoader::Load(
         "/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj", //MESH class attributes
         vertices, normals, texCoords, indices))//MESH class attributes
         {
             // Use the first material texture in the list
             if (OBJLoader::LoadTexture("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/texture_1.png", //MESH class attributes
-            mesh.textureID));
+            mesh.getCurrentTextureID));
             mesh.Initialize(vertices, normals, texCoords, indices);
         }
 

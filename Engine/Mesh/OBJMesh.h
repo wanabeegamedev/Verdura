@@ -4,13 +4,17 @@
 
 #ifndef OBJMESH_H
 #define OBJMESH_H
+#include <map>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <vector>
+
+#include "Mesh.h"
 int stride = 8 * sizeof(float);
-class OBJMesh {
+class OBJMesh : public Mesh
+{
 public:
-    OBJMesh() : VAO(0), VBO(0), EBO(0), textureID(0) {}
+    explicit OBJMesh(const char * filename): currentDataPath(filename)  {}
 
     bool Initialize(const std::vector<glm::vec3>& vertices,
                 const std::vector<glm::vec3>& normals,
@@ -53,6 +57,8 @@ public:
     GLsizei stride = (3 + 3 + 2) * sizeof(float);  // Position (3), Normal (3), Texture coords (2)
 
     //  positions
+        // Use glGetAttribLocation
+    //GLuint posLocation = glGetAttribLocation(currentProgram.programID,"position");
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
     glEnableVertexAttribArray(0);
 
@@ -73,9 +79,9 @@ public:
 
     void Render() const
     {
-        if (textureID != 0)
+        if (currentTextureID != 0)
         {
-            glBindTexture(GL_TEXTURE_2D, textureID);
+            glBindTexture(GL_TEXTURE_2D, currentTextureID);
         }
 
         glBindVertexArray(VAO);
@@ -87,13 +93,19 @@ public:
         if (VAO != 0) glDeleteVertexArrays(1, &VAO);
         if (VBO != 0) glDeleteBuffers(1, &VBO);
         if (EBO != 0) glDeleteBuffers(1, &EBO);
-        if (textureID != 0) glDeleteTextures(1, &textureID);
+        if (currentTextureID != 0) glDeleteTextures(1, &currentTextureID);
     }
 
-    GLuint VAO, VBO, EBO, textureID;
-    GLsizei indicesCount{};
+    GLuint current_texture_id()
+    {
+        return currentTextureID;
+    };
+    GLuint current_program_id()
+    {
+        return currentProgramID;
+    };
 
-
+    const char* currentDataPath;
 };
 
 #endif //OBJMESH_H
