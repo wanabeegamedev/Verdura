@@ -30,8 +30,14 @@ public:
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
         glGenBuffers(1, &EBO);
-        // Interleave vertex data
+        // Interleave vertex data, NOTE  :  Ram Optimization : I just realized
+        // UNDER CONDITION : that no mesh sharing the data will directly change it
+        // I can avoid storing them and use a pointer to the cache
+        // When max effeciency will be needed
+        // Every mesh will then use coeffiecient  in the shaders to change the data
         std::vector<float> interleavedData;
+        // OR std::shared_ptr<std::vector<float>> interleavedData; // so the cache will use std::make_shared, #include<memory> for -std=c++11 or lower
+
         for (size_t i = 0; i < vertices.size(); ++i)
             {
                 // positions

@@ -66,8 +66,16 @@ class MeshLoader
     {
         //  TODO
     };
-    void LoadObjMesh(OBJMesh& mesh)
+    void LoadObjMesh(OBJMesh& mesh /*,const char* meshName*/)
     {
+        /*if (MeshCache::GetOBJMesh(meshName))//Mesh is in the cache
+        {
+            //initlialise
+            MeshCache::Retrieve4fv(vertices, normals, texCoords, indices);
+            mesh.Initialize(vertices, normals, texCoords, indices);
+            resetLoader();
+            return;
+        }*/
         if (OBJLoader::Load(
         mesh.currentDataPath,
         vertices, normals, texCoords, indices))
