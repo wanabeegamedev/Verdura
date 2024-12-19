@@ -48,7 +48,7 @@ Camera camera; // Belongs to RENDERER
 // Global variables for timing (RENDERER)
 double lastFrame = 0.0; // Time of the last frame // Belongs to RENDERER
 double deltaTime = 0.0; // Time between current and last frame // Belongs to RENDERER
-
+Renderer renderer();
 // Main code
 int main(int, char**)
 {
@@ -119,32 +119,25 @@ int main(int, char**)
 
     OBJMesh mesh2("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj");
     mesh2.set_current_texture_path("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/texture_1.png");
-    mesh2.set_position(glm::vec3(1.0f,1.0f,1.0f));
+    mesh2.set_position(glm::vec3(1.0f,1.0f,1.0f));//TODO Utiliser
     loader.LoadObjMesh(mesh2);
 
 
     Shader vShader("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex.txt",GL_VERTEX_SHADER);
     Shader fShader("/home/hous/CLionProjects/Verdura/Game/Shaders/fragment.txt",GL_FRAGMENT_SHADER);
     Program program(vShader.shader_id(),fShader.shader_id());
-    program.bind();
-
-    program.setUniform1i("texture1", 0);
-    glm::mat4 model = glm::mat4(1.0f);
-    program.setUniformMat4("model",model);
-    program.setUniformMat4("view",camera.viewMatrix);
-    program.setUniformMat4("projection",camera.projectionMatrix);
+    program.setName("t_pose_j1");
+    mesh.addProgram(&program);
+    mesh.setCurrentProgram("t_pose_j1");
 
     // just a test
     Shader vShader2("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex2.txt",GL_VERTEX_SHADER);
     Shader fShader2("/home/hous/CLionProjects/Verdura/Game/Shaders/fragment2.txt",GL_FRAGMENT_SHADER);
-    Program program2(vShader2.shader_id(),fShader.shader_id());
-    program2.bind();
-
-    program2.setUniform1i("texture1", 0);
-    program2.setUniformMat4("model",model);
-    program2.setUniformMat4("view",camera.viewMatrix);
-    program2.setUniformMat4("projection",camera.projectionMatrix);
-
+    Program program2(vShader2.shader_id(),fShader2.shader_id());
+    // TODO utiliser des offsets et matrices position rotation et scale (ptet pas scale, pas besoin ) pour réutiliser les memes shaders
+    program2.setName("t_pose_j2");
+    mesh2.addProgram(&program2);
+    mesh2.setCurrentProgram("t_pose_j2");
 
     /*TODO Move to checkProgram, all values in uniformCache must be Positive
      *if (modelLoc == -1 || viewLoc == -1 || projectionLoc == -1 || textureLoc == -1) {
@@ -238,23 +231,10 @@ int main(int, char**)
         deltaTime = glfwGetTime() - lastFrame;
 
         camera.HandleInputs(renderer.window, deltaTime);
-
-        program.bind();
-        program.setUniformMat4("view", camera.viewMatrix);
-        program.setUniformMat4("projection", camera.projectionMatrix);
-
-        program2.bind();
-        program2.setUniformMat4("view", camera.viewMatrix);
-        program2.setUniformMat4("projection", camera.projectionMatrix);
-
         camera.updateCameraVectors();
         camera.update();
-
-        program.bind();
-        mesh.Render();
-
-        program2.bind();
-        mesh2.Render();
+        mesh.Render(camera);
+        mesh2.Render(camera);
 
         glBindVertexArray(0);
 

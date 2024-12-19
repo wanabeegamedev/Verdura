@@ -16,6 +16,7 @@
 class Program {
 
     GLuint programID{};
+    std::string programName{};
     GLuint currentVertexShaderID{};
     GLuint currentFragmentShaderID{};
     std::unordered_map<std::string, GLint> uniformCache;//TODO use addUniform to add the uniforms from the shaders
@@ -32,6 +33,11 @@ class Program {
             exit(PROGRAM_LINK_ERROR);
         }
     }
+
+    void setName(std::string const& name) {
+        programName = name;
+    };
+
     Program(
         GLuint current_vertex_shader_id,
         GLuint current_fragment_shader_id)
@@ -88,6 +94,9 @@ class Program {
 
     GLuint program_id() const {
         return programID;
+    }
+    std::string program_name() const {
+        return programName;
     }
     GLuint current_vertex_shader_id() const {
         return currentVertexShaderID;

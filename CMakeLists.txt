@@ -49,6 +49,8 @@ add_executable(
         Engine/Renderer/Renderer.h
         Engine/Mesh/MeshLoader.h
         Engine/Mesh/Mesh.h
+        Engine/Mesh/MeshCache.h
+        Engine/Game.h
 )
 
 target_include_directories( ${PROJECT_NAME} PUBLIC ${IMGUI_PATH})

@@ -17,10 +17,12 @@ class OBJMesh : public Mesh
 public:
     explicit OBJMesh(const char * filename):Mesh(), currentDataPath(filename) {
         meshType = MeshType::OBJ;
+        model = glm::mat4(1.0f);
         // en haut on peut mettre que les membre de la class
         // car pour les membres de la base class j'ai appelé le constructeur
     }
     glm::vec3 position;
+    glm::mat4 model;
     bool Initialize(const std::vector<glm::vec3>& vertices,
                     const std::vector<glm::vec3>& normals,
                     const std::vector<glm::vec2>& texCoords,
@@ -82,7 +84,7 @@ public:
 }
 
     // TODO Move to Renderer
-    void Render() const
+    void Render(const Camera& camera) const
     {
         //TODO std::string programName ="Basic";
         //TODO glUseProgram(MeshPrograms.at(programName));
@@ -90,7 +92,12 @@ public:
         {
             glBindTexture(GL_TEXTURE_2D, currentTextureID);
         }
-
+        MeshPrograms.at(currentProgramName)->bind();
+        MeshPrograms.at(currentProgramName)->setUniform1i("texture1", 0);
+        MeshPrograms.at(currentProgramName)->setUniformMat4("model",model);
+        MeshPrograms.at(currentProgramName)->setUniformMat4("view",camera.viewMatrix);
+        MeshPrograms.at(currentProgramName)->setUniformMat4("projection",camera.projectionMatrix);
+        // TODO Offseter la Position ICI
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, nullptr);
         glBindVertexArray(0);
@@ -110,10 +117,6 @@ public:
 
     void set_position(glm::vec3&& position) {
         position = position;
-    };
-    GLuint current_program_id()
-    {
-        return currentProgramID;
     };
 
     const char * current_data_path() const {

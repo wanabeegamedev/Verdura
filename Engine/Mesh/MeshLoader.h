@@ -33,8 +33,8 @@ class MeshLoader
     }
     public:
 
-    // TODO Trouver un moyen de mettre des Mesh Data en cache
-    // TODO Trouver un moyen d'abstraire cette méthode
+    // TODO Utiliser Mesh Data en cache
+    // TODO Trouver un moyen d'abstraire cette méthode ??
     inline void switchOBJMeshData(OBJMesh &mesh, const char *dataPath)
     {
         mesh.currentDataPath = dataPath;
@@ -52,15 +52,8 @@ class MeshLoader
         Shader vShader(vertexShaderFilePath,GL_VERTEX_SHADER);
         Shader fShader(fragmentShaderFilePath,GL_FRAGMENT_SHADER);
         Program program(vShader.shader_id(),fShader.shader_id());
-        mesh.addProgram(program.program_id(),programName);
-        /*
-        program.bind();
-        program.setUniform1i("texture1", 0);
-        glm::mat4 model = glm::mat4(1.0f);
-        program.setUniformMat4("model",model);
-        program.setUniformMat4("view",camera.viewMatrix);
-        program.setUniformMat4("projection",camera.projectionMatrix);
-        */
+        program.setName(programName);
+        mesh.addProgram(&program);
     };
     inline void LoadTexture(const std::string& textureFile, GLuint textureID)
     {
@@ -68,10 +61,10 @@ class MeshLoader
     };
     void LoadObjMesh(OBJMesh& mesh /*,const char* meshName*/)
     {
-        /*if (MeshCache::GetOBJMesh(meshName))//Mesh is in the cache
+        /*if (MeshLoader::GetOBJMesh(meshName))//Mesh is in the cache
         {
             //initlialise
-            MeshCache::Retrieve4fv(vertices, normals, texCoords, indices);
+            MeshLoader::Retrieve4fv(vertices, normals, texCoords, indices);
             mesh.Initialize(vertices, normals, texCoords, indices);
             resetLoader();
             return;

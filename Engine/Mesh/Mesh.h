@@ -5,6 +5,9 @@
 #ifndef MESH_H
 #define MESH_H
 #include <map>
+
+#include "../Shader/program.h"
+
 enum MeshType {
     OBJ = 0,
 };
@@ -14,18 +17,25 @@ protected:
     GLuint VAO{}, VBO{}, EBO{};
     unsigned long indicesCount{};
     GLuint currentTextureID{};
-    GLuint currentProgramID{};
+    std::string currentProgramName{};
     std::map<std::string, GLuint> MeshTextures ;
-    std::map<std::string, GLuint> MeshPrograms ;
+    std::map<std::string, Program*> MeshPrograms ;
 
 public:
 
     Mesh()= default;
     MeshType meshType{};
-    void addProgram(GLuint programID,const std::string& _programName) {
-        MeshPrograms[_programName] = programID;
-    };
-    void setTexture(GLuint textureID);
-
+    void addProgram(Program* _program){
+        MeshPrograms[_program->program_name()] = _program;
+    }
+    void addTexture(GLuint textureID,const std::string& _textureName) {
+        MeshTextures[_textureName] = textureID;
+    }
+    void setCurrentProgram(const std::string& programName) {
+        currentProgramName = programName;
+    }
+    void setCurrentTexture(std::string const& textureName) {
+        currentTextureID = MeshTextures[textureName];
+    }
 };
 #endif //MESH_H
