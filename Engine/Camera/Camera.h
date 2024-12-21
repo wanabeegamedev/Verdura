@@ -12,13 +12,15 @@
 #include <GLFW/glfw3.h>
 
 #include <imgui.h>
+
+//#include "../Mesh/OBJMesh.h"
 #define INITIAL_SPEED 500000.0f
 #define INITIAL_NEAR 0.1f
 #define INITIAL_SENSITIVITY 0.1f
 #define INITIAL_FOV 60.0f
 #define INITIAL_FAR 100.0f
 #define INITIAL_NEAR 0.1f
-#define INITIAL_POS glm::vec3(5.0f, 5.0f, 12.0f)
+#define INITIAL_POS glm::vec3(5.0f, 5.0f, 15.0f)
 #define INITIAL_FRONT glm::vec3(-1.0f, -1.0f, -1.0f)// Vers l'origine
 #define INITIAL_UP glm::vec3(0.0f, 1.0f, 0.0f)
 class Camera {
@@ -122,10 +124,38 @@ public:
             {
                 cameraPosition += cameraRight * velocity;
             }
+            // Vertical movement
+            if (ImGui::IsKeyPressed(ImGuiKey_S)) {
+                cameraPosition += cameraUp * velocity; // Move up
+            }
+            if (ImGui::IsKeyPressed(ImGuiKey_Z)) {
+                cameraPosition -= cameraUp * velocity; // Move down
+            }
             // Update camera matrices
             //update();
 
     }
+    /*
+     *void FollowMesh(const OBJMesh& mesh) {
+        // The position of the mesh to follow
+        glm::vec3 targetPosition = mesh.position;
+
+        // Offset the camera position from the target (e.g., behind and above the target)
+        glm::vec3 offset = glm::vec3(5.0f, 5.0f, 20.0f);
+
+        // Set the camera's position to the target position plus the offset
+        cameraPosition = targetPosition + offset;
+
+        // Make the camera look at the target mesh
+        glm::vec3 direction = glm::normalize(targetPosition - cameraPosition);
+        glm::vec3 right = glm::normalize(glm::cross(INITIAL_UP, direction));
+        glm::vec3 up = glm::cross(direction, right);
+
+        // Update the camera's view matrix
+        cameraFront = direction;
+        cameraUp = up;
+    }*/
+
     void update() {
         projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, near, far);
         viewMatrix = glm::lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp);

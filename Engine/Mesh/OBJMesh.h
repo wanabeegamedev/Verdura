@@ -67,7 +67,7 @@ public:
     GLsizei stride = (3 + 3 + 2) * sizeof(float);  // Position (3), Normal (3), Texture coords (2)
 
     //  Positions
-    //  GLuint posLocation = glGetAttribLocation(currentProgram.programID,"position");
+    // TODO GLuint posLocation = glGetAttribLocation(currentProgram.programID,"position");
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
     glEnableVertexAttribArray(0);
     //  Normals
@@ -93,6 +93,7 @@ public:
             glBindTexture(GL_TEXTURE_2D, currentTextureID);
         }
         MeshPrograms.at(currentProgramName)->bind();
+        MeshPrograms.at(currentProgramName)->setUniform3f("offsetPos", position);
         MeshPrograms.at(currentProgramName)->setUniform1i("texture1", 0);
         MeshPrograms.at(currentProgramName)->setUniformMat4("model",model);
         MeshPrograms.at(currentProgramName)->setUniformMat4("view",camera.viewMatrix);
@@ -115,8 +116,8 @@ public:
         return currentTextureID;
     }
 
-    void set_position(glm::vec3&& position) {
-        position = position;
+    void set_position(const glm::vec3& _position) {
+        position = _position;
     };
 
     const char * current_data_path() const {
@@ -131,6 +132,85 @@ public:
     void set_current_texture_path(const char *current_texture_path) {
         currentTexturePath = current_texture_path;
     }
+    void translate(const glm::vec3& translation) {
+        position += translation;
+        model = glm::translate(glm::mat4(1.0f), position); // Update the model matrix
+    }
+
+    void rotate(float angleRadians, const glm::vec3& axis) {
+        model = glm::rotate(model, angleRadians, axis);
+    }
+
+    void scale(const glm::vec3& scaleFactors) {
+        model = glm::scale(model, scaleFactors);
+    }
+    void faceDirection(const glm::vec3& targetPosition) {
+        glm::vec3 direction = glm::normalize(targetPosition - position);
+
+        // angle between the forward vector (assume -Z by default) and the direction
+        glm::vec3 forward = glm::vec3(.0f, 0.0f, -1.0f);
+        float dot = glm::dot(forward, glm::vec3(direction.x, 0.0f, direction.z));
+        float angle = glm::acos(glm::clamp(dot, -1.0f, 1.0f));
+
+        // rotation axis (cross product of forward and direction vectors)
+        glm::vec3 axis = glm::cross(forward, glm::vec3(direction.x, 0.0f, direction.z));
+        if (glm::length(axis) < 1e-6) {
+            axis = glm::vec3(0.0f, 1.0f, 0.0f); // go to Y-axis if vectors are nearly collinear
+        }
+        model = glm::rotate(glm::mat4(1.0f), angle+90, axis);
+    }
+    float speed = 3.0f*100000;
+    /*
+    void handleInputs(float deltaTime) {
+        ImGuiIO& io = ImGui::GetIO(); // Get the ImGui input/output state
+
+        // Calculate movement vectors based on the camera's initial setup
+        glm::vec3 right = glm::normalize(glm::cross(INITIAL_FRONT, INITIAL_UP)); // Right vector
+        glm::vec3 forward = glm::normalize(glm::cross(INITIAL_UP, right));       // Forward vector
+
+        // Speed scaled by deltaTime for frame-independent movement
+        float moveSpeed = speed* deltaTime;
+
+        // Adjust position based on input
+        if (ImGui::IsKeyPressed(ImGuiKey_RightArrow)) {
+            position -= right * moveSpeed; // Move to the right
+            //position += forward * moveSpeed;
+        }
+        if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow)) {
+            position += right * moveSpeed; // Move to the left
+            //position -= forward * moveSpeed;
+        }
+        if (ImGui::IsKeyPressed(ImGuiKey_UpArrow)) {
+            position -= forward * moveSpeed; // Move forward
+        }
+        if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {
+            position += forward * moveSpeed; // Move backward
+        }
+        //std::cout << "(" << position.x << ", " << position.y << ", " << position.z  << ")"<< std::endl;
+    }*/
+
+    void handleInputs(const glm::vec3& cameraFront, const glm::vec3& cameraRight, float deltaTime) {
+        ImGuiIO& io = ImGui::GetIO(); // Get the ImGui input/output state
+
+        // Speed scaled by deltaTime for frame-independent movement
+        float moveSpeed = speed * deltaTime;
+
+        // Movement adjustments based on input
+        if (ImGui::IsKeyPressed(ImGuiKey_RightArrow)) {
+            position += cameraRight * moveSpeed; // Move to the right
+        }
+        if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow)) {
+            position -= cameraRight * moveSpeed; // Move to the left
+        }
+        if (ImGui::IsKeyPressed(ImGuiKey_UpArrow)) {
+            position += cameraFront * moveSpeed; // Move forward in the camera's direction
+        }
+        if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {
+            position -= cameraFront * moveSpeed; // Move backward
+        }
+    }
+
+
     const char* currentDataPath;
     const char* currentTexturePath;
 };

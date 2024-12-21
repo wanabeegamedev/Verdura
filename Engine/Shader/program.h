@@ -84,6 +84,12 @@ class Program {
             glUniform1i(location, value);
         }
     }
+    void setUniform3f(const std::string& name, const glm::vec3& value) {
+        GLint location = getUniformLocation(name);
+        if (location != -1) {
+            glUniform3f(location, value.x, value.y, value.z);
+        }
+    }
 
     void setUniformMat4(const std::string& name, const glm::mat4& value) {
         GLint location = getUniformLocation(name);

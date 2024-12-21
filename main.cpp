@@ -44,12 +44,17 @@ static void glfw_error_callback(int error, const char* description)
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
 
+
+// Map dimensions
+const float mapWidth = 2000.0f, mapHeight = 720.0f;
+
+
 Camera camera; // Belongs to RENDERER
 // Global variables for timing (RENDERER)
 double lastFrame = 0.0; // Time of the last frame // Belongs to RENDERER
 double deltaTime = 0.0; // Time between current and last frame // Belongs to RENDERER
-Renderer renderer();
-// Main code
+
+
 int main(int, char**)
 {
     glfwSetErrorCallback(glfw_error_callback);
@@ -80,6 +85,7 @@ int main(int, char**)
     // Create window with graphics context (RENDERER)
     Renderer renderer;
     glfwMakeContextCurrent(renderer.window);
+    //glfwSetMouseButtonCallback(renderer.window, mouseCallback);
     glfwSwapInterval(1);
 
     //  Dear ImGui
@@ -113,13 +119,14 @@ int main(int, char**)
     // After Initialization of glew and glfw
 
     MeshLoader loader;
-    OBJMesh mesh("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj");
-    mesh.set_current_texture_path("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/texture_1.png");
+    OBJMesh mesh("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/Mage.obj");
+    mesh.set_current_texture_path("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/mage_texture.png");
+    mesh.set_position(glm::vec3(-3,.0f,.0f));
     loader.LoadObjMesh(mesh);
 
     OBJMesh mesh2("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj");
     mesh2.set_current_texture_path("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/texture_1.png");
-    mesh2.set_position(glm::vec3(1.0f,1.0f,1.0f));//TODO Utiliser
+    mesh2.set_position(glm::vec3(.3f,.0f,.0f));
     loader.LoadObjMesh(mesh2);
 
 
@@ -127,17 +134,19 @@ int main(int, char**)
     Shader fShader("/home/hous/CLionProjects/Verdura/Game/Shaders/fragment.txt",GL_FRAGMENT_SHADER);
     Program program(vShader.shader_id(),fShader.shader_id());
     program.setName("t_pose_j1");
+
+
     mesh.addProgram(&program);
     mesh.setCurrentProgram("t_pose_j1");
 
-    // just a test
-    Shader vShader2("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex2.txt",GL_VERTEX_SHADER);
-    Shader fShader2("/home/hous/CLionProjects/Verdura/Game/Shaders/fragment2.txt",GL_FRAGMENT_SHADER);
-    Program program2(vShader2.shader_id(),fShader2.shader_id());
-    // TODO utiliser des offsets et matrices position rotation et scale (ptet pas scale, pas besoin ) pour réutiliser les memes shaders
-    program2.setName("t_pose_j2");
-    mesh2.addProgram(&program2);
-    mesh2.setCurrentProgram("t_pose_j2");
+    //mesh2.translate(glm::vec3(.0f, 0.f, 4.f)); //xmin =-10.0f ,ymin = -8.0f, zmin =-6.f
+   // mesh2.rotate(glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    mesh2.faceDirection(mesh.position);// some invisible direction, of non existent mesh
+    mesh2.scale(glm::vec3(1.f, 1.f, 1.f)); // Scaler
+
+    mesh2.addProgram(&program);
+    mesh2.setCurrentProgram("t_pose_j1");
+
 
     /*TODO Move to checkProgram, all values in uniformCache must be Positive
      *if (modelLoc == -1 || viewLoc == -1 || projectionLoc == -1 || textureLoc == -1) {
@@ -229,10 +238,36 @@ int main(int, char**)
         // RENDERER TAKE OVER
         lastFrame = glfwGetTime();
         deltaTime = glfwGetTime() - lastFrame;
+        //Le jeu bougera de haut en bas et bas en haut
+
+
+        //mesh2.handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
+        mesh2.handleInputs(camera.camera_front(),camera.camera_right(),deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
 
         camera.HandleInputs(renderer.window, deltaTime);
+        //camera.FollowMesh(mesh2);
+        //begin FollowMesh
+        /*glm::vec3 targetPosition = mesh2.position;
+
+        // Offset the camera position from the target (e.g., behind and above the target)
+        glm::vec3 offset = glm::vec3(5.0f, 5.0f, 20.0f);
+
+        // Set the camera's position to the target position plus the offset
+        camera.cameraPosition = targetPosition + offset;
+
+        // Make the camera look at the target mesh
+        glm::vec3 direction = glm::normalize(targetPosition - camera.cameraPosition);
+        glm::vec3 right = glm::normalize(glm::cross(INITIAL_UP, direction));
+        glm::vec3 up = glm::cross(direction, right);
+
+        // Update the camera's view matrix
+        camera.cameraFront = direction;
+        camera.cameraUp = up;*/
+        //end FollowMesh
         camera.updateCameraVectors();
         camera.update();
+
+
         mesh.Render(camera);
         mesh2.Render(camera);
 
