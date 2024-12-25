@@ -16,13 +16,28 @@
 //#include "../Mesh/OBJMesh.h"
 #define INITIAL_SPEED 500000.0f
 #define INITIAL_NEAR 0.1f
-#define INITIAL_SENSITIVITY 0.1f
+#define INITIAL_SENSITIVITY 0.08f
 #define INITIAL_FOV 60.0f
 #define INITIAL_FAR 100.0f
 #define INITIAL_NEAR 0.1f
-#define INITIAL_POS glm::vec3(5.0f, 5.0f, 15.0f)
-#define INITIAL_FRONT glm::vec3(-1.0f, -1.0f, -1.0f)// Vers l'origine
+/*
+facing
+#define INITIAL_POS glm::vec3(.0f, .0f, 20.0f)
+#define INITIAL_FRONT  glm::normalize(glm::vec3(0.0f, 0.0f, 0.0f) - INITIAL_POS)
 #define INITIAL_UP glm::vec3(0.0f, 1.0f, 0.0f)
+*/
+
+//top down
+#define INITIAL_POS glm::vec3(0.0f, 20.0f, 0.0f) // Camera is 20 units above the origin
+#define INITIAL_FRONT glm::vec3(0.0f, -1.0f, 0.0f) // Camera looks straight down
+#define INITIAL_UP glm::vec3(0.0f, 0.0f, -1.0f)   // Z-axis is "up" for this perspective
+
+/*isometric
+#define INITIAL_POS glm::vec3(10.0f, 10.0f, 10.0f) // Camera is above and offset diagonally
+#define INITIAL_FRONT glm::normalize(glm::vec3(0.0f, 0.0f, 0.0f) - INITIAL_POS) // Point at origin
+#define INITIAL_UP glm::vec3(0.0f, 1.0f, 0.0f) // Y-axis remains "up"
+*/
+
 class Camera {
 
     float fov;
@@ -104,60 +119,67 @@ public:
     float camera_rotation_in_radius() const {
         return cameraRotationInRadius;
     }
+   /* void HandleInputs(GLFWwindow* window, double deltaTime) {
+        ImGuiIO& io = ImGui::GetIO();
 
-    void HandleInputs(GLFWwindow *window, double deltaTime) {
-        ImGuiIO& io = ImGui::GetIO(); // Get the ImGui input/output state
+        float velocity = speed * static_cast<float>(deltaTime);
+        glm::vec3 isoForward = glm::normalize(glm::vec3(1.0f, 0.0f, -1.0f)); // forward in isometric view
+        glm::vec3 isoRight = glm::normalize(glm::vec3(1.0f, 0.0f, 1.0f));    // right in isometric view
 
-        float velocity = speed*deltaTime;
-
-        // Check if ImGui does not want to capture the keyboard
-        //if (!io.WantCaptureKeyboard)
-
-            // ImGui key codes match GLFW key codes
-            if (ImGui::IsKeyPressed(ImGuiKey_Q))
-
-            {
-                cameraPosition -= cameraRight * velocity;
+        if (!io.WantCaptureKeyboard) {
+            if (ImGui::IsKeyPressed(ImGuiKey_Q)) {
+                cameraPosition -= isoRight * velocity;
             }
-            if (ImGui::IsKeyPressed(ImGuiKey_D))
-
-            {
-                cameraPosition += cameraRight * velocity;
-            }
-            // Vertical movement
-            if (ImGui::IsKeyPressed(ImGuiKey_S)) {
-                cameraPosition += cameraUp * velocity; // Move up
+            if (ImGui::IsKeyPressed(ImGuiKey_D)) {
+                cameraPosition += isoRight * velocity;
             }
             if (ImGui::IsKeyPressed(ImGuiKey_Z)) {
-                cameraPosition -= cameraUp * velocity; // Move down
+                cameraPosition += isoForward * velocity;
             }
-            // Update camera matrices
-            //update();
+            if (ImGui::IsKeyPressed(ImGuiKey_S)) {
+                cameraPosition -= isoForward * velocity;
+            }
+            // Vertical movement
+            if (ImGui::IsKeyPressed(ImGuiKey_E)) {
+                cameraPosition += cameraUp * velocity;
+            }
+            if (ImGui::IsKeyPressed(ImGuiKey_A)) {
+                cameraPosition -= cameraUp * velocity;
+            }
+        }
 
-    }
-    /*
-     *void FollowMesh(const OBJMesh& mesh) {
-        // The position of the mesh to follow
-        glm::vec3 targetPosition = mesh.position;
-
-        // Offset the camera position from the target (e.g., behind and above the target)
-        glm::vec3 offset = glm::vec3(5.0f, 5.0f, 20.0f);
-
-        // Set the camera's position to the target position plus the offset
-        cameraPosition = targetPosition + offset;
-
-        // Make the camera look at the target mesh
-        glm::vec3 direction = glm::normalize(targetPosition - cameraPosition);
-        glm::vec3 right = glm::normalize(glm::cross(INITIAL_UP, direction));
-        glm::vec3 up = glm::cross(direction, right);
-
-        // Update the camera's view matrix
-        cameraFront = direction;
-        cameraUp = up;
+        // Update the camera matrices after moving
+        update();
     }*/
+    void HandleInputs(GLFWwindow* window, double deltaTime) {
+        ImGuiIO& io = ImGui::GetIO();
+
+        float velocity = speed * static_cast<float>(deltaTime);
+
+        // Movement directions for top-down camera
+        glm::vec3 forward = glm::vec3(0.0f, 0.0f, 1.0f); // Forward in top-down view (positive Z)
+        glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);   // Right in top-down view (positive X)
+
+        if (!io.WantCaptureKeyboard) {
+            // Check movement key inputs
+            if (ImGui::IsKeyPressed(ImGuiKey_Q)) {
+                cameraPosition -= right * velocity; // Move left (along the X-axis)
+            }
+            if (ImGui::IsKeyPressed(ImGuiKey_D)) {
+                cameraPosition += right * velocity; // Move right (along the X-axis)
+            }
+            if (ImGui::IsKeyPressed(ImGuiKey_Z)) {
+                cameraPosition += forward * velocity; // Move forward (along the Z-axis)
+            }
+            if (ImGui::IsKeyPressed(ImGuiKey_S)) {
+                cameraPosition -= forward * velocity; // Move backward (along the Z-axis)
+            }
+        }
+    }
 
     void update() {
-        projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, near, far);
+        //projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, near, far); TODO
+        projectionMatrix = glm::ortho(-20.0f, 20.0f, -10.0f, 10.0f, near, far);
         viewMatrix = glm::lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp);
     }
     void updateCameraVectors() {

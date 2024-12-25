@@ -51,6 +51,29 @@ add_executable(
         Engine/Mesh/Mesh.h
         Engine/Mesh/MeshCache.h
         Engine/Game.h
+        Game/Character.h
+        Game/Enemy.h
+        Game/Inventory.h
+        Game/Leveling.cpp
+        Game/Leveling.h
+        Game/Character.cpp
+        Game/Character.h
+        Game/Inventory.cpp
+        Game/Inventory.h
+        Game/Enemy.cpp
+        Game/Enemy.h
+        Game/GameUI.cpp
+        Game/GameUI.h
+        Game/Dialog.cpp
+        Game/Dialog.h
+        Game/Shop.cpp
+        Game/Shop.h
+        Game/Item.cpp
+        Game/Item.h
+        Game/Ability.cpp
+        Game/Ability.h
+        Game/Attack.cpp
+        Game/Attack.h
 )
 
 target_include_directories( ${PROJECT_NAME} PUBLIC ${IMGUI_PATH})

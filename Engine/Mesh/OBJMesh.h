@@ -22,6 +22,7 @@ public:
         // car pour les membres de la base class j'ai appelé le constructeur
     }
     glm::vec3 position;
+    double yaw{};
     glm::mat4 model;
     bool Initialize(const std::vector<glm::vec3>& vertices,
                     const std::vector<glm::vec3>& normals,
@@ -93,7 +94,7 @@ public:
             glBindTexture(GL_TEXTURE_2D, currentTextureID);
         }
         MeshPrograms.at(currentProgramName)->bind();
-        MeshPrograms.at(currentProgramName)->setUniform3f("offsetPos", position);
+        MeshPrograms.at(currentProgramName)->setUniform3f("offsetPos", position);// TODO = GET RID
         MeshPrograms.at(currentProgramName)->setUniform1i("texture1", 0);
         MeshPrograms.at(currentProgramName)->setUniformMat4("model",model);
         MeshPrograms.at(currentProgramName)->setUniformMat4("view",camera.viewMatrix);
@@ -157,57 +158,81 @@ public:
         if (glm::length(axis) < 1e-6) {
             axis = glm::vec3(0.0f, 1.0f, 0.0f); // go to Y-axis if vectors are nearly collinear
         }
-        model = glm::rotate(glm::mat4(1.0f), angle+90, axis);
+        model = glm::rotate(glm::mat4(1.0f), angle, axis);
     }
     float speed = 3.0f*100000;
-    /*
+  /*void handleInputs(float deltaTime) {
+        // Movement directions for isometric perspective
+        glm::vec3 isoForward = glm::normalize(glm::vec3(1.0f, 0.0f, -1.0f)); // Diagonal forward
+        glm::vec3 isoRight = glm::normalize(glm::vec3(1.0f, 0.0f, 1.0f));    // Diagonal right
+
+        // Movement speed
+        const float movementSpeed = 5.0f; // Units per second
+
+        // Initialize movement vector
+        glm::vec3 movement = glm::vec3(0.0f);
+
+        // Check key inputs for movement (WASD)
+        if (ImGui::IsKeyPressed(ImGuiKey_UpArrow)) {
+            movement -= isoRight; // Move left
+        }
+        if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {
+            movement += isoRight; // Move right
+        }
+        if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow)) {
+
+            movement -= isoForward; // Move forward
+        }
+        if (ImGui::IsKeyPressed(ImGuiKey_RightArrow)) {
+
+            movement += isoForward; // Move backward
+            //faceDirection(glm::vec3(-1.0f, 1.0f, .0f));
+        }
+
+        // Normalize movement vector to prevent diagonal speed boost
+        if (glm::length(movement) > 0.0f) {
+            movement = glm::normalize(movement);
+        }
+
+        // Update character position based on movement
+        position += movement * speed * deltaTime;
+
+    }
+*/
     void handleInputs(float deltaTime) {
-        ImGuiIO& io = ImGui::GetIO(); // Get the ImGui input/output state
+        // Movement directions for top-down perspective
+        glm::vec3 forward = glm::vec3(0.0f, 0.0f, 1.0f); // Forward (positive Z)
+        glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);   // Right (positive X)
 
-        // Calculate movement vectors based on the camera's initial setup
-        glm::vec3 right = glm::normalize(glm::cross(INITIAL_FRONT, INITIAL_UP)); // Right vector
-        glm::vec3 forward = glm::normalize(glm::cross(INITIAL_UP, right));       // Forward vector
+        // Movement speed
+        const float movementSpeed = 5.0f; // Units per second
 
-        // Speed scaled by deltaTime for frame-independent movement
-        float moveSpeed = speed* deltaTime;
+        // Initialize movement vector
+        glm::vec3 movement = glm::vec3(0.0f);
 
-        // Adjust position based on input
-        if (ImGui::IsKeyPressed(ImGuiKey_RightArrow)) {
-            position -= right * moveSpeed; // Move to the right
-            //position += forward * moveSpeed;
-        }
-        if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow)) {
-            position += right * moveSpeed; // Move to the left
-            //position -= forward * moveSpeed;
-        }
+        // Check key inputs for movement (WASD or Arrow keys)
         if (ImGui::IsKeyPressed(ImGuiKey_UpArrow)) {
-            position -= forward * moveSpeed; // Move forward
+            movement += forward; // Move forward (along the Z-axis)
         }
         if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {
-            position += forward * moveSpeed; // Move backward
-        }
-        //std::cout << "(" << position.x << ", " << position.y << ", " << position.z  << ")"<< std::endl;
-    }*/
-
-    void handleInputs(const glm::vec3& cameraFront, const glm::vec3& cameraRight, float deltaTime) {
-        ImGuiIO& io = ImGui::GetIO(); // Get the ImGui input/output state
-
-        // Speed scaled by deltaTime for frame-independent movement
-        float moveSpeed = speed * deltaTime;
-
-        // Movement adjustments based on input
-        if (ImGui::IsKeyPressed(ImGuiKey_RightArrow)) {
-            position += cameraRight * moveSpeed; // Move to the right
+            movement -= forward; // Move backward (along the Z-axis)
         }
         if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow)) {
-            position -= cameraRight * moveSpeed; // Move to the left
+            movement -= right; // Move left (along the X-axis)
         }
-        if (ImGui::IsKeyPressed(ImGuiKey_UpArrow)) {
-            position += cameraFront * moveSpeed; // Move forward in the camera's direction
+        if (ImGui::IsKeyPressed(ImGuiKey_RightArrow)) {
+            movement += right; // Move right (along the X-axis)
         }
-        if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {
-            position -= cameraFront * moveSpeed; // Move backward
+
+        // Normalize movement vector to prevent diagonal speed boost
+        if (glm::length(movement) > 0.0f) {
+            movement = glm::normalize(movement);
         }
+
+        // Update character position based on movement
+        position += movement * speed * deltaTime;
+
+        // Optionally, you could add rotation or other actions based on the movement
     }
 
 

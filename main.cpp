@@ -108,7 +108,8 @@ int main(int, char**)
     // Our state
     bool show_demo_window = true;
     bool show_another_window = false;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    //ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    ImVec4 clear_color = ImVec4(0.f, 0.f, 0.f, 1.00f);
 
 
     if(!gladLoadGL())
@@ -126,7 +127,7 @@ int main(int, char**)
 
     OBJMesh mesh2("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj");
     mesh2.set_current_texture_path("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/texture_1.png");
-    mesh2.set_position(glm::vec3(.3f,.0f,.0f));
+    mesh2.set_position(glm::vec3(0,.0f,.0f));
     loader.LoadObjMesh(mesh2);
 
 
@@ -141,7 +142,7 @@ int main(int, char**)
 
     //mesh2.translate(glm::vec3(.0f, 0.f, 4.f)); //xmin =-10.0f ,ymin = -8.0f, zmin =-6.f
    // mesh2.rotate(glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    mesh2.faceDirection(mesh.position);// some invisible direction, of non existent mesh
+    //mesh2.faceDirection(mesh.position);// some invisible direction, of non existent mesh
     mesh2.scale(glm::vec3(1.f, 1.f, 1.f)); // Scaler
 
     mesh2.addProgram(&program);
@@ -168,19 +169,14 @@ int main(int, char**)
     while (!glfwWindowShouldClose(renderer.window))
 #endif
     {
-        // Poll and handle events (inputs, window resize, etc.)
-        // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-        // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
-        // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
-        // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
-
         glfwPollEvents();
-
+//      GameUI.Initialize();
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-       /*
+        // END GameUI.Initialize();
+/*
         // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
         if (show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);
@@ -206,9 +202,9 @@ int main(int, char**)
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
             ImGui::End();
         }
-        */
+
         // 3. Show another simple window.
-        /*if (show_another_window)
+        if (show_another_window)
         {
             ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
             ImGui::Text("Hello from another window!");
@@ -241,29 +237,11 @@ int main(int, char**)
         //Le jeu bougera de haut en bas et bas en haut
 
 
-        //mesh2.handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
-        mesh2.handleInputs(camera.camera_front(),camera.camera_right(),deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
+        mesh2.handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
+        //mesh2.handleInputs(camera.camera_front(),camera.camera_right(),deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
 
         camera.HandleInputs(renderer.window, deltaTime);
-        //camera.FollowMesh(mesh2);
-        //begin FollowMesh
-        /*glm::vec3 targetPosition = mesh2.position;
 
-        // Offset the camera position from the target (e.g., behind and above the target)
-        glm::vec3 offset = glm::vec3(5.0f, 5.0f, 20.0f);
-
-        // Set the camera's position to the target position plus the offset
-        camera.cameraPosition = targetPosition + offset;
-
-        // Make the camera look at the target mesh
-        glm::vec3 direction = glm::normalize(targetPosition - camera.cameraPosition);
-        glm::vec3 right = glm::normalize(glm::cross(INITIAL_UP, direction));
-        glm::vec3 up = glm::cross(direction, right);
-
-        // Update the camera's view matrix
-        camera.cameraFront = direction;
-        camera.cameraUp = up;*/
-        //end FollowMesh
         camera.updateCameraVectors();
         camera.update();
 

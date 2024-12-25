@@ -144,6 +144,76 @@ build CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o: CXX_COMPILER__Verdura_
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/dependencies_code
 
+build CMakeFiles/Verdura.dir/Game/Leveling.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Leveling.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Leveling.cpp.o.d
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+
+build CMakeFiles/Verdura.dir/Game/Character.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Character.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Character.cpp.o.d
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+
+build CMakeFiles/Verdura.dir/Game/Inventory.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Inventory.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Inventory.cpp.o.d
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+
+build CMakeFiles/Verdura.dir/Game/Enemy.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Enemy.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Enemy.cpp.o.d
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+
+build CMakeFiles/Verdura.dir/Game/GameUI.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/GameUI.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/GameUI.cpp.o.d
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+
+build CMakeFiles/Verdura.dir/Game/Dialog.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Dialog.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Dialog.cpp.o.d
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+
+build CMakeFiles/Verdura.dir/Game/Shop.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Shop.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Shop.cpp.o.d
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+
+build CMakeFiles/Verdura.dir/Game/Item.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Item.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Item.cpp.o.d
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+
+build CMakeFiles/Verdura.dir/Game/Ability.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Ability.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Ability.cpp.o.d
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+
+build CMakeFiles/Verdura.dir/Game/Attack.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Attack.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Attack.cpp.o.d
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Verdura
@@ -152,7 +222,7 @@ build CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o: CXX_COMPILER__Verdura_
 #############################################
 # Link the executable Verdura
 
-build Verdura: CXX_EXECUTABLE_LINKER__Verdura_Debug CMakeFiles/Verdura.dir/main.cpp.o CMakeFiles/Verdura.dir/dependencies_code/glad.c.o CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o | libimgui.a /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so /usr/lib/x86_64-linux-gnu/libassimp.so.5.3.0 || libimgui.a
+build Verdura: CXX_EXECUTABLE_LINKER__Verdura_Debug CMakeFiles/Verdura.dir/main.cpp.o CMakeFiles/Verdura.dir/dependencies_code/glad.c.o CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o CMakeFiles/Verdura.dir/Game/Leveling.cpp.o CMakeFiles/Verdura.dir/Game/Character.cpp.o CMakeFiles/Verdura.dir/Game/Inventory.cpp.o CMakeFiles/Verdura.dir/Game/Enemy.cpp.o CMakeFiles/Verdura.dir/Game/GameUI.cpp.o CMakeFiles/Verdura.dir/Game/Dialog.cpp.o CMakeFiles/Verdura.dir/Game/Shop.cpp.o CMakeFiles/Verdura.dir/Game/Item.cpp.o CMakeFiles/Verdura.dir/Game/Ability.cpp.o CMakeFiles/Verdura.dir/Game/Attack.cpp.o | libimgui.a /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so /usr/lib/x86_64-linux-gnu/libassimp.so.5.3.0 || libimgui.a
   FLAGS = -g
   LINK_LIBRARIES = -Wl,-rpath,/home/hous/CLionProjects/Verdura/lib  libimgui.a  -lglfw  /usr/lib/x86_64-linux-gnu/libOpenGL.so  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libGLU.so  /usr/lib/x86_64-linux-gnu/libassimp.so.5.3.0  -lpugixml
   LINK_PATH = -L/home/hous/CLionProjects/Verdura/lib
