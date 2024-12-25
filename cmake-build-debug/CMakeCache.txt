@@ -254,6 +254,9 @@ OPENGL_opengl_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libOpenGL.so
 //Path to a file.
 OPENGL_xmesa_INCLUDE_DIR:PATH=OPENGL_xmesa_INCLUDE_DIR-NOTFOUND
 
+//The directory containing a CMake configuration file for SDL2_mixer.
+SDL2_mixer_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/SDL2_mixer
+
 //Value Computed by CMake
 Verdura_BINARY_DIR:STATIC=/home/hous/CLionProjects/Verdura/cmake-build-debug
 

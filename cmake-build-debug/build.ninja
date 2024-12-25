@@ -51,49 +51,49 @@ build cmake_object_order_depends_target_imgui: phony || .
 
 build CMakeFiles/imgui.dir/imgui/backends/imgui_impl_glfw.cpp.o: CXX_COMPILER__imgui_unscanned_Debug /home/hous/CLionProjects/Verdura/imgui/backends/imgui_impl_glfw.cpp || cmake_object_order_depends_target_imgui
   DEP_FILE = CMakeFiles/imgui.dir/imgui/backends/imgui_impl_glfw.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/imgui.dir
   OBJECT_FILE_DIR = CMakeFiles/imgui.dir/imgui/backends
 
 build CMakeFiles/imgui.dir/imgui/backends/imgui_impl_opengl3.cpp.o: CXX_COMPILER__imgui_unscanned_Debug /home/hous/CLionProjects/Verdura/imgui/backends/imgui_impl_opengl3.cpp || cmake_object_order_depends_target_imgui
   DEP_FILE = CMakeFiles/imgui.dir/imgui/backends/imgui_impl_opengl3.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/imgui.dir
   OBJECT_FILE_DIR = CMakeFiles/imgui.dir/imgui/backends
 
 build CMakeFiles/imgui.dir/imgui/imgui.cpp.o: CXX_COMPILER__imgui_unscanned_Debug /home/hous/CLionProjects/Verdura/imgui/imgui.cpp || cmake_object_order_depends_target_imgui
   DEP_FILE = CMakeFiles/imgui.dir/imgui/imgui.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/imgui.dir
   OBJECT_FILE_DIR = CMakeFiles/imgui.dir/imgui
 
 build CMakeFiles/imgui.dir/imgui/imgui_demo.cpp.o: CXX_COMPILER__imgui_unscanned_Debug /home/hous/CLionProjects/Verdura/imgui/imgui_demo.cpp || cmake_object_order_depends_target_imgui
   DEP_FILE = CMakeFiles/imgui.dir/imgui/imgui_demo.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/imgui.dir
   OBJECT_FILE_DIR = CMakeFiles/imgui.dir/imgui
 
 build CMakeFiles/imgui.dir/imgui/imgui_draw.cpp.o: CXX_COMPILER__imgui_unscanned_Debug /home/hous/CLionProjects/Verdura/imgui/imgui_draw.cpp || cmake_object_order_depends_target_imgui
   DEP_FILE = CMakeFiles/imgui.dir/imgui/imgui_draw.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/imgui.dir
   OBJECT_FILE_DIR = CMakeFiles/imgui.dir/imgui
 
 build CMakeFiles/imgui.dir/imgui/imgui_tables.cpp.o: CXX_COMPILER__imgui_unscanned_Debug /home/hous/CLionProjects/Verdura/imgui/imgui_tables.cpp || cmake_object_order_depends_target_imgui
   DEP_FILE = CMakeFiles/imgui.dir/imgui/imgui_tables.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/imgui.dir
   OBJECT_FILE_DIR = CMakeFiles/imgui.dir/imgui
 
 build CMakeFiles/imgui.dir/imgui/imgui_widgets.cpp.o: CXX_COMPILER__imgui_unscanned_Debug /home/hous/CLionProjects/Verdura/imgui/imgui_widgets.cpp || cmake_object_order_depends_target_imgui
   DEP_FILE = CMakeFiles/imgui.dir/imgui/imgui_widgets.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/imgui.dir
   OBJECT_FILE_DIR = CMakeFiles/imgui.dir/imgui
@@ -125,7 +125,7 @@ build cmake_object_order_depends_target_Verdura: phony || cmake_object_order_dep
 
 build CMakeFiles/Verdura.dir/main.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/main.cpp || cmake_object_order_depends_target_Verdura
   DEP_FILE = CMakeFiles/Verdura.dir/main.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir
@@ -139,80 +139,108 @@ build CMakeFiles/Verdura.dir/dependencies_code/glad.c.o: C_COMPILER__Verdura_uns
 
 build CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/dependencies_code/stb.cpp || cmake_object_order_depends_target_Verdura
   DEP_FILE = CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/dependencies_code
 
-build CMakeFiles/Verdura.dir/Game/Leveling.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Leveling.cpp || cmake_object_order_depends_target_Verdura
-  DEP_FILE = CMakeFiles/Verdura.dir/Game/Leveling.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+build CMakeFiles/Verdura.dir/Game/Character/Leveling.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Character/Leveling.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Character/Leveling.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
-  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game/Character
 
-build CMakeFiles/Verdura.dir/Game/Character.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Character.cpp || cmake_object_order_depends_target_Verdura
-  DEP_FILE = CMakeFiles/Verdura.dir/Game/Character.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+build CMakeFiles/Verdura.dir/Game/Character/Character.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Character/Character.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Character/Character.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
-  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game/Character
 
-build CMakeFiles/Verdura.dir/Game/Inventory.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Inventory.cpp || cmake_object_order_depends_target_Verdura
-  DEP_FILE = CMakeFiles/Verdura.dir/Game/Inventory.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+build CMakeFiles/Verdura.dir/Game/Inventory/Inventory.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Inventory/Inventory.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Inventory/Inventory.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
-  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game/Inventory
 
-build CMakeFiles/Verdura.dir/Game/Enemy.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Enemy.cpp || cmake_object_order_depends_target_Verdura
-  DEP_FILE = CMakeFiles/Verdura.dir/Game/Enemy.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+build CMakeFiles/Verdura.dir/Game/Character/Enemy.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Character/Enemy.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Character/Enemy.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
-  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game/Character
 
 build CMakeFiles/Verdura.dir/Game/GameUI.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/GameUI.cpp || cmake_object_order_depends_target_Verdura
   DEP_FILE = CMakeFiles/Verdura.dir/Game/GameUI.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
 
-build CMakeFiles/Verdura.dir/Game/Dialog.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Dialog.cpp || cmake_object_order_depends_target_Verdura
-  DEP_FILE = CMakeFiles/Verdura.dir/Game/Dialog.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+build CMakeFiles/Verdura.dir/Game/Inventory/Shop.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Inventory/Shop.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Inventory/Shop.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
-  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game/Inventory
 
-build CMakeFiles/Verdura.dir/Game/Shop.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Shop.cpp || cmake_object_order_depends_target_Verdura
-  DEP_FILE = CMakeFiles/Verdura.dir/Game/Shop.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+build CMakeFiles/Verdura.dir/Game/Inventory/Item.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Inventory/Item.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Inventory/Item.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
-  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game/Inventory
 
-build CMakeFiles/Verdura.dir/Game/Item.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Item.cpp || cmake_object_order_depends_target_Verdura
-  DEP_FILE = CMakeFiles/Verdura.dir/Game/Item.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+build CMakeFiles/Verdura.dir/Game/Ability/Ability.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Ability/Ability.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Ability/Ability.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
-  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game/Ability
 
-build CMakeFiles/Verdura.dir/Game/Ability.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Ability.cpp || cmake_object_order_depends_target_Verdura
-  DEP_FILE = CMakeFiles/Verdura.dir/Game/Ability.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+build CMakeFiles/Verdura.dir/Game/Ability/Attack.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Ability/Attack.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Ability/Attack.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
-  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game/Ability
 
-build CMakeFiles/Verdura.dir/Game/Attack.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Attack.cpp || cmake_object_order_depends_target_Verdura
-  DEP_FILE = CMakeFiles/Verdura.dir/Game/Attack.cpp.o.d
-  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+build CMakeFiles/Verdura.dir/Game/Character/CharacterMovement.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Character/CharacterMovement.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Character/CharacterMovement.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
   OBJECT_DIR = CMakeFiles/Verdura.dir
-  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game/Character
+
+build CMakeFiles/Verdura.dir/Game/Character/Stats.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Character/Stats.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Character/Stats.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game/Character
+
+build CMakeFiles/Verdura.dir/Game/Ability/DefenseStrategy.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Ability/DefenseStrategy.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Ability/DefenseStrategy.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game/Ability
+
+build CMakeFiles/Verdura.dir/Game/Ability/RetourALEnvoyeurStrategy.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Ability/RetourALEnvoyeurStrategy.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Ability/RetourALEnvoyeurStrategy.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game/Ability
+
+build CMakeFiles/Verdura.dir/Game/Ability/BouclierStrategy.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Ability/BouclierStrategy.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Ability/BouclierStrategy.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game/Ability
 
 
 # =============================================================================
@@ -222,9 +250,9 @@ build CMakeFiles/Verdura.dir/Game/Attack.cpp.o: CXX_COMPILER__Verdura_unscanned_
 #############################################
 # Link the executable Verdura
 
-build Verdura: CXX_EXECUTABLE_LINKER__Verdura_Debug CMakeFiles/Verdura.dir/main.cpp.o CMakeFiles/Verdura.dir/dependencies_code/glad.c.o CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o CMakeFiles/Verdura.dir/Game/Leveling.cpp.o CMakeFiles/Verdura.dir/Game/Character.cpp.o CMakeFiles/Verdura.dir/Game/Inventory.cpp.o CMakeFiles/Verdura.dir/Game/Enemy.cpp.o CMakeFiles/Verdura.dir/Game/GameUI.cpp.o CMakeFiles/Verdura.dir/Game/Dialog.cpp.o CMakeFiles/Verdura.dir/Game/Shop.cpp.o CMakeFiles/Verdura.dir/Game/Item.cpp.o CMakeFiles/Verdura.dir/Game/Ability.cpp.o CMakeFiles/Verdura.dir/Game/Attack.cpp.o | libimgui.a /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so /usr/lib/x86_64-linux-gnu/libassimp.so.5.3.0 || libimgui.a
+build Verdura: CXX_EXECUTABLE_LINKER__Verdura_Debug CMakeFiles/Verdura.dir/main.cpp.o CMakeFiles/Verdura.dir/dependencies_code/glad.c.o CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o CMakeFiles/Verdura.dir/Game/Character/Leveling.cpp.o CMakeFiles/Verdura.dir/Game/Character/Character.cpp.o CMakeFiles/Verdura.dir/Game/Inventory/Inventory.cpp.o CMakeFiles/Verdura.dir/Game/Character/Enemy.cpp.o CMakeFiles/Verdura.dir/Game/GameUI.cpp.o CMakeFiles/Verdura.dir/Game/Inventory/Shop.cpp.o CMakeFiles/Verdura.dir/Game/Inventory/Item.cpp.o CMakeFiles/Verdura.dir/Game/Ability/Ability.cpp.o CMakeFiles/Verdura.dir/Game/Ability/Attack.cpp.o CMakeFiles/Verdura.dir/Game/Character/CharacterMovement.cpp.o CMakeFiles/Verdura.dir/Game/Character/Stats.cpp.o CMakeFiles/Verdura.dir/Game/Ability/DefenseStrategy.cpp.o CMakeFiles/Verdura.dir/Game/Ability/RetourALEnvoyeurStrategy.cpp.o CMakeFiles/Verdura.dir/Game/Ability/BouclierStrategy.cpp.o | libimgui.a /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so || libimgui.a
   FLAGS = -g
-  LINK_LIBRARIES = -Wl,-rpath,/home/hous/CLionProjects/Verdura/lib  libimgui.a  -lglfw  /usr/lib/x86_64-linux-gnu/libOpenGL.so  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libGLU.so  /usr/lib/x86_64-linux-gnu/libassimp.so.5.3.0  -lpugixml
+  LINK_LIBRARIES = -Wl,-rpath,/home/hous/CLionProjects/Verdura/lib  libimgui.a  -lglfw  /usr/lib/x86_64-linux-gnu/libOpenGL.so  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libGLU.so  -lSDL2_mixer  -lSDL2
   LINK_PATH = -L/home/hous/CLionProjects/Verdura/lib
   OBJECT_DIR = CMakeFiles/Verdura.dir
   POST_BUILD = :
@@ -277,14 +305,14 @@ build all: phony libimgui.a Verdura
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | /home/hous/CLionProjects/Verdura/CMakeLists.txt /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeCInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeCXXInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeCommonLanguageInclude.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeGenericSystem.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeLanguageInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/CMakeCommonCompilerMacros.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/GNU-C.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/GNU-CXX.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/GNU.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/FindOpenGL.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/FindPackageHandleStandardArgs.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/FindPackageMessage.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-GNU-C.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-GNU-CXX.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-GNU.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-Initialize.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/UnixPaths.cmake /usr/lib/x86_64-linux-gnu/cmake/assimp-5.3/assimpConfig.cmake /usr/lib/x86_64-linux-gnu/cmake/assimp-5.3/assimpConfigVersion.cmake /usr/lib/x86_64-linux-gnu/cmake/assimp-5.3/assimpTargets-none.cmake /usr/lib/x86_64-linux-gnu/cmake/assimp-5.3/assimpTargets.cmake CMakeCache.txt CMakeFiles/3.30.5/CMakeCCompiler.cmake CMakeFiles/3.30.5/CMakeCXXCompiler.cmake CMakeFiles/3.30.5/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | /home/hous/CLionProjects/Verdura/CMakeLists.txt /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeCInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeCXXInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeCommonLanguageInclude.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeFindDependencyMacro.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeGenericSystem.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeLanguageInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/CMakeCommonCompilerMacros.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/GNU-C.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/GNU-CXX.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/GNU.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/FeatureSummary.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/FindOpenGL.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/FindPackageHandleStandardArgs.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/FindPackageMessage.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-GNU-C.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-GNU-CXX.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-GNU.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-Initialize.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/UnixPaths.cmake /usr/lib/x86_64-linux-gnu/cmake/SDL2_mixer/sdl2_mixer-config-version.cmake /usr/lib/x86_64-linux-gnu/cmake/SDL2_mixer/sdl2_mixer-config.cmake CMakeCache.txt CMakeFiles/3.30.5/CMakeCCompiler.cmake CMakeFiles/3.30.5/CMakeCXXCompiler.cmake CMakeFiles/3.30.5/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build /home/hous/CLionProjects/Verdura/CMakeLists.txt /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeCInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeCXXInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeCommonLanguageInclude.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeGenericSystem.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeLanguageInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/CMakeCommonCompilerMacros.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/GNU-C.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/GNU-CXX.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/GNU.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/FindOpenGL.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/FindPackageHandleStandardArgs.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/FindPackageMessage.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-GNU-C.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-GNU-CXX.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-GNU.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-Initialize.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/UnixPaths.cmake /usr/lib/x86_64-linux-gnu/cmake/assimp-5.3/assimpConfig.cmake /usr/lib/x86_64-linux-gnu/cmake/assimp-5.3/assimpConfigVersion.cmake /usr/lib/x86_64-linux-gnu/cmake/assimp-5.3/assimpTargets-none.cmake /usr/lib/x86_64-linux-gnu/cmake/assimp-5.3/assimpTargets.cmake CMakeCache.txt CMakeFiles/3.30.5/CMakeCCompiler.cmake CMakeFiles/3.30.5/CMakeCXXCompiler.cmake CMakeFiles/3.30.5/CMakeSystem.cmake: phony
+build /home/hous/CLionProjects/Verdura/CMakeLists.txt /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeCInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeCXXInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeCommonLanguageInclude.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeFindDependencyMacro.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeGenericSystem.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeLanguageInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/CMakeCommonCompilerMacros.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/GNU-C.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/GNU-CXX.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Compiler/GNU.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/FeatureSummary.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/FindOpenGL.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/FindPackageHandleStandardArgs.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/FindPackageMessage.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-GNU-C.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-GNU-CXX.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-GNU.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux-Initialize.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/Linux.cmake /snap/clion/310/bin/cmake/linux/x64/share/cmake-3.30/Modules/Platform/UnixPaths.cmake /usr/lib/x86_64-linux-gnu/cmake/SDL2_mixer/sdl2_mixer-config-version.cmake /usr/lib/x86_64-linux-gnu/cmake/SDL2_mixer/sdl2_mixer-config.cmake CMakeCache.txt CMakeFiles/3.30.5/CMakeCCompiler.cmake CMakeFiles/3.30.5/CMakeCXXCompiler.cmake CMakeFiles/3.30.5/CMakeSystem.cmake: phony
 
 
 #############################################

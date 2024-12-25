@@ -37,6 +37,7 @@
 #include "Engine/Renderer/Renderer.h"
 #include "Engine/Shader/program.h"
 #include "Engine/Shader/shader.h"
+#include "Engine/Sound/SoundManager.h"
 
 
 static void glfw_error_callback(int error, const char* description)
@@ -82,7 +83,6 @@ int main(int, char**)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 #endif
 
-    // Create window with graphics context (RENDERER)
     Renderer renderer;
     glfwMakeContextCurrent(renderer.window);
     //glfwSetMouseButtonCallback(renderer.window, mouseCallback);
@@ -92,14 +92,11 @@ int main(int, char**)
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-    //ImGui::StyleColorsLight();
-
-    // Setup Platform/Renderer backends
+    //ImGui::StyleColorsDark();
+    ImGui::StyleColorsLight();
     ImGui_ImplGlfw_InitForOpenGL(renderer.window, true);
 #ifdef __EMSCRIPTEN__
     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
@@ -131,8 +128,8 @@ int main(int, char**)
     loader.LoadObjMesh(mesh2);
 
 
-    Shader vShader("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex.txt",GL_VERTEX_SHADER);
-    Shader fShader("/home/hous/CLionProjects/Verdura/Game/Shaders/fragment.txt",GL_FRAGMENT_SHADER);
+    Shader vShader("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex_character.txt",GL_VERTEX_SHADER);
+    Shader fShader("/home/hous/CLionProjects/Verdura/Game/Shaders/fragment_character.txt",GL_FRAGMENT_SHADER);
     Program program(vShader.shader_id(),fShader.shader_id());
     program.setName("t_pose_j1");
 
@@ -141,7 +138,6 @@ int main(int, char**)
     mesh.setCurrentProgram("t_pose_j1");
 
     //mesh2.translate(glm::vec3(.0f, 0.f, 4.f)); //xmin =-10.0f ,ymin = -8.0f, zmin =-6.f
-   // mesh2.rotate(glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     //mesh2.faceDirection(mesh.position);// some invisible direction, of non existent mesh
     mesh2.scale(glm::vec3(1.f, 1.f, 1.f)); // Scaler
 
@@ -154,6 +150,10 @@ int main(int, char**)
         std::cerr << "One or more uniforms not found in the shader program!" << std::endl;
     }*/
 
+
+    SoundManager soundManager;
+    soundManager.loadSound("sound1", "/home/hous/CLionProjects/Verdura/Engine/Sound/mixkit-arcade-retro-game-over-213.wav");
+    soundManager.playSound("sound1");
 
 
     glEnable(GL_DEPTH_TEST); // Enable depth testing
@@ -235,7 +235,8 @@ int main(int, char**)
         lastFrame = glfwGetTime();
         deltaTime = glfwGetTime() - lastFrame;
         //Le jeu bougera de haut en bas et bas en haut
-
+       // soundManager.playSound("sound1");
+        //soundManager.stopSound("sound1");
 
         mesh2.handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
         //mesh2.handleInputs(camera.camera_front(),camera.camera_right(),deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once

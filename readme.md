@@ -2,7 +2,8 @@
 Verdura is a Basic game Engine wrote by https://github.com/hussein-mamane as an graded exam.
 It comes with an RPG game that is needed for the exam but shows how the engine is used.
 #### Credits
-Icons on "Very Icon" website
+Icons on "Very Icon" website 
+Mage Dying Sound Effect by **u_r7cny11q7r** from Pixabay
 #### Dependencies
 - <a href = "https://github.com/ocornut/imgui">Dear ImGui by Omar Cornut</a>,
 - <a href = >stb_image</a>,

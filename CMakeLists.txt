@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 3.15)
 project(Verdura)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 include_directories(${CMAKE_SOURCE_DIR}/inc)
 link_directories(${CMAKE_SOURCE_DIR}/lib)
+link_directories(${SDL2_MIXER_LIB_DIRS})
+link_directories(${SDL2_LIBRARIES_DIRS})
+
 include_directories(${CMAKE_SOURCE_DIR}/imgui)
 include_directories(${CMAKE_SOURCE_DIR}/imgui/backends)
 include_directories(${CMAKE_SOURCE_DIR}/dependencies_code)
@@ -35,7 +38,8 @@ add_library("imgui" STATIC ${IMGUI_GLOB}) # build libimgui.a
 
 # Linux
 find_package(OpenGL REQUIRED)
-find_package(assimp REQUIRED)
+find_package(SDL2_mixer REQUIRED) # Optional, if using SDL2_mixer
+
 
 add_executable(
         ${PROJECT_NAME} main.cpp
@@ -51,31 +55,42 @@ add_executable(
         Engine/Mesh/Mesh.h
         Engine/Mesh/MeshCache.h
         Engine/Game.h
-        Game/Character.h
-        Game/Enemy.h
-        Game/Inventory.h
-        Game/Leveling.cpp
-        Game/Leveling.h
-        Game/Character.cpp
-        Game/Character.h
-        Game/Inventory.cpp
-        Game/Inventory.h
-        Game/Enemy.cpp
-        Game/Enemy.h
+        Game/Character/Character.h
+        Game/Character/Enemy.h
+        Game/Inventory/Inventory.h
+        Game/Character/Leveling.cpp
+        Game/Character/Leveling.h
+        Game/Character/Character.cpp
+        Game/Character/Character.h
+        Game/Inventory/Inventory.cpp
+        Game/Inventory/Inventory.h
+        Game/Character/Enemy.cpp
+        Game/Character/Enemy.h
         Game/GameUI.cpp
         Game/GameUI.h
-        Game/Dialog.cpp
-        Game/Dialog.h
-        Game/Shop.cpp
-        Game/Shop.h
-        Game/Item.cpp
-        Game/Item.h
-        Game/Ability.cpp
-        Game/Ability.h
-        Game/Attack.cpp
-        Game/Attack.h
+        Game/Inventory/Shop.cpp
+        Game/Inventory/Shop.h
+        Game/Inventory/Item.cpp
+        Game/Inventory/Item.h
+        Game/Ability/Ability.cpp
+        Game/Ability/Ability.h
+        Game/Ability/Attack.cpp
+        Game/Ability/Attack.h
+        Game/Character/CharacterMovement.cpp
+        Game/Character/CharacterMovement.h
+        Game/Character/Stats.cpp
+        Game/Character/Stats.h
+        Game/Ability/DefenseStrategy.cpp
+        Game/Ability/DefenseStrategy.h
+        Game/Ability/RetourALEnvoyeurStrategy.cpp
+        Game/Ability/RetourALEnvoyeurStrategy.h
+        Game/Ability/BouclierStrategy.cpp
+        Game/Ability/BouclierStrategy.h
+        Engine/Sound/SoundManager.h
+        Engine/ParticleEffect/ParticleManager.h
+
 )
 
-target_include_directories( ${PROJECT_NAME} PUBLIC ${IMGUI_PATH})
-target_link_libraries(${PROJECT_NAME} PUBLIC imgui glfw ${OPENGL_LIBRARIES} assimp::assimp) # windows 'glfw3', with a 3, linux 'glfw' no 3,
+target_include_directories( ${PROJECT_NAME} PUBLIC ${IMGUI_PATH}  ${SDL2_MIXER_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PUBLIC imgui glfw ${OPENGL_LIBRARIES} SDL2_mixer SDL2 ${SDL2_LIBRARIES} ) # windows 'glfw3', with a 3, linux 'glfw' no 3,
                                                                                             # but you still install libglfw3 with apt (debian family)

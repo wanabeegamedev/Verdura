@@ -23,6 +23,7 @@ public:
     }
     glm::vec3 position;
     double yaw{};
+    int facingDirection{};
     glm::mat4 model;
     bool Initialize(const std::vector<glm::vec3>& vertices,
                     const std::vector<glm::vec3>& normals,
@@ -212,13 +213,16 @@ public:
 
         // Check key inputs for movement (WASD or Arrow keys)
         if (ImGui::IsKeyPressed(ImGuiKey_UpArrow)) {
-            movement += forward; // Move forward (along the Z-axis)
+            movement -= forward; // Move forward (along the Z-axis)
+            facingDirection  = 2;
         }
         if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {
-            movement -= forward; // Move backward (along the Z-axis)
+            movement += forward; // Move backward (along the Z-axis)
+            facingDirection  = 0;
         }
         if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow)) {
             movement -= right; // Move left (along the X-axis)
+            facingDirection  = 2;
         }
         if (ImGui::IsKeyPressed(ImGuiKey_RightArrow)) {
             movement += right; // Move right (along the X-axis)
