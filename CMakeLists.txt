@@ -88,6 +88,8 @@ add_executable(
         Game/Ability/BouclierStrategy.h
         Engine/Sound/SoundManager.h
         Engine/ParticleEffect/ParticleManager.h
+        Game/Character/DamageManager.cpp
+        Game/Character/DamageManager.h
 
 )
 

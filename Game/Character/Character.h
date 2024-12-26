@@ -15,7 +15,6 @@ class Character {
 public:
     Mesh characterMesh;
     std::string name;
-    std::vector<DefenseStrategy> DefensesActives;
     // TODO Movement
     Stats stats;
     Character();

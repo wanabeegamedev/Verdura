@@ -143,8 +143,8 @@ public:
         model = glm::rotate(model, angleRadians, axis);
     }
 
-    void scale(const glm::vec3& scaleFactors) {
-        model = glm::scale(model, scaleFactors);
+    void scale(const glm::vec3& scaleFactor) {
+        model = glm::scale(model, scaleFactor);
     }
     void faceDirection(const glm::vec3& targetPosition) {
         glm::vec3 direction = glm::normalize(targetPosition - position);

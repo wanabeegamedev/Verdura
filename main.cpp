@@ -34,6 +34,7 @@
 #include "Engine/Camera/Camera.h"
 #include "Engine/Mesh/MeshLoader.h"
 #include "Engine/Mesh/OBJMesh.h"
+#include "Engine/ParticleEffect/ParticleManager.h"
 #include "Engine/Renderer/Renderer.h"
 #include "Engine/Shader/program.h"
 #include "Engine/Shader/shader.h"
@@ -156,8 +157,19 @@ int main(int, char**)
     soundManager.playSound("sound1");
 
 
-    glEnable(GL_DEPTH_TEST); // Enable depth testing
+    Shader vShaderFire("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex_fire_ice_particle.txt",GL_VERTEX_SHADER);
+    Shader fShaderFire("/home/hous/CLionProjects/Verdura/Game/Shaders/fragment_fire_ice_particle.txt",GL_FRAGMENT_SHADER);
+    Program programFire(vShaderFire.shader_id(),fShaderFire.shader_id());
+    programFire.setName("fireProgram");
+    Particle particleFire("/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/fireball.png",
+                        0.3f,
+                        glm::vec3(.5f,.5f,.5f));
+    particleFire.scale(glm::vec3(0.07f));
+    particleFire.load();
 
+
+    glEnable(GL_DEPTH_TEST); //  depth testing
+    glfwSwapInterval(1); // V-SYNC
 
     // Main loop
 #ifdef __EMSCRIPTEN__
@@ -234,10 +246,7 @@ int main(int, char**)
         // RENDERER TAKE OVER
         lastFrame = glfwGetTime();
         deltaTime = glfwGetTime() - lastFrame;
-        //Le jeu bougera de haut en bas et bas en haut
-       // soundManager.playSound("sound1");
-        //soundManager.stopSound("sound1");
-
+        
         mesh2.handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
         //mesh2.handleInputs(camera.camera_front(),camera.camera_right(),deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
 
@@ -250,8 +259,10 @@ int main(int, char**)
         mesh.Render(camera);
         mesh2.Render(camera);
 
-        glBindVertexArray(0);
+        particleFire.update(deltaTime);
+        particleFire.renderParticle(&programFire,camera,deltaTime);
 
+        glBindVertexArray(0);
         glfwSwapBuffers(renderer.window);
         //TODO ICI Le Renderer GLFW a terminé
     }

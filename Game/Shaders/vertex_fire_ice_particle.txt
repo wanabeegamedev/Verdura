@@ -1,0 +1,20 @@
+#version 330 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec2 aTexCoord;
+
+out vec2 TexCoord;
+// add uPosition and uTime here TODO
+uniform float uTime;
+uniform mat4 model;
+//uniform mat4 view;
+//uniform mat4 projection;
+
+void main() {
+
+    vec3 timeOffset = vec3(sin(uTime), 0.0, cos(uTime));
+    mat4 timeTransform = model;
+    timeTransform[3].xyz += timeOffset;
+    gl_Position = model*vec4(aPos, 1.0);
+    TexCoord = aTexCoord;
+
+}
