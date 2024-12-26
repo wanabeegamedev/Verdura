@@ -137,7 +137,7 @@ int main(int, char**)
 
     mesh.addProgram(&program);
     mesh.setCurrentProgram("t_pose_j1");
-
+    // mesh2.rotate(glm::radians(180.0f),glm::vec3(0.0f,1.0f,.0f));
     //mesh2.translate(glm::vec3(.0f, 0.f, 4.f)); //xmin =-10.0f ,ymin = -8.0f, zmin =-6.f
     //mesh2.faceDirection(mesh.position);// some invisible direction, of non existent mesh
     mesh2.scale(glm::vec3(1.f, 1.f, 1.f)); // Scaler
@@ -256,8 +256,8 @@ int main(int, char**)
         camera.update();
 
 
-        mesh.Render(camera);
-        mesh2.Render(camera);
+        mesh.Render(camera,deltaTime);
+        mesh2.Render(camera,deltaTime);
 
         particleFire.update(deltaTime);
         particleFire.renderParticle(&programFire,camera,deltaTime);

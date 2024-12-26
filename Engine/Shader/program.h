@@ -68,7 +68,7 @@ class Program {
 
         GLint location = glGetUniformLocation(programID, name.c_str());
         if (location == -1) {
-            std::cerr << "WARNING: Uniform '" << name << "' doesn't exist in program ID " << programID << "!" << std::endl;
+            std::cerr << "WARNING: Uniform '" << name;// << "' doesn't exist in program ID " << programID << "!" << std::endl;
         }
         uniformCache[name] = location;
         return location;

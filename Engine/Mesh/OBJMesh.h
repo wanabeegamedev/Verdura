@@ -22,8 +22,13 @@ public:
         // car pour les membres de la base class j'ai appelé le constructeur
     }
     glm::vec3 position;
-    double yaw{};
+
     int facingDirection{};
+    int newFacingDirection{};
+    float rotationAngle{};
+
+    glm::vec3 movementDirection = glm::vec3(0.0f);
+    float movementSpeed = 1.0f;
     glm::mat4 model;
     bool Initialize(const std::vector<glm::vec3>& vertices,
                     const std::vector<glm::vec3>& normals,
@@ -86,7 +91,7 @@ public:
 }
 
     // TODO Move to Renderer
-    void Render(const Camera& camera) const
+    void Render(const Camera& camera,float deltaTime) const
     {
         //TODO std::string programName ="Basic";
         //TODO glUseProgram(MeshPrograms.at(programName));
@@ -95,7 +100,10 @@ public:
             glBindTexture(GL_TEXTURE_2D, currentTextureID);
         }
         MeshPrograms.at(currentProgramName)->bind();
-        MeshPrograms.at(currentProgramName)->setUniform3f("offsetPos", position);// TODO = GET RID
+        //MeshPrograms.at(currentProgramName)->setUniform3f("offsetPos", position);// TODO = GET RID
+        //MeshPrograms.at(currentProgramName)->setUniform3f("movementDirection", movementDirection);// TODO = GET RID
+        //MeshPrograms.at(currentProgramName)->setUniform1f("movementSpeed", movementSpeed);// TODO = GET RID
+        MeshPrograms.at(currentProgramName)->setUniform1f("uTime", deltaTime);// TODO = GET RID
         MeshPrograms.at(currentProgramName)->setUniform1i("texture1", 0);
         MeshPrograms.at(currentProgramName)->setUniformMat4("model",model);
         MeshPrograms.at(currentProgramName)->setUniformMat4("view",camera.viewMatrix);
@@ -162,82 +170,64 @@ public:
         model = glm::rotate(glm::mat4(1.0f), angle, axis);
     }
     float speed = 3.0f*100000;
-  /*void handleInputs(float deltaTime) {
-        // Movement directions for isometric perspective
-        glm::vec3 isoForward = glm::normalize(glm::vec3(1.0f, 0.0f, -1.0f)); // Diagonal forward
-        glm::vec3 isoRight = glm::normalize(glm::vec3(1.0f, 0.0f, 1.0f));    // Diagonal right
 
-        // Movement speed
-        const float movementSpeed = 5.0f; // Units per second
-
-        // Initialize movement vector
-        glm::vec3 movement = glm::vec3(0.0f);
-
-        // Check key inputs for movement (WASD)
-        if (ImGui::IsKeyPressed(ImGuiKey_UpArrow)) {
-            movement -= isoRight; // Move left
-        }
-        if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {
-            movement += isoRight; // Move right
-        }
-        if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow)) {
-
-            movement -= isoForward; // Move forward
-        }
-        if (ImGui::IsKeyPressed(ImGuiKey_RightArrow)) {
-
-            movement += isoForward; // Move backward
-            //faceDirection(glm::vec3(-1.0f, 1.0f, .0f));
-        }
-
-        // Normalize movement vector to prevent diagonal speed boost
-        if (glm::length(movement) > 0.0f) {
-            movement = glm::normalize(movement);
-        }
-
-        // Update character position based on movement
-        position += movement * speed * deltaTime;
-
-    }
-*/
     void handleInputs(float deltaTime) {
         // Movement directions for top-down perspective
         glm::vec3 forward = glm::vec3(0.0f, 0.0f, 1.0f); // Forward (positive Z)
-        glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);   // Right (positive X)
-
-        // Movement speed
-        const float movementSpeed = 5.0f; // Units per second
-
-        // Initialize movement vector
-        glm::vec3 movement = glm::vec3(0.0f);
+        glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);
+        glm::vec3 movementRotate = glm::vec3(.0f, 1.f, .0f);
 
         // Check key inputs for movement (WASD or Arrow keys)
         if (ImGui::IsKeyPressed(ImGuiKey_UpArrow)) {
-            movement -= forward; // Move forward (along the Z-axis)
-            facingDirection  = 2;
+            movementDirection = forward*-1.0f; // Move forward (along the Z-axis)
+            newFacingDirection  = 2;
+
+            position += movementDirection * speed * deltaTime;//*1000000.0f;
+            model  = glm::mat4(1.0f);
+            model = glm::translate(model, position);
+                rotate(glm::radians(90.0f*(float)(newFacingDirection)), movementRotate);
+            facingDirection = newFacingDirection;
         }
         if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {
-            movement += forward; // Move backward (along the Z-axis)
-            facingDirection  = 0;
+            movementDirection = forward; // Move backward (along the Z-axis)
+            newFacingDirection  = 0;
+
+            position += movementDirection * speed * deltaTime;//*1000000.0f;
+            model  = glm::mat4(1.0f);
+            model = glm::translate(model, position);
+                rotate(glm::radians(90.0f*(float)(newFacingDirection)), movementRotate);
+
+            facingDirection = newFacingDirection;
         }
         if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow)) {
-            movement -= right; // Move left (along the X-axis)
-            facingDirection  = 2;
+            movementDirection = right*-1.0f; // Move left (along the X-axis)
+            newFacingDirection  = 3;
+
+            position += movementDirection * speed * deltaTime;//*1000000.0f;
+            model  = glm::mat4(1.0f);
+            model = glm::translate(model, position);
+                rotate(glm::radians(90.0f*(float)(newFacingDirection)), movementRotate);
+
+            facingDirection = newFacingDirection;
         }
         if (ImGui::IsKeyPressed(ImGuiKey_RightArrow)) {
-            movement += right; // Move right (along the X-axis)
-        }
+            movementDirection = right; // Move right (along the X-axis)
+            newFacingDirection  = 1;
 
+            position += movementDirection * speed * deltaTime;//*1000000.0f;
+            model  = glm::mat4(1.0f);
+            model = glm::translate(model, position);
+                rotate(glm::radians(90.0f*(float)(newFacingDirection)), movementRotate);
+
+            facingDirection = newFacingDirection;
+        }
         // Normalize movement vector to prevent diagonal speed boost
-        if (glm::length(movement) > 0.0f) {
-            movement = glm::normalize(movement);
+        if (glm::length(movementDirection) > 0.0f) {
+            movementDirection = glm::normalize(movementDirection);
+
         }
-
-        // Update character position based on movement
-        position += movement * speed * deltaTime;
-
-        // Optionally, you could add rotation or other actions based on the movement
     }
+
 
 
     const char* currentDataPath;

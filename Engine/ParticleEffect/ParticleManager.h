@@ -35,7 +35,7 @@ public:
     void renderParticle(Program*,const Camera&,float deltaTime) const ;
     float lifetime; // particle set to inactive if lifetime hit 0
     glm::vec3 position{}; // initialize to mesh.position() which is the position of the mesh
-    float velocity{3.0f}; //
+    float velocity{75.0f}; //
     glm::mat4 model{}; // billboard never rotate, it always face camera
     void update(float);//move up a little bit, also at every update the billboard follow its mesh(the burning character)
     void translate(const glm::vec3& translation) {
@@ -129,7 +129,7 @@ inline void Particle::renderParticle(Program *program,const Camera& camera,float
 inline void Particle::update(float deltaTime) {
     position += movementDirection * velocity * deltaTime*1000000.0f;
     model  = glm::mat4(1.0f);
-    scale(glm::vec3(0.07f));
+    scale(glm::vec3(0.07f));//  POUR LES 64px x 64px; TODO A parametriser
     model = glm::translate(model, position);
 }
 
