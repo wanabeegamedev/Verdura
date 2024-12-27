@@ -6,14 +6,15 @@
 #define SHOP_H
 #include <vector>
 
+#include "Inventory.h"
 #include "Item.h"
 #include "../Character/Character.h"
 
 
-class Shop {
+class Shop: public Inventory {
 public:
-    std::vector<Item> items;
-    void addItem(Item item);
+    Shop();
+    ~Shop();
     void sellItem(Item item,Character& character);
 };
 

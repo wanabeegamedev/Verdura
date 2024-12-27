@@ -4,10 +4,10 @@
 
 #ifndef ABILITY_H
 #define ABILITY_H
+#include "../Inventory/Item.h"
 
 
-
-class Ability {
+class Ability:public Item {
 public:
     double manaCost{};
     //TODO Revoir ici

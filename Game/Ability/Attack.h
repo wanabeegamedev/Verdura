@@ -7,9 +7,9 @@
 #include "Ability.h"
 
 
-class Attack : Ability {
+class Attack : public Ability {
     public:
-
+        double damagePoints{};
 
 };
 

@@ -4,11 +4,13 @@
 
 #ifndef DEFENSESTRATEGY_H
 #define DEFENSESTRATEGY_H
-
+#include "Attack.h"
 
 
 class DefenseStrategy {
-
+public:
+    virtual ~DefenseStrategy() = default;
+    virtual void  doDefense(Attack* attack);
 };
 
 

@@ -54,7 +54,7 @@ add_executable(
         Engine/Mesh/MeshLoader.h
         Engine/Mesh/Mesh.h
         Engine/Mesh/MeshCache.h
-        Engine/Game.h
+        Engine/Common/Game.h
         Game/Character/Character.h
         Game/Character/Enemy.h
         Game/Inventory/Inventory.h

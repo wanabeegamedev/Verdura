@@ -4,13 +4,15 @@
 
 #ifndef BOUCLIERSTRATEGY_H
 #define BOUCLIERSTRATEGY_H
+#include "Attack.h"
 #include "DefenseStrategy.h"
 
 
 
 class BouclierStrategy:public DefenseStrategy
 {
-
+public:
+     void doDefense(Attack* attack) override;
 };
 
 

@@ -11,6 +11,7 @@
 #include <glm/vec3.hpp>
 
 #include "../Mesh/Mesh.h"
+#include "../Physics/Movement.h"
 
 #define NB_PARTICLES 10;
 #define LIFETIME 3f;
@@ -31,8 +32,9 @@ class Particle {
 public:
     GLuint VAO{}, VBO{}, EBO{},texture{};
     Program * program;
-    Mesh * mesh;// TODO get position, direction & more
+    //Movement* movement;// TODO get position, direction & more
     std::string pathToFile;
+    void update(double);//move up a little bit, also at every update the billboard follow its mesh(the burning character)
     void load(); // load the billboard, png, Used Once for every type of particle
     void renderParticle(double deltaTime) const ;
     float lifetime; // particle set to inactive if lifetime hit 0
@@ -40,7 +42,6 @@ public:
     float velocity{450.0f}; // particle speed
     int facingDirection;
     glm::mat4 model{}; // billboard never rotate, it always face camera
-    void update(double);//move up a little bit, also at every update the billboard follow its mesh(the burning character)
     void translate(const glm::vec3& translation) {
         position += translation;
         model = glm::translate(glm::mat4(1.0f), position); // Update the model matrix
