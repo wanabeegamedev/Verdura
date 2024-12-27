@@ -66,8 +66,8 @@ add_executable(
         Game/Inventory/Inventory.h
         Game/Character/Enemy.cpp
         Game/Character/Enemy.h
-        Game/GameUI.cpp
-        Game/GameUI.h
+        Game/UI/GameUI.cpp
+        Game/UI/GameUI.h
         Game/Inventory/Shop.cpp
         Game/Inventory/Shop.h
         Game/Inventory/Item.cpp
@@ -90,6 +90,10 @@ add_executable(
         Engine/ParticleEffect/ParticleManager.h
         Game/Character/DamageManager.cpp
         Game/Character/DamageManager.h
+        Game/UI/GameUI.h
+        Game/UI/GameUI.cpp
+        Engine/ParticleEffect/ParticleMovement.h
+        Engine/Physics/Movement.h
 
 )
 

@@ -30,30 +30,41 @@ inline GLuint indices[] = {
 class Particle {
 public:
     GLuint VAO{}, VBO{}, EBO{},texture{};
+    Program * program;
+    Mesh * mesh;// TODO get position, direction & more
     std::string pathToFile;
     void load(); // load the billboard, png, Used Once for every type of particle
-    void renderParticle(Program*,const Camera&,float deltaTime) const ;
+    void renderParticle(double deltaTime) const ;
     float lifetime; // particle set to inactive if lifetime hit 0
     glm::vec3 position{}; // initialize to mesh.position() which is the position of the mesh
-    float velocity{75.0f}; //
+    float velocity{450.0f}; // particle speed
+    int facingDirection;
     glm::mat4 model{}; // billboard never rotate, it always face camera
-    void update(float);//move up a little bit, also at every update the billboard follow its mesh(the burning character)
+    void update(double);//move up a little bit, also at every update the billboard follow its mesh(the burning character)
     void translate(const glm::vec3& translation) {
         position += translation;
         model = glm::translate(glm::mat4(1.0f), position); // Update the model matrix
     }
-    glm::vec3 movementDirection{}; // blood fall down, attack(fire, ice) follow direction faced by player, burning effect go up
+    glm::vec3 movementDirection{};
     void scale(const glm::vec3& scaleFactor) {
         model = glm::scale(model, scaleFactor);
     }
-    Particle(const std::string& _path,float _lifetime, glm::vec3 _position);
+    void rotate(float angleRadians, const glm::vec3& axis) {
+        model = glm::rotate(model, angleRadians, axis);
+    }
+    Particle(const std::string& _path,float _lifetime, glm::vec3 _position,
+    int _facingDirection,Program * _program);
 };
 
 class ParticleManager {
     public:
     std::vector<Particle> particles;
-    void update(float); // update particles
+    void update(double); // update particles
+    void particleFromPrototype(const Particle& original, glm::vec3 newPosition,
+        int newFacingDirection);
+    void add(Particle& particle);
 
+    void renderParticles(double deltaTime);
 };
 
 
@@ -97,7 +108,8 @@ inline void Particle::load() {
 
 }
 
-inline void Particle::renderParticle(Program *program,const Camera& camera,float deltaTime) const {
+inline void Particle::renderParticle(
+    double deltaTime) const {
     if (!program) {
         std::cerr << "Error: Shader program is null." << std::endl;
         return;
@@ -125,23 +137,67 @@ inline void Particle::renderParticle(Program *program,const Camera& camera,float
     glBindVertexArray(0);
 }
 
-
-inline void Particle::update(float deltaTime) {
-    position += movementDirection * velocity * deltaTime*1000000.0f;
+inline void Particle::update(double deltaTime) {
+    position += movementDirection * velocity*(float)deltaTime*100000.0f;
     model  = glm::mat4(1.0f);
     scale(glm::vec3(0.07f));//  POUR LES 64px x 64px; TODO A parametriser
     model = glm::translate(model, position);
+    rotate(glm::radians(90.0f*(float)(facingDirection-1)), glm::vec3(0.0f, .0f, 1.0f));// TODO #define PARTICLE_ROTATION_AXIS
+    //std::cout << position.x << " " << position.y << " " << position.z << std::endl;
 }
 
-inline Particle::Particle(const std::string& _path,float _lifetime, glm::vec3 _position)
+inline Particle::Particle(const std::string& _path,float _lifetime,
+     const glm::vec3 _position,
+     int _facingDirection,Program * _program)
 {
     pathToFile = _path;
+    program = _program;
     lifetime = _lifetime;
     position = _position;
     model = glm::mat4(1.0f);
-    movementDirection = glm::vec3(0.01f,.0f,.0f);
+    facingDirection = _facingDirection;
+    switch (_facingDirection) {
+        case 0 :
+            movementDirection = glm::vec3(0.0f,-0.01f,0.0f);
+            break;
+        case 1 :
+            movementDirection = glm::vec3(0.01f,0.0f,0.0f);
+            break;
+        case 2 :
+            movementDirection = glm::vec3(0.0f,0.01f,0.0f);
+        break;
+        case 3 :
+            movementDirection = glm::vec3(-0.01f,0.0f,0.0f);
+        break;
+        default: ;
+    }
+    rotate(glm::radians(90.0f*(float)(_facingDirection-1)), glm::vec3(0.0f, 1.0f, 0.0f));
+    //std::cout << movementDirection.x << " " << movementDirection.y << " "<<movementDirection.z<< " " <<std::endl;
 }
 
-inline void ParticleManager::update(float deltaTime) {
+inline void ParticleManager::particleFromPrototype(const Particle& original,
+    glm::vec3 newPosition, int newFacingDirection)
+{
+    Particle newParticle = original;
+    newParticle.position = newPosition;
+    newParticle.facingDirection = newFacingDirection;
+    newParticle.model = glm::translate(glm::mat4(1.0f), newPosition);
+    particles.push_back(newParticle);
 }
+inline void ParticleManager::add(Particle &particle) {
+    particles.push_back(particle);
+}
+
+// TODO deltaTime is a double
+inline void ParticleManager::update(double deltaTime) {
+    for (Particle& particle : particles) {
+        particle.update(deltaTime);
+    }
+}
+inline void ParticleManager::renderParticles(double deltaTime) {
+    for (Particle& particle : particles) {
+        particle.renderParticle(deltaTime);
+    }
+}
+
 #endif //PARTICLEMANAGER_H

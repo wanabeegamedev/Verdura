@@ -18,6 +18,7 @@ public:
     explicit OBJMesh(const char * filename):Mesh(), currentDataPath(filename) {
         meshType = MeshType::OBJ;
         model = glm::mat4(1.0f);
+        rotate(glm::radians(90.0f*(float)(facingDirection)), glm::vec3(.0f, 1.0f, 0.0f));
         // en haut on peut mettre que les membre de la class
         // car pour les membres de la base class j'ai appelé le constructeur
     }
@@ -27,7 +28,7 @@ public:
     int newFacingDirection{};
     float rotationAngle{};
 
-    glm::vec3 movementDirection = glm::vec3(0.0f);
+    glm::vec3 movementDirection = glm::vec3(.0f, 1.0f, .0f);
     float movementSpeed = 1.0f;
     glm::mat4 model;
     bool Initialize(const std::vector<glm::vec3>& vertices,
@@ -188,7 +189,7 @@ public:
                 rotate(glm::radians(90.0f*(float)(newFacingDirection)), movementRotate);
             facingDirection = newFacingDirection;
         }
-        if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {
+        else if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {
             movementDirection = forward; // Move backward (along the Z-axis)
             newFacingDirection  = 0;
 
@@ -199,7 +200,7 @@ public:
 
             facingDirection = newFacingDirection;
         }
-        if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow)) {
+        else if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow)) {
             movementDirection = right*-1.0f; // Move left (along the X-axis)
             newFacingDirection  = 3;
 
@@ -210,7 +211,7 @@ public:
 
             facingDirection = newFacingDirection;
         }
-        if (ImGui::IsKeyPressed(ImGuiKey_RightArrow)) {
+        else if (ImGui::IsKeyPressed(ImGuiKey_RightArrow)) {
             movementDirection = right; // Move right (along the X-axis)
             newFacingDirection  = 1;
 

@@ -151,7 +151,7 @@ public:
         // Update the camera matrices after moving
         update();
     }*/
-    void HandleInputs(GLFWwindow* window, double deltaTime) {
+    void handleInputs(double deltaTime) {
         ImGuiIO& io = ImGui::GetIO();
 
         float velocity = speed * static_cast<float>(deltaTime);

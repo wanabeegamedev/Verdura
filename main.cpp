@@ -39,6 +39,7 @@
 #include "Engine/Shader/program.h"
 #include "Engine/Shader/shader.h"
 #include "Engine/Sound/SoundManager.h"
+#include "Game/UI/GameUI.h"
 
 
 static void glfw_error_callback(int error, const char* description)
@@ -120,7 +121,7 @@ int main(int, char**)
     MeshLoader loader;
     OBJMesh mesh("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/Mage.obj");
     mesh.set_current_texture_path("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/mage_texture.png");
-    mesh.set_position(glm::vec3(-3,.0f,.0f));
+    mesh.set_position(glm::vec3(-3,.0f,.0f));//TODO utiliser à la création de la mesh
     loader.LoadObjMesh(mesh);
 
     OBJMesh mesh2("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj");
@@ -137,9 +138,6 @@ int main(int, char**)
 
     mesh.addProgram(&program);
     mesh.setCurrentProgram("t_pose_j1");
-    // mesh2.rotate(glm::radians(180.0f),glm::vec3(0.0f,1.0f,.0f));
-    //mesh2.translate(glm::vec3(.0f, 0.f, 4.f)); //xmin =-10.0f ,ymin = -8.0f, zmin =-6.f
-    //mesh2.faceDirection(mesh.position);// some invisible direction, of non existent mesh
     mesh2.scale(glm::vec3(1.f, 1.f, 1.f)); // Scaler
 
     mesh2.addProgram(&program);
@@ -163,11 +161,17 @@ int main(int, char**)
     programFire.setName("fireProgram");
     Particle particleFire("/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/fireball.png",
                         0.3f,
-                        glm::vec3(.5f,.5f,.5f));
+                        glm::vec3(.5f,.5f,.5f),
+                        mesh2.facingDirection,
+                        &programFire);
     particleFire.scale(glm::vec3(0.07f));
     particleFire.load();
 
+    ParticleManager particleManager{};
+    particleManager.add(particleFire);
+    particleManager.particleFromPrototype(particleFire,glm::vec3(1.5f,.5f,.5f),mesh2.facingDirection);
 
+    GameUI gameUI{};
     glEnable(GL_DEPTH_TEST); //  depth testing
     glfwSwapInterval(1); // V-SYNC
 
@@ -225,7 +229,16 @@ int main(int, char**)
             ImGui::End();
         }
 */
-
+        //GameUI.handleInputs(); // va hériter de UI qui manage des GameObjects et va elle, manager des Objets concrets;
+        /*if (show_inventory)
+        {
+            ImGui::Begin("Ma sacoche de héros", &show_inventory);
+            ImGui::Text("Qu\'est-ce qu\'on a de beau ?'");
+            if (ImGui::Button("J\'ai fini !"))
+                show_inventory = false;
+            ImGui::End();
+        }*/
+        gameUI.handleInputs();
         ImGui::Render();
 
 
@@ -250,7 +263,8 @@ int main(int, char**)
         mesh2.handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
         //mesh2.handleInputs(camera.camera_front(),camera.camera_right(),deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
 
-        camera.HandleInputs(renderer.window, deltaTime);
+        camera.handleInputs(deltaTime);
+
 
         camera.updateCameraVectors();
         camera.update();
@@ -259,8 +273,10 @@ int main(int, char**)
         mesh.Render(camera,deltaTime);
         mesh2.Render(camera,deltaTime);
 
-        particleFire.update(deltaTime);
-        particleFire.renderParticle(&programFire,camera,deltaTime);
+        //particleFire.update(deltaTime);
+        //particleFire.renderParticle(&programFire,deltaTime);
+        particleManager.update(deltaTime);
+        particleManager.renderParticles(deltaTime);
 
         glBindVertexArray(0);
         glfwSwapBuffers(renderer.window);
