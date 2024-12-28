@@ -4,14 +4,15 @@
 
 #ifndef PARTICLEMANAGER_H
 #define PARTICLEMANAGER_H
+#include "glad.h"
 #include <stb_image.h>
 #include <string>
 #include <vector>
 #include <glm/fwd.hpp>
 #include <glm/vec3.hpp>
+#include "../Engine/Shader/program.h"
 
-#include "../Mesh/Mesh.h"
-#include "../Physics/Movement.h"
+//#include "../Physics/Movement.h"
 
 #define NB_PARTICLES 10;
 #define LIFETIME 3f;
@@ -41,6 +42,7 @@ public:
     glm::vec3 position{}; // initialize to mesh.position() which is the position of the mesh
     float velocity{450.0f}; // particle speed
     int facingDirection;
+    bool isActive  = false;
     glm::mat4 model{}; // billboard never rotate, it always face camera
     void translate(const glm::vec3& translation) {
         position += translation;
@@ -59,13 +61,14 @@ public:
 
 class ParticleManager {
     public:
-    std::vector<Particle> particles;
+    std::vector<Particle> particlesObjectPool;
     void update(double); // update particles
     void particleFromPrototype(const Particle& original, glm::vec3 newPosition,
         int newFacingDirection);
     void add(Particle& particle);
-
     void renderParticles(double deltaTime);
+    void prepareObjectPool(Particle& particle, int size);
+    void releaseFromObjectPool();
 };
 
 
@@ -180,25 +183,36 @@ inline void ParticleManager::particleFromPrototype(const Particle& original,
     glm::vec3 newPosition, int newFacingDirection)
 {
     Particle newParticle = original;
+    newParticle.isActive = false;
     newParticle.position = newPosition;
     newParticle.facingDirection = newFacingDirection;
     newParticle.model = glm::translate(glm::mat4(1.0f), newPosition);
-    particles.push_back(newParticle);
+    particlesObjectPool.push_back(newParticle);
 }
 inline void ParticleManager::add(Particle &particle) {
-    particles.push_back(particle);
+    particlesObjectPool.push_back(particle);
 }
 
-// TODO deltaTime is a double
 inline void ParticleManager::update(double deltaTime) {
-    for (Particle& particle : particles) {
-        particle.update(deltaTime);
+    for (Particle& particle : particlesObjectPool) {
+        if (particle.isActive)
+            particle.update(deltaTime);
     }
 }
 inline void ParticleManager::renderParticles(double deltaTime) {
-    for (Particle& particle : particles) {
-        particle.renderParticle(deltaTime);
+    for (Particle& particle : particlesObjectPool) {
+        if (particle.isActive)
+            particle.renderParticle(deltaTime);
     }
 }
+inline void ParticleManager::prepareObjectPool(Particle &particle, int size) {
+   /* add(particle);
+    for ([[maybe_unused]] int i : size)
+        particleFromPrototype(particle, particle.position, particle.facingDirection);*/
+}
+inline void ParticleManager::releaseFromObjectPool() {
+ //TODO get inactive particle, set position, direction,
+}
+
 
 #endif //PARTICLEMANAGER_H

@@ -11,7 +11,8 @@
 #include <vector>
 
 #include "Mesh.h"
-int stride = 8 * sizeof(float);
+#include "../Engine/Camera/Camera.h"
+inline int stride = 8 * sizeof(float);
 class OBJMesh : public Mesh
 {
 public:

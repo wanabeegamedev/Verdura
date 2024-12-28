@@ -13,7 +13,7 @@ public:
     std::string itemDescription;
     int itemCost;
     Item(std::string itemName, std::string itemDescription, int itemCost);
-
+    Item();
 };
 
 

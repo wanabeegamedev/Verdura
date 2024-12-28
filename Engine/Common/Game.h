@@ -10,14 +10,17 @@
 #include "../../Game/UI/GameUI.h"
 #include "../Renderer/Renderer.h"
 
+enum GameState {PLAYING, UI_INTERRUPT};
 class Game {
     public:
         //std::vector<Playable> playables;
-        GameUI gameUI;
-        Renderer renderer;
+    //J'utilise des Pointeurs pour pouvoir delete
+        GameUI* gameUI{};
+        GameState state{};
+        Renderer* renderer{};
 
     Game();
-    ~Game();
+    virtual ~Game();
 
 };
 

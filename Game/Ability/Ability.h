@@ -11,6 +11,7 @@ class Ability:public Item {
 public:
     double manaCost{};
     //TODO Revoir ici
+    Ability();
 };
 
 

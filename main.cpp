@@ -86,8 +86,10 @@ int main(int, char**)
 #endif
 
     Renderer renderer;
-    glfwMakeContextCurrent(renderer.window);
-    //glfwSetMouseButtonCallback(renderer.window, mouseCallback);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL3 example", nullptr, nullptr);
+
+    glfwMakeContextCurrent(window);
+    //glfwSetMouseButtonCallback(window, mouseCallback);
     glfwSwapInterval(1);
 
     //  Dear ImGui
@@ -99,7 +101,7 @@ int main(int, char**)
 
     //ImGui::StyleColorsDark();
     ImGui::StyleColorsLight();
-    ImGui_ImplGlfw_InitForOpenGL(renderer.window, true);
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
 #ifdef __EMSCRIPTEN__
     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
 #endif
@@ -164,13 +166,14 @@ int main(int, char**)
                         glm::vec3(.5f,.5f,.5f),
                         mesh2.facingDirection,
                         &programFire);
+    particleFire.isActive = true;
     particleFire.scale(glm::vec3(0.07f));
     particleFire.load();
 
     ParticleManager particleManager{};
     particleManager.add(particleFire);
     particleManager.particleFromPrototype(particleFire,glm::vec3(1.5f,.5f,.5f),mesh2.facingDirection);
-
+    //TODO activate other particles
     GameUI gameUI{};
     glEnable(GL_DEPTH_TEST); //  depth testing
     glfwSwapInterval(1); // V-SYNC
@@ -182,7 +185,7 @@ int main(int, char**)
     io.IniFilename = nullptr;
     EMSCRIPTEN_MAINLOOP_BEGIN
 #else
-    while (!glfwWindowShouldClose(renderer.window))
+    while (!glfwWindowShouldClose(window))
 #endif
     {
         glfwPollEvents();
@@ -245,7 +248,7 @@ int main(int, char**)
         //TODO Rendering; ICI Le Renderer GLFW Intervient
 
         int display_w, display_h;
-        glfwGetFramebufferSize(renderer.window, &display_w, &display_h);
+        glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
 
@@ -269,7 +272,7 @@ int main(int, char**)
         camera.updateCameraVectors();
         camera.update();
 
-
+        // If GameState == UI_INTERRUPT // Render but not update
         mesh.Render(camera,deltaTime);
         mesh2.Render(camera,deltaTime);
 
@@ -279,7 +282,7 @@ int main(int, char**)
         particleManager.renderParticles(deltaTime);
 
         glBindVertexArray(0);
-        glfwSwapBuffers(renderer.window);
+        glfwSwapBuffers(window);
         //TODO ICI Le Renderer GLFW a terminé
     }
 #ifdef __EMSCRIPTEN__
@@ -290,7 +293,7 @@ int main(int, char**)
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
-    glfwDestroyWindow(renderer.window); // Renderer.window, //RENDERER class attributes
+    glfwDestroyWindow(window); // Renderer.window, //RENDERER class attributes
     glfwTerminate();
 
     return 0;

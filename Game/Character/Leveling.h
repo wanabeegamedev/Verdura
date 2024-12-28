@@ -16,7 +16,7 @@ struct Level {
     int nbInventoryPlacesUnlocked{};
 };
 // TODO Create Levels , Other option, read level stats from file (more precise)
-std::vector<Level> Levels{};
+//std::vector<Level> Levels{};
 
 class Leveling {
 public:

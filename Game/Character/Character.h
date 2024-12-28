@@ -8,10 +8,11 @@
 #include <string>
 
 #include "Stats.h"
+#include "../../Engine/Mesh/OBJMesh.h"
 
 class Character{
 public:
-
+    OBJMesh characterMesh;
     std::string name;
     // TODO Movement
     Stats stats;

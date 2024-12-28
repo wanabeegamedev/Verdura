@@ -94,6 +94,8 @@ add_executable(
         Game/UI/GameUI.cpp
         Engine/ParticleEffect/ParticleMovement.h
         Engine/Physics/Movement.h
+        Game/Game/GameImpl.cpp
+        Game/Game/GameImpl.h
 
 )
 

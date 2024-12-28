@@ -4,14 +4,14 @@
 
 #ifndef PROGRAM_H
 #define PROGRAM_H
+#include "glad.h"
 #include <string>
 #include <fstream>
-#include <glad.h>
 #include <iostream>
 #include <unordered_map>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "program.h"
+
 #include "error_codes.h"
 
 class Program {
@@ -68,7 +68,7 @@ class Program {
 
         GLint location = glGetUniformLocation(programID, name.c_str());
         if (location == -1) {
-            std::cerr << "WARNING: Uniform '" << name;// << "' doesn't exist in program ID " << programID << "!" << std::endl;
+            std::cerr << "WARNING: Uniform '" << name << "' doesn't exist in program ID " << programID << "!" << std::endl;
         }
         uniformCache[name] = location;
         return location;

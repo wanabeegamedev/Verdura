@@ -18,10 +18,13 @@ public:
     std::string text = "Hello UI";
     bool show_welcome = false;
     bool show_help = false;
+    bool show_info_log = true;
     bool show_quit = false;
     bool show_about = false;
     bool show_inventory = false;
     void show_welcome_window() ;
+
+    void show_info_log_window();
 
     void handleInputs();
 
@@ -39,6 +42,16 @@ inline void GameUI::show_welcome_window() {
     }
 }
 
+inline void GameUI::show_info_log_window()
+{
+    if (show_info_log) {
+        ImGui::Begin("Welcome", &show_info_log);
+        ImGui::Text("Hello Adventurer, You must Fight !");
+        if (ImGui::Button("Close"))
+            show_info_log = false;
+        ImGui::End();
+    }
+}
 inline void GameUI::handleInputs() {
     if (ImGui::IsKeyPressed(ImGuiKey_W))
         show_welcome = !show_welcome;
