@@ -10,12 +10,15 @@
 #include <vector>
 #include <glm/fwd.hpp>
 #include <glm/vec3.hpp>
+
+#include "../Camera/Camera.h"
 #include "../Engine/Shader/program.h"
+
 
 //#include "../Physics/Movement.h"
 
-#define NB_PARTICLES 10;
-#define LIFETIME 3f;
+#define MAX_NB_PARTICLES 100;
+#define LIFETIME 3.f;
 inline float vertices[] = {
     // positions        // texture coords
     -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, //bas-gauche
@@ -37,15 +40,16 @@ public:
     std::string pathToFile;
     void update(double);//move up a little bit, also at every update the billboard follow its mesh(the burning character)
     void load(); // load the billboard, png, Used Once for every type of particle
-    void renderParticle(double deltaTime) const ;
+    void renderParticle(double deltaTime,const Camera& camera) const ;
     float lifetime; // particle set to inactive if lifetime hit 0
     glm::vec3 position{}; // initialize to mesh.position() which is the position of the mesh
-    float velocity{450.0f}; // particle speed
+    float velocity{10.0f}; // particle speed
     int facingDirection;
     bool isActive  = false;
     glm::mat4 model{}; // billboard never rotate, it always face camera
-    void translate(const glm::vec3& translation) {
-        position += translation;
+    void translate(const glm::vec3& translation)
+    {
+        //position += translation;
         model = glm::translate(glm::mat4(1.0f), position); // Update the model matrix
     }
     glm::vec3 movementDirection{};
@@ -66,9 +70,12 @@ class ParticleManager {
     void particleFromPrototype(const Particle& original, glm::vec3 newPosition,
         int newFacingDirection);
     void add(Particle& particle);
-    void renderParticles(double deltaTime);
-    void prepareObjectPool(Particle& particle, int size);
-    void releaseFromObjectPool();
+    void renderParticles(double deltaTime,const Camera& camera);
+    void prepareObjectPool(Particle& particlePrototype);
+    void releaseFromObjectPool(
+        const glm::vec3& _position,
+        int _facingDirection);
+    void returnToObjectPool(Particle& particle);
 };
 
 
@@ -113,7 +120,7 @@ inline void Particle::load() {
 }
 
 inline void Particle::renderParticle(
-    double deltaTime) const {
+    double deltaTime,const Camera& camera) const {
     if (!program) {
         std::cerr << "Error: Shader program is null." << std::endl;
         return;
@@ -126,6 +133,8 @@ inline void Particle::renderParticle(
     }
     program->setUniform1i("partTexture", 0);
     program->setUniformMat4("model",model);
+    program->setUniformMat4("view",camera.viewMatrix);
+    program->setUniformMat4("projection",camera.projectionMatrix);
     program->setUniform1f("uTime", deltaTime);
     if (!glIsTexture(texture)) {
         std::cerr << "Error: Invalid texture ID." << std::endl;
@@ -141,18 +150,21 @@ inline void Particle::renderParticle(
     glBindVertexArray(0);
 }
 
-inline void Particle::update(double deltaTime) {
-    position += movementDirection * velocity*(float)deltaTime*100000.0f;
+
+inline void Particle::update(double deltaTime)
+{
+    position += glm::normalize(movementDirection) * velocity *(float)deltaTime*100000.0f;
     model  = glm::mat4(1.0f);
-    scale(glm::vec3(0.07f));//  POUR LES 64px x 64px; TODO A parametriser
+    //scale(glm::vec3(1.7f));//  POUR LES 64px x 64px; TODO A parametriser
+    //position.y = 7.f;
     model = glm::translate(model, position);
-    rotate(glm::radians(90.0f*(float)(facingDirection-1)), glm::vec3(0.0f, .0f, 1.0f));// TODO #define PARTICLE_ROTATION_AXIS
     //std::cout << position.x << " " << position.y << " " << position.z << std::endl;
 }
 
-inline Particle::Particle(const std::string& _path,float _lifetime,
-     const glm::vec3 _position,
-     int _facingDirection,Program * _program)
+inline Particle::Particle(
+    const std::string& _path,float _lifetime,
+    const glm::vec3 _position,
+    int _facingDirection,Program * _program)
 {
     pathToFile = _path;
     program = _program;
@@ -161,21 +173,22 @@ inline Particle::Particle(const std::string& _path,float _lifetime,
     model = glm::mat4(1.0f);
     facingDirection = _facingDirection;
     switch (_facingDirection) {
-        case 0 :
-            movementDirection = glm::vec3(0.0f,-0.01f,0.0f);
-            break;
-        case 1 :
-            movementDirection = glm::vec3(0.01f,0.0f,0.0f);
-            break;
-        case 2 :
-            movementDirection = glm::vec3(0.0f,0.01f,0.0f);
+        case 0: // Facing down
+            movementDirection = glm::vec3(0.0f, .00f, 0.01f);
         break;
-        case 3 :
-            movementDirection = glm::vec3(-0.01f,0.0f,0.0f);
+        case 1: // Facing right
+            movementDirection = glm::vec3(.01f, 0.0f, 0.0f);
         break;
-        default: ;
+        case 2: // Facing up
+            movementDirection = glm::vec3(0.0f, .0f, -0.01f);
+        break;
+        case 3: // Facing left
+            movementDirection = glm::vec3(-0.01f, 0.0f, 0.0f);
+        break;
+        default:
+            movementDirection = glm::vec3(0.0f); // Default to stationary
     }
-    rotate(glm::radians(90.0f*(float)(_facingDirection-1)), glm::vec3(0.0f, 1.0f, 0.0f));
+    //rotate(glm::radians(90.0f*(float)(_facingDirection-1)), glm::vec3(0.0f, 1.0f, 0.0f));
     //std::cout << movementDirection.x << " " << movementDirection.y << " "<<movementDirection.z<< " " <<std::endl;
 }
 
@@ -186,7 +199,7 @@ inline void ParticleManager::particleFromPrototype(const Particle& original,
     newParticle.isActive = false;
     newParticle.position = newPosition;
     newParticle.facingDirection = newFacingDirection;
-    newParticle.model = glm::translate(glm::mat4(1.0f), newPosition);
+    ///newParticle.model = glm::translate(glm::mat4(1.0f), newPosition);
     particlesObjectPool.push_back(newParticle);
 }
 inline void ParticleManager::add(Particle &particle) {
@@ -199,19 +212,97 @@ inline void ParticleManager::update(double deltaTime) {
             particle.update(deltaTime);
     }
 }
-inline void ParticleManager::renderParticles(double deltaTime) {
+inline void ParticleManager::renderParticles(double deltaTime,const Camera& camera) {
     for (Particle& particle : particlesObjectPool) {
         if (particle.isActive)
-            particle.renderParticle(deltaTime);
+            particle.renderParticle(deltaTime,camera);
     }
 }
-inline void ParticleManager::prepareObjectPool(Particle &particle, int size) {
-   /* add(particle);
-    for ([[maybe_unused]] int i : size)
-        particleFromPrototype(particle, particle.position, particle.facingDirection);*/
+inline void ParticleManager::prepareObjectPool(Particle &particlePrototype) {
+    int size = MAX_NB_PARTICLES;
+    add(particlePrototype);
+    size--;
+    while (size > 0) {
+        particleFromPrototype(particlePrototype, particlePrototype.position,
+            particlePrototype.facingDirection);
+        size--;
+    }
 }
-inline void ParticleManager::releaseFromObjectPool() {
- //TODO get inactive particle, set position, direction,
+/*
+inline void ParticleManager::releaseFromObjectPool(const glm::vec3& _position,
+    int _facingDirection) {
+    for (Particle& particle : particlesObjectPool)
+        {
+        if (!particle.isActive) {
+            particle.facingDirection = _facingDirection;
+            particle.position = _position;
+            particle.model = glm::translate(glm::mat4(1.0f), _position);
+            //particle.model = (glm::mat4(1.0f));
+            switch (_facingDirection) {
+                case 0 :
+                    particle.movementDirection = glm::vec3(0.0f,-0.01f,0.0f);
+                    break;
+                case 1 :
+                    particle.movementDirection = glm::vec3(0.01f,0.0f,0.0f);
+                    break;
+                case 2 :
+                    particle.movementDirection = glm::vec3(0.0f,0.01f,0.0f);
+                    break;
+                case 3 :
+                    particle.movementDirection = glm::vec3(-0.01f,0.0f,0.0f);
+                    break;
+                default: ;
+            }
+            particle.isActive = true;
+            break;
+        }
+    }
+}
+*/
+inline void ParticleManager::releaseFromObjectPool(const glm::vec3& _position,
+    const int _facingDirection) {
+    for (Particle& particle : particlesObjectPool)
+    {
+        if (!particle.isActive) {
+            particle.facingDirection = _facingDirection;
+            particle.position = _position;//+glm::vec3(2.5f,0.f,2.5f);
+            particle.model = glm::mat4(1.0f);
+            switch (_facingDirection) {
+                case 0: // Facing down
+                    particle.movementDirection = glm::vec3(0.0f, .00f, 0.01f);
+                break;
+                case 1: // Facing right
+                    particle.movementDirection = glm::vec3(.01f, 0.0f, 0.0f);
+                break;
+                case 2: // Facing up
+                    particle.movementDirection = glm::vec3(0.0f, .0f, -0.01f);
+                break;
+                case 3: // Facing left
+                    particle.movementDirection = glm::vec3(-0.01f, 0.0f, 0.0f);
+                break;
+                default:
+                    particle.movementDirection = glm::vec3(0.0f); // Default to stationary
+            }
+
+            // Normalize movement direction
+            //particle.movementDirection = glm::normalize(particle.movementDirection) * 0.01f;
+
+            // Activate particle
+            particle.isActive = true;
+
+            // Debug: Log particle properties
+            std::cout << "Particle Released - Position: ("
+                      << particle.position.x << ", "
+                      << particle.position.y << ", "
+                      << particle.position.z << "), Facing: "
+                      << _facingDirection << std::endl;
+            //particle.renderParticle(1.0f);
+            break;
+        }
+    }
+}
+
+inline void ParticleManager::returnToObjectPool(Particle &particle) {
 }
 
 

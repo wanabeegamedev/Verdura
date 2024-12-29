@@ -159,7 +159,7 @@ public:
     void faceDirection(const glm::vec3& targetPosition) {
         glm::vec3 direction = glm::normalize(targetPosition - position);
 
-        // angle between the forward vector (assume -Z by default) and the direction
+        // angle between the forward vector ( -Z by default) and the direction
         glm::vec3 forward = glm::vec3(.0f, 0.0f, -1.0f);
         float dot = glm::dot(forward, glm::vec3(direction.x, 0.0f, direction.z));
         float angle = glm::acos(glm::clamp(dot, -1.0f, 1.0f));
@@ -178,54 +178,39 @@ public:
         glm::vec3 forward = glm::vec3(0.0f, 0.0f, 1.0f); // Forward (positive Z)
         glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);
         glm::vec3 movementRotate = glm::vec3(.0f, 1.f, .0f);
-
+        bool keyPressed = false;
         // Check key inputs for movement (WASD or Arrow keys)
         if (ImGui::IsKeyPressed(ImGuiKey_UpArrow)) {
             movementDirection = forward*-1.0f; // Move forward (along the Z-axis)
             newFacingDirection  = 2;
-
-            position += movementDirection * speed * deltaTime;//*1000000.0f;
-            model  = glm::mat4(1.0f);
-            model = glm::translate(model, position);
-                rotate(glm::radians(90.0f*(float)(newFacingDirection)), movementRotate);
-            facingDirection = newFacingDirection;
+            keyPressed = true;
         }
         else if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {
             movementDirection = forward; // Move backward (along the Z-axis)
             newFacingDirection  = 0;
-
-            position += movementDirection * speed * deltaTime;//*1000000.0f;
-            model  = glm::mat4(1.0f);
-            model = glm::translate(model, position);
-                rotate(glm::radians(90.0f*(float)(newFacingDirection)), movementRotate);
-
-            facingDirection = newFacingDirection;
+            keyPressed = true;
         }
         else if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow)) {
             movementDirection = right*-1.0f; // Move left (along the X-axis)
             newFacingDirection  = 3;
-
-            position += movementDirection * speed * deltaTime;//*1000000.0f;
-            model  = glm::mat4(1.0f);
-            model = glm::translate(model, position);
-                rotate(glm::radians(90.0f*(float)(newFacingDirection)), movementRotate);
-
-            facingDirection = newFacingDirection;
+            keyPressed = true;
         }
         else if (ImGui::IsKeyPressed(ImGuiKey_RightArrow)) {
             movementDirection = right; // Move right (along the X-axis)
             newFacingDirection  = 1;
-
-            position += movementDirection * speed * deltaTime;//*1000000.0f;
-            model  = glm::mat4(1.0f);
-            model = glm::translate(model, position);
-                rotate(glm::radians(90.0f*(float)(newFacingDirection)), movementRotate);
-
-            facingDirection = newFacingDirection;
+            keyPressed = true;
         }
         // Normalize movement vector to prevent diagonal speed boost
         if (glm::length(movementDirection) > 0.0f) {
             movementDirection = glm::normalize(movementDirection);
+        }
+        if (keyPressed) {
+            position += movementDirection * speed * deltaTime;//*1000000.0f;
+            model  = glm::mat4(1.0f);
+            model = glm::translate(model, position);
+            rotate(glm::radians(90.0f*(float)(newFacingDirection)), movementRotate);
+            facingDirection = newFacingDirection;
+            //std::cout << "Position: (" << position.x << ", " << position.y << ", " << position.z << ")\n";
 
         }
     }

@@ -96,6 +96,9 @@ add_executable(
         Engine/Physics/Movement.h
         Game/Game/GameImpl.cpp
         Game/Game/GameImpl.h
+        Engine/Events/EventDispatcher.h
+        Game/Events/HitEvent.h
+        Game/Events/UseOrBuyItemEvent.h
 
 )
 

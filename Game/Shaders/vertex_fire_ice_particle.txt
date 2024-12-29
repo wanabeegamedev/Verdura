@@ -1,3 +1,4 @@
+/*
 #version 330 core
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec2 aTexCoord;
@@ -5,10 +6,39 @@ layout (location = 1) in vec2 aTexCoord;
 out vec2 TexCoord;
 uniform float uTime;
 uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
 
 void main() {
-
-    gl_Position = model*uTime*vec4(aPos, 1.0);
+    gl_Position = projection*view*model*vec4(aPos, 1.0);
     TexCoord = aTexCoord;
+}
+*/
+#version 330 core
 
+layout (location = 0) in vec3 aPos;       // Vertex position (local quad coordinates)
+layout (location = 1) in vec2 aTexCoord; // Texture coordinates
+
+out vec2 TexCoord;
+
+uniform mat4 model;       // Model matrix
+uniform mat4 view;        // View matrix
+uniform mat4 projection;  // Projection matrix
+
+void main() {
+    // Extract the rotational part of the view matrix (upper-left 3x3 part)
+    mat3 viewRotation = mat3(view);
+
+    // Remove rotation from the model matrix and keep translation
+    vec3 worldPosition = vec3(model[3]); // Extract translation from the model matrix
+    vec3 billboardOffset = viewRotation * aPos; // Rotate the quad to face the camera
+
+    // Calculate the final position in world space
+    vec4 finalPosition = vec4(worldPosition + billboardOffset, 1.0);
+
+    // Apply view and projection matrices
+    gl_Position = projection * view * finalPosition;
+
+    // Pass texture coordinates to the fragment shader
+    TexCoord = aTexCoord;
 }

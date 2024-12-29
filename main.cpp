@@ -163,20 +163,19 @@ int main(int, char**)
     programFire.setName("fireProgram");
     Particle particleFire("/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/fireball.png",
                         0.3f,
-                        glm::vec3(.5f,.5f,.5f),
+                        mesh2.position,
                         mesh2.facingDirection,
                         &programFire);
-    particleFire.isActive = true;
-    particleFire.scale(glm::vec3(0.07f));
+    //particleFire.isActive = true;
+    //particleFire.scale(glm::vec3(0.07f));
     particleFire.load();
-
     ParticleManager particleManager{};
-    particleManager.add(particleFire);
-    particleManager.particleFromPrototype(particleFire,glm::vec3(1.5f,.5f,.5f),mesh2.facingDirection);
-    //TODO activate other particles
+    particleManager.prepareObjectPool(particleFire);
     GameUI gameUI{};
     glEnable(GL_DEPTH_TEST); //  depth testing
     glfwSwapInterval(1); // V-SYNC
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Main loop
 #ifdef __EMSCRIPTEN__
@@ -276,10 +275,22 @@ int main(int, char**)
         mesh.Render(camera,deltaTime);
         mesh2.Render(camera,deltaTime);
 
+        glm::vec4 meshClipSpacePos = camera.projectionMatrix * camera.viewMatrix * mesh2.model * glm::vec4(mesh2.position, 1.0f);
+        glm::mat4 inversePV = glm::inverse(camera.projectionMatrix * camera.viewMatrix);
+        glm::vec4 worldPosition = inversePV * meshClipSpacePos;
+        //worldPosition /= worldPosition.w;
+
+        if (ImGui::IsKeyPressed(ImGuiKey_M,false)) {
+            particleManager.releaseFromObjectPool(mesh2.position,mesh2.facingDirection);
+            std::cout << "Position: (" << mesh2.position.x << ", " << mesh2.position.y << ", " << mesh2.position.z << ")\n";
+
+        }
+
         //particleFire.update(deltaTime);
         //particleFire.renderParticle(&programFire,deltaTime);
         particleManager.update(deltaTime);
-        particleManager.renderParticles(deltaTime);
+        particleManager.renderParticles(deltaTime,camera);
+
 
         glBindVertexArray(0);
         glfwSwapBuffers(window);
