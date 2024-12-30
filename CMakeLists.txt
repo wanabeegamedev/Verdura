@@ -99,6 +99,9 @@ add_executable(
         Engine/Events/EventDispatcher.h
         Game/Events/HitEvent.h
         Game/Events/UseOrBuyItemEvent.h
+        Game/Character/Hero.cpp
+        Game/Character/Hero.h
+        dependencies_code/imgui_image_loader_opengl.h
 
 )
 

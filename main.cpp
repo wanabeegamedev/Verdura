@@ -123,7 +123,7 @@ int main(int, char**)
     MeshLoader loader;
     OBJMesh mesh("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/Mage.obj");
     mesh.set_current_texture_path("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/mage_texture.png");
-    mesh.set_position(glm::vec3(-3,.0f,.0f));//TODO utiliser à la création de la mesh
+    mesh.set_position(glm::vec3(-8,.0f,.0f));//TODO utiliser à la création de la mesh
     loader.LoadObjMesh(mesh);
 
     OBJMesh mesh2("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj");

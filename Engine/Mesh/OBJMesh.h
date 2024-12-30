@@ -12,6 +12,8 @@
 
 #include "Mesh.h"
 #include "../Engine/Camera/Camera.h"
+
+const glm::vec3 movementRotate = glm::vec3(.0f, 1.f, .0f);
 inline int stride = 8 * sizeof(float);
 class OBJMesh : public Mesh
 {
@@ -88,6 +90,10 @@ public:
 
     // Unbind VAO
     glBindVertexArray(0);
+    //Initial Direction
+        model  = glm::mat4(1.0f);
+        model = glm::translate(model, position);
+        rotate(glm::radians(90.0f*(float)(newFacingDirection)), movementRotate);
 
     return true;
 }
@@ -156,28 +162,13 @@ public:
     void scale(const glm::vec3& scaleFactor) {
         model = glm::scale(model, scaleFactor);
     }
-    void faceDirection(const glm::vec3& targetPosition) {
-        glm::vec3 direction = glm::normalize(targetPosition - position);
 
-        // angle between the forward vector ( -Z by default) and the direction
-        glm::vec3 forward = glm::vec3(.0f, 0.0f, -1.0f);
-        float dot = glm::dot(forward, glm::vec3(direction.x, 0.0f, direction.z));
-        float angle = glm::acos(glm::clamp(dot, -1.0f, 1.0f));
-
-        // rotation axis (cross product of forward and direction vectors)
-        glm::vec3 axis = glm::cross(forward, glm::vec3(direction.x, 0.0f, direction.z));
-        if (glm::length(axis) < 1e-6) {
-            axis = glm::vec3(0.0f, 1.0f, 0.0f); // go to Y-axis if vectors are nearly collinear
-        }
-        model = glm::rotate(glm::mat4(1.0f), angle, axis);
-    }
     float speed = 3.0f*100000;
 
     void handleInputs(float deltaTime) {
         // Movement directions for top-down perspective
         glm::vec3 forward = glm::vec3(0.0f, 0.0f, 1.0f); // Forward (positive Z)
         glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);
-        glm::vec3 movementRotate = glm::vec3(.0f, 1.f, .0f);
         bool keyPressed = false;
         // Check key inputs for movement (WASD or Arrow keys)
         if (ImGui::IsKeyPressed(ImGuiKey_UpArrow)) {
@@ -214,8 +205,6 @@ public:
 
         }
     }
-
-
 
     const char* currentDataPath;
     const char* currentTexturePath;

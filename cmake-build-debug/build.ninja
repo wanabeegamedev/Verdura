@@ -256,6 +256,13 @@ build CMakeFiles/Verdura.dir/Game/Game/GameImpl.cpp.o: CXX_COMPILER__Verdura_uns
   OBJECT_DIR = CMakeFiles/Verdura.dir
   OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game/Game
 
+build CMakeFiles/Verdura.dir/Game/Character/Hero.cpp.o: CXX_COMPILER__Verdura_unscanned_Debug /home/hous/CLionProjects/Verdura/Game/Character/Hero.cpp || cmake_object_order_depends_target_Verdura
+  DEP_FILE = CMakeFiles/Verdura.dir/Game/Character/Hero.cpp.o.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -I/home/hous/CLionProjects/Verdura/inc -I/home/hous/CLionProjects/Verdura/imgui -I/home/hous/CLionProjects/Verdura/imgui/backends -I/home/hous/CLionProjects/Verdura/dependencies_code
+  OBJECT_DIR = CMakeFiles/Verdura.dir
+  OBJECT_FILE_DIR = CMakeFiles/Verdura.dir/Game/Character
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Verdura
@@ -264,7 +271,7 @@ build CMakeFiles/Verdura.dir/Game/Game/GameImpl.cpp.o: CXX_COMPILER__Verdura_uns
 #############################################
 # Link the executable Verdura
 
-build Verdura: CXX_EXECUTABLE_LINKER__Verdura_Debug CMakeFiles/Verdura.dir/main.cpp.o CMakeFiles/Verdura.dir/dependencies_code/glad.c.o CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o CMakeFiles/Verdura.dir/Game/Character/Leveling.cpp.o CMakeFiles/Verdura.dir/Game/Character/Character.cpp.o CMakeFiles/Verdura.dir/Game/Inventory/Inventory.cpp.o CMakeFiles/Verdura.dir/Game/Character/Enemy.cpp.o CMakeFiles/Verdura.dir/Game/UI/GameUI.cpp.o CMakeFiles/Verdura.dir/Game/Inventory/Shop.cpp.o CMakeFiles/Verdura.dir/Game/Inventory/Item.cpp.o CMakeFiles/Verdura.dir/Game/Ability/Ability.cpp.o CMakeFiles/Verdura.dir/Game/Ability/Attack.cpp.o CMakeFiles/Verdura.dir/Game/Character/CharacterMovement.cpp.o CMakeFiles/Verdura.dir/Game/Character/Stats.cpp.o CMakeFiles/Verdura.dir/Game/Ability/DefenseStrategy.cpp.o CMakeFiles/Verdura.dir/Game/Ability/RetourALEnvoyeurStrategy.cpp.o CMakeFiles/Verdura.dir/Game/Ability/BouclierStrategy.cpp.o CMakeFiles/Verdura.dir/Game/Character/DamageManager.cpp.o CMakeFiles/Verdura.dir/Game/Game/GameImpl.cpp.o | libimgui.a /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so || libimgui.a
+build Verdura: CXX_EXECUTABLE_LINKER__Verdura_Debug CMakeFiles/Verdura.dir/main.cpp.o CMakeFiles/Verdura.dir/dependencies_code/glad.c.o CMakeFiles/Verdura.dir/dependencies_code/stb.cpp.o CMakeFiles/Verdura.dir/Game/Character/Leveling.cpp.o CMakeFiles/Verdura.dir/Game/Character/Character.cpp.o CMakeFiles/Verdura.dir/Game/Inventory/Inventory.cpp.o CMakeFiles/Verdura.dir/Game/Character/Enemy.cpp.o CMakeFiles/Verdura.dir/Game/UI/GameUI.cpp.o CMakeFiles/Verdura.dir/Game/Inventory/Shop.cpp.o CMakeFiles/Verdura.dir/Game/Inventory/Item.cpp.o CMakeFiles/Verdura.dir/Game/Ability/Ability.cpp.o CMakeFiles/Verdura.dir/Game/Ability/Attack.cpp.o CMakeFiles/Verdura.dir/Game/Character/CharacterMovement.cpp.o CMakeFiles/Verdura.dir/Game/Character/Stats.cpp.o CMakeFiles/Verdura.dir/Game/Ability/DefenseStrategy.cpp.o CMakeFiles/Verdura.dir/Game/Ability/RetourALEnvoyeurStrategy.cpp.o CMakeFiles/Verdura.dir/Game/Ability/BouclierStrategy.cpp.o CMakeFiles/Verdura.dir/Game/Character/DamageManager.cpp.o CMakeFiles/Verdura.dir/Game/Game/GameImpl.cpp.o CMakeFiles/Verdura.dir/Game/Character/Hero.cpp.o | libimgui.a /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so || libimgui.a
   FLAGS = -g
   LINK_LIBRARIES = -Wl,-rpath,/home/hous/CLionProjects/Verdura/lib  libimgui.a  -lglfw  /usr/lib/x86_64-linux-gnu/libOpenGL.so  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libGLU.so  -lSDL2_mixer  -lSDL2
   LINK_PATH = -L/home/hous/CLionProjects/Verdura/lib

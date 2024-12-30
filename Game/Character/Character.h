@@ -13,9 +13,7 @@
 class Character{
 public:
     OBJMesh characterMesh;
-    std::string name;
-    // TODO Movement
-    Stats stats;
+
     Character();
 };
 
