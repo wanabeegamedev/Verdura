@@ -1,7 +1,6 @@
 
 //NOTE IMPORTANT
 /**
- * Copied from
  * https://github.com/ocornut/imgui/wiki/Image-Loading-and-Displaying-Examples#example-for-opengl-users
  * Credits DearImGui by Omar Cornut
  */

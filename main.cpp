@@ -39,6 +39,7 @@
 #include "Engine/Shader/program.h"
 #include "Engine/Shader/shader.h"
 #include "Engine/Sound/SoundManager.h"
+#include "Game/Character/Hero.h"
 #include "Game/UI/GameUI.h"
 
 
@@ -172,6 +173,11 @@ int main(int, char**)
     ParticleManager particleManager{};
     particleManager.prepareObjectPool(particleFire);
     GameUI gameUI{};
+
+    Stats stats;
+    Inventory inventory;
+    Hero hero1(mesh2,stats,inventory,"Le Héros");
+
     glEnable(GL_DEPTH_TEST); //  depth testing
     glfwSwapInterval(1); // V-SYNC
     glEnable(GL_BLEND);
@@ -262,7 +268,7 @@ int main(int, char**)
         lastFrame = glfwGetTime();
         deltaTime = glfwGetTime() - lastFrame;
         
-        mesh2.handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
+        hero1.characterMesh.handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
         //mesh2.handleInputs(camera.camera_front(),camera.camera_right(),deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
 
         camera.handleInputs(deltaTime);
@@ -272,24 +278,22 @@ int main(int, char**)
         camera.update();
 
         // If GameState == UI_INTERRUPT // Render but not update
-        mesh.Render(camera,deltaTime);
-        mesh2.Render(camera,deltaTime);
+        //mesh.Render(camera,deltaTime);
+        //mesh2.Render(camera,deltaTime);
+        renderer.renderMeshOBJ(mesh,deltaTime);
+        renderer.renderMeshOBJ(hero1.characterMesh,deltaTime);
 
-        glm::vec4 meshClipSpacePos = camera.projectionMatrix * camera.viewMatrix * mesh2.model * glm::vec4(mesh2.position, 1.0f);
-        glm::mat4 inversePV = glm::inverse(camera.projectionMatrix * camera.viewMatrix);
-        glm::vec4 worldPosition = inversePV * meshClipSpacePos;
-        //worldPosition /= worldPosition.w;
 
         if (ImGui::IsKeyPressed(ImGuiKey_M,false)) {
-            particleManager.releaseFromObjectPool(mesh2.position,mesh2.facingDirection);
-            std::cout << "Position: (" << mesh2.position.x << ", " << mesh2.position.y << ", " << mesh2.position.z << ")\n";
+            particleManager.releaseFromObjectPool(hero1.characterMesh.position,hero1.characterMesh.facingDirection);
+            //std::cout << "Position: (" << mesh2.position.x << ", " << mesh2.position.y << ", " << mesh2.position.z << ")\n";
 
         }
 
         //particleFire.update(deltaTime);
         //particleFire.renderParticle(&programFire,deltaTime);
         particleManager.update(deltaTime);
-        particleManager.renderParticles(deltaTime,camera);
+        renderer.renderParticles(deltaTime,particleManager);
 
 
         glBindVertexArray(0);

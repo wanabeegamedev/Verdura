@@ -15,7 +15,7 @@ public:
     int currentMana{};
 
     // The unique subscriber is the Leveling Class
-    //    void notifyLeveling(VEvent event);
+    //    void notifyLeveling(Event event);
 
 
 };

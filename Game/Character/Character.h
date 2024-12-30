@@ -13,8 +13,9 @@
 class Character{
 public:
     OBJMesh characterMesh;
-
-    Character();
+    Character(): characterMesh(nullptr) {
+    }
+    ;
 };
 
 

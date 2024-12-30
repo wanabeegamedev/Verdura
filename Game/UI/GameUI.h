@@ -16,7 +16,7 @@ class GameUI {
 public:
     GameUI() = default;
     std::string text = "Hello UI";
-    bool show_welcome = false;
+    bool show_welcome = true;
     bool show_help = false;
     bool show_info_log = true;
     bool show_quit = false;

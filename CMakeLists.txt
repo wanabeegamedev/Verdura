@@ -92,7 +92,6 @@ add_executable(
         Game/Character/DamageManager.h
         Game/UI/GameUI.h
         Game/UI/GameUI.cpp
-        Engine/ParticleEffect/ParticleMovement.h
         Engine/Physics/Movement.h
         Game/Game/GameImpl.cpp
         Game/Game/GameImpl.h
@@ -102,6 +101,8 @@ add_executable(
         Game/Character/Hero.cpp
         Game/Character/Hero.h
         dependencies_code/imgui_image_loader_opengl.h
+        Game/Events/SoundRequestEvent.h
+        Game/Events/UIInterruptEvent.h
 
 )
 

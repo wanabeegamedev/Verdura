@@ -12,12 +12,14 @@ class Hero:public Character{
     public:
 
     //TODO std::vector<WarriorClass> HeroClasses
-    Hero();
+    Hero(OBJMesh& _characterMesh,Stats& _stats, Inventory& _inventory,
+        const std::string& _name);
     ~Hero();
     std::string name;
     Stats stats;
     Inventory inventory;
 };
+
 
 
 

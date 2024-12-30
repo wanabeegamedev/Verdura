@@ -26,7 +26,6 @@ public:
         // car pour les membres de la base class j'ai appelé le constructeur
     }
     glm::vec3 position;
-
     int facingDirection{};
     int newFacingDirection{};
     float rotationAngle{};

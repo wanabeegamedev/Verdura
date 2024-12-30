@@ -36,11 +36,10 @@ class Particle {
 public:
     GLuint VAO{}, VBO{}, EBO{},texture{};
     Program * program;
-    //Movement* movement;// TODO get position, direction & more
     std::string pathToFile;
     void update(double);//move up a little bit, also at every update the billboard follow its mesh(the burning character)
     void load(); // load the billboard, png, Used Once for every type of particle
-    void renderParticle(const Camera &camera) const ;
+
     float lifetime; // particle set to inactive if lifetime hit 0
     glm::vec3 position{}; // initialize to mesh.position() which is the position of the mesh
     float velocity{10.0f}; // particle speed
@@ -61,7 +60,6 @@ public:
     }
     Particle(const std::string& _path,float _lifetime, glm::vec3 _position,
     int _facingDirection,Program * _program);
-    bool checkCollision(const glm::vec3& point) const;
 };
 
 class ParticleManager {
@@ -71,15 +69,12 @@ class ParticleManager {
     void particleFromPrototype(const Particle& original, glm::vec3 newPosition,
         int newFacingDirection);
     void add(Particle& particle);
-    void renderParticles(double deltaTime,const Camera& camera);
     void prepareObjectPool(Particle& particlePrototype);
     void releaseFromObjectPool(
         const glm::vec3& _position,
         int _facingDirection);
     void returnToObjectPool(Particle& particle);
 };
-
-
 inline void Particle::load() {
     int width, height, nrChannels;
     unsigned char* data = stbi_load(pathToFile.c_str(), &width, &height, &nrChannels, 0);
@@ -119,58 +114,12 @@ inline void Particle::load() {
     glBindVertexArray(0);
 
 }
-
-inline void Particle::renderParticle(
-    const Camera &camera) const {
-    if (!program) {
-        std::cerr << "Error: Shader program is null." << std::endl;
-        return;
-    }
-    program->bind();
-    int textureLocation = program->getUniformLocation("partTexture");
-    if (textureLocation == -1) {
-        std::cerr << "Error: Uniform 'partTexture' not found." << std::endl;
-        return;
-    }
-    program->setUniform1i("partTexture", 0);
-    program->setUniformMat4("model",model);
-    program->setUniformMat4("view",camera.viewMatrix);
-    program->setUniformMat4("projection",camera.projectionMatrix);
-    //program->setUniform1f("uTime", deltaTime);
-    if (!glIsTexture(texture)) {
-        std::cerr << "Error: Invalid texture ID." << std::endl;
-        return;
-    }
-    glBindTexture(GL_TEXTURE_2D, texture);
-    if (!glIsVertexArray(VAO)) {
-        std::cerr << "Error: Invalid VAO ID." << std::endl;
-        return;
-    }
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-}
-
-
 inline void Particle::update(double deltaTime)
 {
     position += glm::normalize(movementDirection) * velocity *(float)deltaTime*100000.0f;
     model  = glm::mat4(1.0f);
-    //scale(glm::vec3(1.7f));//  POUR LES 64px x 64px; TODO A parametriser
-    //position.y = 7.f;
     model = glm::translate(model, position);
-
-
-    // TODO Move to Damage Manager
-    if (checkCollision(glm::vec3(-8.f,0.f,0.f))) {
-        std::cout << "Touché" << std::endl;
-        isActive = false;
-        //Jouer un son, HitEvent
-    }
-
-    //    std::cout << position.x << " " << position.y << " " << position.z << std::endl;
 }
-
 inline Particle::Particle(
     const std::string& _path,float _lifetime,
     const glm::vec3 _position,
@@ -201,7 +150,6 @@ inline Particle::Particle(
     //rotate(glm::radians(90.0f*(float)(_facingDirection-1)), glm::vec3(0.0f, 1.0f, 0.0f));
     //std::cout << movementDirection.x << " " << movementDirection.y << " "<<movementDirection.z<< " " <<std::endl;
 }
-
 inline void ParticleManager::particleFromPrototype(const Particle& original,
     glm::vec3 newPosition, int newFacingDirection)
 {
@@ -215,19 +163,13 @@ inline void ParticleManager::particleFromPrototype(const Particle& original,
 inline void ParticleManager::add(Particle &particle) {
     particlesObjectPool.push_back(particle);
 }
-
 inline void ParticleManager::update(double deltaTime) {
     for (Particle& particle : particlesObjectPool) {
         if (particle.isActive)
             particle.update(deltaTime);
     }
 }
-inline void ParticleManager::renderParticles(double deltaTime,const Camera& camera) {
-    for (Particle& particle : particlesObjectPool) {
-        if (particle.isActive)
-            particle.renderParticle(camera);
-    }
-}
+
 inline void ParticleManager::prepareObjectPool(Particle &particlePrototype) {
     int size = MAX_NB_PARTICLES;
     add(particlePrototype);
@@ -238,37 +180,6 @@ inline void ParticleManager::prepareObjectPool(Particle &particlePrototype) {
         size--;
     }
 }
-/*
-inline void ParticleManager::releaseFromObjectPool(const glm::vec3& _position,
-    int _facingDirection) {
-    for (Particle& particle : particlesObjectPool)
-        {
-        if (!particle.isActive) {
-            particle.facingDirection = _facingDirection;
-            particle.position = _position;
-            particle.model = glm::translate(glm::mat4(1.0f), _position);
-            //particle.model = (glm::mat4(1.0f));
-            switch (_facingDirection) {
-                case 0 :
-                    particle.movementDirection = glm::vec3(0.0f,-0.01f,0.0f);
-                    break;
-                case 1 :
-                    particle.movementDirection = glm::vec3(0.01f,0.0f,0.0f);
-                    break;
-                case 2 :
-                    particle.movementDirection = glm::vec3(0.0f,0.01f,0.0f);
-                    break;
-                case 3 :
-                    particle.movementDirection = glm::vec3(-0.01f,0.0f,0.0f);
-                    break;
-                default: ;
-            }
-            particle.isActive = true;
-            break;
-        }
-    }
-}
-*/
 inline void ParticleManager::releaseFromObjectPool(const glm::vec3& _position,
     const int _facingDirection) {
     for (Particle& particle : particlesObjectPool)
@@ -311,12 +222,8 @@ inline void ParticleManager::releaseFromObjectPool(const glm::vec3& _position,
         }
     }
 }
-
 inline void ParticleManager::returnToObjectPool(Particle &particle) {
 }
-inline bool Particle::checkCollision(const glm::vec3 &point) const {
-    float collisionRadius = 0.3f; //Pour toutes les particules
-    return glm::distance(point, position) < collisionRadius;
-}
+
 
 #endif //PARTICLEMANAGER_H

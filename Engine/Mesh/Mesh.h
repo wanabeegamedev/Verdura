@@ -13,7 +13,8 @@ enum MeshType {
 };
 class Mesh
 {
-protected:
+public:
+
     GLuint VAO{}, VBO{}, EBO{};
     unsigned long indicesCount{};
     GLuint currentTextureID{};
@@ -21,7 +22,6 @@ protected:
     std::map<std::string, GLuint> MeshTextures ;
     std::map<std::string, Program*> MeshPrograms ;
 
-public:
 
     Mesh()= default;
     MeshType meshType{};

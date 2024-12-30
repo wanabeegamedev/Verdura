@@ -8,14 +8,15 @@
 
 #include "Inventory.h"
 #include "Item.h"
-#include "../Character/Character.h"
+#include "../Character/Hero.h"
 
 
 class Shop: public Inventory {
 public:
     Shop();
     ~Shop();
-    void sellItem(Item item,Character& character);
+    void sellItem(Item item,Hero& hero);
+    void buyItem(Item item,Hero& hero);
 };
 
 
