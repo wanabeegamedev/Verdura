@@ -14,12 +14,12 @@ Hero::Hero(OBJMesh& _characterMesh,Stats& _stats, Inventory& _inventory,
         //TODO seed HeroClasses
 }
 
-void Hero::attackSuccessful() override
+void Hero::attackSuccessful()
 {
         stats.currentExp+=ATTACK_XP_INCREASE;
         //Toutes les attaques donnent le meme xp
 }
-void Hero::attackReceived(float damage) override
+void Hero::attackReceived(float damage)
 {
         stats.currentHp -= damage;
 }

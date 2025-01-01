@@ -32,6 +32,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Engine/Camera/Camera.h"
+#include "Engine/Events/EventManager.h"
 #include "Engine/Mesh/MeshLoader.h"
 #include "Engine/Mesh/OBJMesh.h"
 #include "Engine/ParticleEffect/ParticleManager.h"
@@ -41,6 +42,7 @@
 #include "Engine/Sound/SoundManager.h"
 #include "Game/Character/DamageManager.h"
 #include "Game/Character/Hero.h"
+#include "Game/Events/HitEvent.h"
 #include "Game/UI/GameUI.h"
 
 
@@ -183,6 +185,7 @@ int main(int, char**)
     Inventory inventory;
     Hero hero1(mesh2,stats,inventory,"Le Héros");
     DamageManager damageManager;
+    EventManager eventManager;
 
     glEnable(GL_DEPTH_TEST); //  depth testing
     glfwSwapInterval(1); // V-SYNC
@@ -313,9 +316,12 @@ int main(int, char**)
                 {
                     particle.isActive = false;
                     soundManager.playSound("pain1");
+                    eventManager.addEvent(std::make_unique<HitEvent>(hero1, hero1, soundManager));
+
+
                 }
         renderer.renderParticles(particleManager);
-
+        eventManager.handleEvents();
 
         glBindVertexArray(0);
         glfwSwapBuffers(window);

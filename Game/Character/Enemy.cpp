@@ -3,10 +3,10 @@
 //
 
 #include "Enemy.h"
-void Enemy::attackSuccessful() override
+void Enemy::attackSuccessful()
 {
 }
-void Enemy::attackReceived(float damage) override
+void Enemy::attackReceived(float damage)
 {
    currentHp-=damage;
 }
