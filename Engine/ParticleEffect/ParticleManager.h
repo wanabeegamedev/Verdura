@@ -147,8 +147,6 @@ inline Particle::Particle(
         default:
             movementDirection = glm::vec3(0.0f); // Default to stationary
     }
-    //rotate(glm::radians(90.0f*(float)(_facingDirection-1)), glm::vec3(0.0f, 1.0f, 0.0f));
-    //std::cout << movementDirection.x << " " << movementDirection.y << " "<<movementDirection.z<< " " <<std::endl;
 }
 inline void ParticleManager::particleFromPrototype(const Particle& original,
     glm::vec3 newPosition, int newFacingDirection)
@@ -157,7 +155,6 @@ inline void ParticleManager::particleFromPrototype(const Particle& original,
     newParticle.isActive = false;
     newParticle.position = newPosition;
     newParticle.facingDirection = newFacingDirection;
-    ///newParticle.model = glm::translate(glm::mat4(1.0f), newPosition);
     particlesObjectPool.push_back(newParticle);
 }
 inline void ParticleManager::add(Particle &particle) {

@@ -4,7 +4,7 @@
 
 #ifndef USEORBUYITEMEVENT_H
 #define USEORBUYITEMEVENT_H
-#include "../../Engine/Events/EventDispatcher.h"
+#include "../../Engine/Events/EventManager.h"
 #include "../Inventory/Item.h"
 
 class UseOrBuyItemEvent:public Event{

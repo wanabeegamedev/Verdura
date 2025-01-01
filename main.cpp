@@ -39,6 +39,7 @@
 #include "Engine/Shader/program.h"
 #include "Engine/Shader/shader.h"
 #include "Engine/Sound/SoundManager.h"
+#include "Game/Character/DamageManager.h"
 #include "Game/Character/Hero.h"
 #include "Game/UI/GameUI.h"
 
@@ -47,7 +48,6 @@ static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
-
 
 // Map dimensions
 const float mapWidth = 2000.0f, mapHeight = 720.0f;
@@ -122,6 +122,7 @@ int main(int, char**)
     // After Initialization of glew and glfw
 
     MeshLoader loader;
+
     OBJMesh mesh("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/Mage.obj");
     mesh.set_current_texture_path("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/mage_texture.png");
     mesh.set_position(glm::vec3(-8,.0f,.0f));//TODO utiliser à la création de la mesh
@@ -154,10 +155,14 @@ int main(int, char**)
 
 
     SoundManager soundManager;
-    soundManager.loadSound("sound1", "/home/hous/CLionProjects/Verdura/Engine/Sound/mixkit-arcade-retro-game-over-213.wav");
-    soundManager.playSound("sound1");
+    soundManager.loadSound("gameStart", "/home/hous/CLionProjects/Verdura/Engine/Sound/gamestart-272829.mp3");
+    //soundManager.playSound("gameStart");
+    soundManager.loadSound("fireSound", "/home/hous/CLionProjects/Verdura/Engine/Sound/8-bit-laser-151672.mp3");
+    soundManager.loadSound("pain1", "/home/hous/CLionProjects/Verdura/Engine/Sound/088436_hurt-1-82785.mp3");
+    soundManager.loadSound("music1", "/home/hous/CLionProjects/Verdura/Engine/Sound/8bit-music-for-game-68698.mp3");
+    //soundManager.playSound("music1");
 
-
+    soundManager.playSequential("gameStart","music1");
     Shader vShaderFire("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex_fire_ice_particle.txt",GL_VERTEX_SHADER);
     Shader fShaderFire("/home/hous/CLionProjects/Verdura/Game/Shaders/fragment_fire_ice_particle.txt",GL_FRAGMENT_SHADER);
     Program programFire(vShaderFire.shader_id(),fShaderFire.shader_id());
@@ -177,6 +182,7 @@ int main(int, char**)
     Stats stats;
     Inventory inventory;
     Hero hero1(mesh2,stats,inventory,"Le Héros");
+    DamageManager damageManager;
 
     glEnable(GL_DEPTH_TEST); //  depth testing
     glfwSwapInterval(1); // V-SYNC
@@ -284,16 +290,31 @@ int main(int, char**)
         renderer.renderMeshOBJ(hero1.characterMesh,deltaTime);
 
 
-        if (ImGui::IsKeyPressed(ImGuiKey_M,false)) {
+        if (ImGui::IsKeyPressed(ImGuiKey_M,false))
+        {
             particleManager.releaseFromObjectPool(hero1.characterMesh.position,hero1.characterMesh.facingDirection);
+            soundManager.playSound("fireSound");//TODO Travail de la classe Attack, Qui a besoin d'un soundManager
             //std::cout << "Position: (" << mesh2.position.x << ", " << mesh2.position.y << ", " << mesh2.position.z << ")\n";
-
         }
 
         //particleFire.update(deltaTime);
         //particleFire.renderParticle(&programFire,deltaTime);
+
+        //TODO Travail de la class DamageManager; qui va le faire sur Attack
+        // puis lancer le HitEvent avec le soundManager et la position de la
+        // particule
+
+
         particleManager.update(deltaTime);
-        renderer.renderParticles(deltaTime,particleManager);
+        //Sans la ref c'est une copie
+        for (Particle& particle :particleManager.particlesObjectPool)
+            if (particle.isActive)
+                if (damageManager.checkCollision(particle.position,mesh.position))
+                {
+                    particle.isActive = false;
+                    soundManager.playSound("pain1");
+                }
+        renderer.renderParticles(particleManager);
 
 
         glBindVertexArray(0);

@@ -65,7 +65,7 @@ class Renderer {
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
     }
-     void renderParticles (double deltaTime,ParticleManager& particleManager) const {
+     void renderParticles (ParticleManager& particleManager) const {
         for (Particle& particle : particleManager.particlesObjectPool) {
             if (particle.isActive)
                 renderParticle(particle);
