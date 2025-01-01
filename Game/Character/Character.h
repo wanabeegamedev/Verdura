@@ -17,8 +17,10 @@ public:
     OBJMesh characterMesh;
     Character(): characterMesh(nullptr) {
     }
+
     virtual void attackSuccessful();
-    virtual void attackReceived();
+    virtual void attackReceived(float);
+
 };
 
 

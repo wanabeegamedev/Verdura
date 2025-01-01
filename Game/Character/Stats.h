@@ -10,14 +10,9 @@
 class Stats {
 public:
     int currentExp{};
-    int currentHp{};
+    float currentHp{};
     int currentCoins{};
     int currentMana{};
-
-    // The unique subscriber is the Leveling Class
-    //    void notifyLeveling(Event event);
-
-
 };
 
 

@@ -5,11 +5,17 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 #include "Character.h"
+#include "../Ability/Attack.h"
 
 
-class Enemy :public Character
+class Enemy  :public Character
 {
+public:
+    float currentHp{};
+    Attack attack;
 
+    void attackSuccessful() override;
+    void attackReceived(float damage) override;
 };
 
 

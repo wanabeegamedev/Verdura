@@ -14,6 +14,10 @@ class Hero:public Character{
     //TODO std::vector<WarriorClass> HeroClasses
     Hero(OBJMesh& _characterMesh,Stats& _stats, Inventory& _inventory,
         const std::string& _name);
+
+    void attackSuccessful() override;
+    void attackReceived(float damage) override;
+
     ~Hero();
     std::string name;
     Stats stats;
