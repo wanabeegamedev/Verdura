@@ -19,16 +19,18 @@ class Attack : public Ability {
         float attackDuration;
         Program* program;// TODO Specifier que jai utiliser les pointeurs avant de comprendre les ref et que quand j'ai compris j'ai arreté
         Character& Owner;
-        Attack(Character& _Owner, const std::string& ParticlePath,double _damagePoints,
-        float _attackDuration,Program* _program);
+        Attack(Character& _owner, const std::string& ParticlePath,double _damagePoints,
+        float _attackDuration,Program* _program);//_Owner est un identifiant reservé
 };
 
-inline Attack::Attack(Character& _Owner,
+inline Attack::Attack(Character& _owner,
                       const std::string &ParticlePath,
-                      const double _damagePoints,float _attackDuration,Program* _program): Ability(),
-                                                                                           particlePrototype(Particle(particlePath, attackDuration,Owner.characterMesh.position,
-                                                                                                                      Owner.characterMesh.facingDirection,program)),
-                                                                                           Owner(_Owner)
+                      const double _damagePoints,float _attackDuration,
+                      Program* _program):
+Ability(),
+particlePrototype(Particle(particlePath, attackDuration,Owner.characterMesh.position,
+                          Owner.characterMesh.facingDirection,program)),
+Owner(_owner)
 {
     particlePath = ParticlePath;
     damagePoints = _damagePoints;

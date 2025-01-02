@@ -12,15 +12,15 @@
 
 class Character{
 public:
-    virtual ~Character() = default;
+
 
     OBJMesh characterMesh;
     Character(): characterMesh(nullptr) {
     }
+    virtual void attackSuccessful() = 0;
+    virtual void attackReceived(float) = 0;
 
-    virtual void attackSuccessful();
-    virtual void attackReceived(float);
-
+    virtual ~Character() = default;
 };
 
 

@@ -41,6 +41,7 @@
 #include "Engine/Shader/shader.h"
 #include "Engine/Sound/SoundManager.h"
 #include "Game/Character/DamageManager.h"
+#include "Game/Character/Enemy.h"
 #include "Game/Character/Hero.h"
 #include "Game/Events/HitEvent.h"
 #include "Game/UI/GameUI.h"
@@ -184,6 +185,7 @@ int main(int, char**)
     Stats stats;
     Inventory inventory;
     Hero hero1(mesh2,stats,inventory,"Le Héros");
+    Enemy enemy1(mesh);
     DamageManager damageManager;
     EventManager eventManager;
 
@@ -280,6 +282,7 @@ int main(int, char**)
         hero1.characterMesh.handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
         //mesh2.handleInputs(camera.camera_front(),camera.camera_right(),deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
 
+        enemy1.alignToHero(hero1.characterMesh.position);
         camera.handleInputs(deltaTime);
 
 
@@ -307,7 +310,6 @@ int main(int, char**)
         // puis lancer le HitEvent avec le soundManager et la position de la
         // particule
 
-
         particleManager.update(deltaTime);
         //Sans la ref c'est une copie
         for (Particle& particle :particleManager.particlesObjectPool)
@@ -316,9 +318,7 @@ int main(int, char**)
                 {
                     particle.isActive = false;
                     soundManager.playSound("pain1");
-                    eventManager.addEvent(std::make_unique<HitEvent>(hero1, hero1, soundManager));
-
-
+                    eventManager.addEvent(std::make_unique<HitEvent>(hero1, enemy1, soundManager));
                 }
         renderer.renderParticles(particleManager);
         eventManager.handleEvents();

@@ -13,14 +13,13 @@
 enum GameState {PLAYING, UI_INTERRUPT};
 class Game {
     public:
-        //std::vector<Playable> playables;
     //J'utilise des Pointeurs pour pouvoir delete
         GameUI* gameUI{};
         GameState state{};
         Renderer* renderer{};
 
     Game();
-    virtual ~Game();
+    virtual ~Game();// TODO :  JE SUIS FICHU
 
 };
 

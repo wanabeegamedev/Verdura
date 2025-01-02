@@ -11,7 +11,7 @@ Hero::Hero(OBJMesh& _characterMesh,Stats& _stats, Inventory& _inventory,
         stats = _stats;
         inventory = _inventory;
         name = _name;
-        //TODO seed HeroClasses
+        //TODO seed WarriorClasses
 }
 
 void Hero::attackSuccessful()

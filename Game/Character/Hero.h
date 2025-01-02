@@ -18,10 +18,11 @@ class Hero:public Character{
     void attackSuccessful() override;
     void attackReceived(float damage) override;
 
-    ~Hero();
+    ~Hero() override;
     std::string name;
     Stats stats;
     Inventory inventory;
+
 };
 
 
