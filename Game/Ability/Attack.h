@@ -28,8 +28,8 @@ inline Attack::Attack(Character& _owner,
                       const double _damagePoints,float _attackDuration,
                       Program* _program):
 Ability(),
-particlePrototype(Particle(particlePath, attackDuration,Owner.characterMesh.position,
-                          Owner.characterMesh.facingDirection,program)),
+particlePrototype(Particle(particlePath, attackDuration,Owner.characterMesh->position,
+                          Owner.characterMesh->facingDirection,program)),
 Owner(_owner)
 {
     particlePath = ParticlePath;

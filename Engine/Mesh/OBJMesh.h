@@ -151,7 +151,7 @@ public:
     }
     void translate(const glm::vec3& translation) {
         position += translation;
-        model = glm::translate(glm::mat4(1.0f), position); // Update the model matrix
+        model = glm::translate(glm::mat4(1.0f), position);
     }
 
     void rotate(float angleRadians, const glm::vec3& axis) {
@@ -165,28 +165,27 @@ public:
     float speed = 3.0f*100000;
 
     void handleInputs(float deltaTime) {
-        // Movement directions for top-down perspective
-        glm::vec3 forward = glm::vec3(0.0f, 0.0f, 1.0f); // Forward (positive Z)
+        glm::vec3 forward = glm::vec3(0.0f, 0.0f, 1.0f); //  Z+
         glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);
         bool keyPressed = false;
-        // Check key inputs for movement (WASD or Arrow keys)
         if (ImGui::IsKeyPressed(ImGuiKey_UpArrow)) {
-            movementDirection = forward*-1.0f; // Move forward (along the Z-axis)
+            movementDirection = forward*-1.0f;
             newFacingDirection  = 2;
             keyPressed = true;
         }
         else if (ImGui::IsKeyPressed(ImGuiKey_DownArrow)) {
-            movementDirection = forward; // Move backward (along the Z-axis)
+            movementDirection = forward;
             newFacingDirection  = 0;
             keyPressed = true;
         }
+        // X
         else if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow)) {
-            movementDirection = right*-1.0f; // Move left (along the X-axis)
+            movementDirection = right*-1.0f;
             newFacingDirection  = 3;
             keyPressed = true;
         }
         else if (ImGui::IsKeyPressed(ImGuiKey_RightArrow)) {
-            movementDirection = right; // Move right (along the X-axis)
+            movementDirection = right;
             newFacingDirection  = 1;
             keyPressed = true;
         }

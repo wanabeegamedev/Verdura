@@ -14,7 +14,7 @@ class Character{
 public:
 
 
-    OBJMesh characterMesh;
+    OBJMesh* characterMesh;
     Character(): characterMesh(nullptr) {
     }
     virtual void attackSuccessful() = 0;

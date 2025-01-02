@@ -4,7 +4,7 @@
 
 #include "Enemy.h"
 #include <cassert>
-Enemy::Enemy(OBJMesh& _characterMesh) {
+Enemy::Enemy(OBJMesh* _characterMesh) {
    characterMesh = _characterMesh;
 }
 
@@ -20,8 +20,10 @@ void Enemy::attackReceived(float damage)
    currentHp-=damage;
 }
 
-void Enemy::alignToHero(const glm::vec3& heroPosition) {
-   glm::vec3 direction = heroPosition - characterMesh.position;
+void Enemy::alignToHero(const glm::vec3& heroPosition,float deltatime) {
+
+   glm::vec3 direction = heroPosition - characterMesh->position;
+   //std::cout<<"(" << direction.x << ", "<< direction.y << ", "<< direction.z << ")"<<std::endl;
    float absX = std::fabs(direction.x);
    float absZ = std::fabs(direction.z);
    glm::vec3 movementDirection(0.0f);
@@ -40,13 +42,13 @@ void Enemy::alignToHero(const glm::vec3& heroPosition) {
    //movementDirection = glm::normalize(movementDirection);
 
    float speed = 300000.f;
-   characterMesh.position += movementDirection * speed;
+   /*characterMesh.position += movementDirection * speed*deltatime;*/
 
-   characterMesh.model = glm::mat4(1.0f);
-   characterMesh.model = glm::translate(characterMesh.model, characterMesh.position);
-   characterMesh.rotate(glm::radians(90.0f * static_cast<float>(newFacingDirection)), movementRotate);
+   characterMesh->model = glm::mat4(1.0f);
+   characterMesh->model = glm::translate(characterMesh->model, characterMesh->position);
+   characterMesh->rotate(glm::radians(90.0f * static_cast<float>(newFacingDirection)), movementRotate);
 
-   characterMesh.facingDirection = newFacingDirection;
+   characterMesh->facingDirection = newFacingDirection;
 }
 
 Enemy::~Enemy()= default;

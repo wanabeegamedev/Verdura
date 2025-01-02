@@ -184,8 +184,8 @@ int main(int, char**)
 
     Stats stats;
     Inventory inventory;
-    Hero hero1(mesh2,stats,inventory,"Le Héros");
-    Enemy enemy1(mesh);
+    Hero hero1(&mesh2,stats,inventory,"Le Héros");
+    Enemy enemy1(&mesh);
     DamageManager damageManager;
     EventManager eventManager;
 
@@ -279,10 +279,10 @@ int main(int, char**)
         lastFrame = glfwGetTime();
         deltaTime = glfwGetTime() - lastFrame;
         
-        hero1.characterMesh.handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
+        hero1.characterMesh->handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
         //mesh2.handleInputs(camera.camera_front(),camera.camera_right(),deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
 
-        enemy1.alignToHero(hero1.characterMesh.position);
+        enemy1.alignToHero(hero1.characterMesh->position,deltaTime);
         camera.handleInputs(deltaTime);
 
 
@@ -293,12 +293,12 @@ int main(int, char**)
         //mesh.Render(camera,deltaTime);
         //mesh2.Render(camera,deltaTime);
         renderer.renderMeshOBJ(mesh,deltaTime);
-        renderer.renderMeshOBJ(hero1.characterMesh,deltaTime);
+        renderer.renderMeshOBJ(*hero1.characterMesh,deltaTime);
 
 
         if (ImGui::IsKeyPressed(ImGuiKey_M,false))
         {
-            particleManager.releaseFromObjectPool(hero1.characterMesh.position,hero1.characterMesh.facingDirection);
+            particleManager.releaseFromObjectPool(hero1.characterMesh->position,hero1.characterMesh->facingDirection);
             soundManager.playSound("fireSound");//TODO Travail de la classe Attack, Qui a besoin d'un soundManager
             //std::cout << "Position: (" << mesh2.position.x << ", " << mesh2.position.y << ", " << mesh2.position.z << ")\n";
         }

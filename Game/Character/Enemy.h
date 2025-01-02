@@ -21,8 +21,8 @@ public:
 
     void setAttack(Attack* _attack);
 
-    explicit Enemy(OBJMesh& _characterMesh);
-    void alignToHero(const glm::vec3& heroPosition);
+    explicit Enemy(OBJMesh* _characterMesh);
+    void alignToHero(const glm::vec3& heroPosition,float deltatime);
     ~Enemy() override;
 };
 

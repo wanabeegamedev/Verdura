@@ -12,7 +12,7 @@ class Hero:public Character{
     public:
 
     //TODO std::vector<WarriorClass> HeroClasses
-    Hero(OBJMesh& _characterMesh,Stats& _stats, Inventory& _inventory,
+    Hero(OBJMesh* _characterMesh,Stats& _stats, Inventory& _inventory,
         const std::string& _name);
 
     void attackSuccessful() override;
