@@ -13,13 +13,13 @@
 
 #include "../Camera/Camera.h"
 #include "../Engine/Shader/program.h"
+#include "../Sound/SoundManager.h"
 
 
-//#include "../Physics/Movement.h"
-
-#define MAX_NB_PARTICLES 100;
-#define LIFETIME 3.f;
-inline float vertices[] = {
+constexpr float PARTICLE_SPEED = 12.f; // Je la garde constante
+constexpr float MAX_NB_PARTICLES = 100;
+constexpr float LIFETIME = 3.f;
+inline constexpr float vertices[] = {
     // positions        // texture coords
     -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, //bas-gauche
      0.5f, -0.5f, 0.0f,  1.0f, 0.0f, // bas-droit
@@ -27,7 +27,7 @@ inline float vertices[] = {
     -0.5f,  0.5f, 0.0f,  0.0f, 1.0f
 };
 
-inline GLuint indices[] = {
+inline constexpr GLuint indices[] = {
     0, 1, 2,
     0, 2, 3
 };
@@ -37,12 +37,13 @@ public:
     GLuint VAO{}, VBO{}, EBO{},texture{};
     Program * program;
     std::string pathToFile;
+    std::string sound;
     void update(double);//move up a little bit, also at every update the billboard follow its mesh(the burning character)
     void load(); // load the billboard, png, Used Once for every type of particle
 
     float lifetime; // particle set to inactive if lifetime hit 0
     glm::vec3 position{}; // initialize to mesh.position() which is the position of the mesh
-    float velocity{10.0f}; // particle speed
+    float velocity{PARTICLE_SPEED}; // particle speed
     int facingDirection;
     bool isActive  = false;
     glm::mat4 model{}; // billboard never rotate, it always face camera
@@ -51,6 +52,7 @@ public:
         //position += translation;
         model = glm::translate(glm::mat4(1.0f), position); // Update the model matrix
     }
+    void setSound(std::string const& _sound);
     glm::vec3 movementDirection{};
     void scale(const glm::vec3& scaleFactor) {
         model = glm::scale(model, scaleFactor);
@@ -61,6 +63,9 @@ public:
     Particle(const std::string& _path,float _lifetime, glm::vec3 _position,
     int _facingDirection,Program * _program);
 };
+inline void Particle::setSound(std::string const& _sound) {
+    sound = _sound;
+}
 
 class ParticleManager {
     public:
@@ -72,7 +77,8 @@ class ParticleManager {
     void prepareObjectPool(Particle& particlePrototype);
     void releaseFromObjectPool(
         const glm::vec3& _position,
-        int _facingDirection);
+        int _facingDirection,
+        SoundManager&);
     void returnToObjectPool(Particle& particle);
 };
 inline void Particle::load() {
@@ -116,7 +122,7 @@ inline void Particle::load() {
 }
 inline void Particle::update(double deltaTime)
 {
-    position += glm::normalize(movementDirection) * velocity *(float)deltaTime*100000.0f;
+    position += glm::normalize(movementDirection) * velocity *(float)deltaTime;
     model  = glm::mat4(1.0f);
     model = glm::translate(model, position);
 }
@@ -129,6 +135,7 @@ inline Particle::Particle(
     program = _program;
     lifetime = _lifetime;
     position = _position;
+    sound ="";
     model = glm::mat4(1.0f);
     facingDirection = _facingDirection;
     switch (_facingDirection) {
@@ -178,7 +185,7 @@ inline void ParticleManager::prepareObjectPool(Particle &particlePrototype) {
     }
 }
 inline void ParticleManager::releaseFromObjectPool(const glm::vec3& _position,
-    const int _facingDirection) {
+    const int _facingDirection,SoundManager& soundManager) {
     for (Particle& particle : particlesObjectPool)
     {
         if (!particle.isActive) {
@@ -208,6 +215,11 @@ inline void ParticleManager::releaseFromObjectPool(const glm::vec3& _position,
             // Activate particle
             particle.isActive = true;
 
+            // TODO  Peut utiliser ParticleReleaseEvent sur SoundManager,
+            // Si le temps suffit
+            if (!particle.sound.empty())
+                soundManager.playSound(particle.sound);
+
             // Debug: Log particle properties
             /*std::cout << "Particle Released - Position: ("
                       << particle.position.x << ", "
@@ -215,6 +227,7 @@ inline void ParticleManager::releaseFromObjectPool(const glm::vec3& _position,
                       << particle.position.z << "), Facing: "
                       << _facingDirection << std::endl;*/
             //particle.renderParticle(1.0f);
+
             break;
         }
     }

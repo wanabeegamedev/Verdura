@@ -84,8 +84,8 @@ add_executable(
         Game/Ability/DefenseStrategy.h
         Game/Ability/RetourALEnvoyeurStrategy.cpp
         Game/Ability/RetourALEnvoyeurStrategy.h
-        Game/Ability/BouclierStrategy.cpp
-        Game/Ability/BouclierStrategy.h
+        Game/Ability/DamageReductionStrategy.cpp
+        Game/Ability/DamageReductionStrategy.h
         Engine/Sound/SoundManager.h
         Engine/ParticleEffect/ParticleManager.h
         Game/Character/DamageManager.cpp
@@ -103,6 +103,8 @@ add_executable(
         dependencies_code/imgui_image_loader_opengl.h
         Game/Events/SoundRequestEvent.h
         Game/Events/UIInterruptEvent.h
+        Game/Character/WarriorClass.cpp
+        Game/Character/WarriorClass.h
 
 )
 

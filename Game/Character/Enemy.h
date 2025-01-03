@@ -8,22 +8,26 @@
 #include "../Ability/Attack.h"
 #include <glm/glm.hpp>
 
+#include "WarriorClass.h"
+
 
 class Enemy  :public Character
 {
 public:
     float currentHp{};
-    Attack* attack{};
-
+    WarriorClass* warriorClass{};
+    float delayBetweenAttack{};
 
     void attackSuccessful() override;
     void attackReceived(float damage) override;
 
-    void setAttack(Attack* _attack);
+    void setClass(WarriorClass* _class);
 
     explicit Enemy(OBJMesh* _characterMesh);
-    void alignToHero(const glm::vec3& heroPosition,float deltatime);
+    void alignToHero(const glm::vec3& heroPosition);
+    void doAttack(float deltatime,SoundManager&);
     ~Enemy() override;
+
 };
 
 

@@ -8,19 +8,19 @@ Enemy::Enemy(OBJMesh* _characterMesh) {
    characterMesh = _characterMesh;
 }
 
-void Enemy::setAttack(Attack* _attack)
-{attack=_attack;}
+void Enemy::setClass(WarriorClass* _class)
+{warriorClass=_class;}
 void Enemy::attackSuccessful(){}
 void Enemy::attackReceived(float damage)
 {
    //assert(attack!=nullptr && "Enemy attack forgotten !");
    //TODO Deplacer dans make attack
-   /*if (attack == nullptr)
+   /*if (warriorClass == nullptr)
       throw std::runtime_error("Enemy attack forgotten!");*/
    currentHp-=damage;
 }
 
-void Enemy::alignToHero(const glm::vec3& heroPosition,float deltatime) {
+void Enemy::alignToHero(const glm::vec3& heroPosition) {
 
    glm::vec3 direction = heroPosition - characterMesh->position;
    //std::cout<<"(" << direction.x << ", "<< direction.y << ", "<< direction.z << ")"<<std::endl;
@@ -50,5 +50,8 @@ void Enemy::alignToHero(const glm::vec3& heroPosition,float deltatime) {
 
    characterMesh->facingDirection = newFacingDirection;
 }
-
+void Enemy::doAttack(float deltatime,SoundManager& soundManager) {
+   warriorClass->doAttack(deltatime,characterMesh->position,
+      characterMesh->facingDirection,soundManager);
+}
 Enemy::~Enemy()= default;

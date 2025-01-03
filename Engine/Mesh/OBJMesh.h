@@ -162,7 +162,7 @@ public:
         model = glm::scale(model, scaleFactor);
     }
 
-    float speed = 3.0f*100000;
+    float speed = 10.0f*1;
 
     void handleInputs(float deltaTime) {
         glm::vec3 forward = glm::vec3(0.0f, 0.0f, 1.0f); //  Z+

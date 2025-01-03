@@ -5,13 +5,14 @@
 #ifndef HERO_H
 #define HERO_H
 #include "Character.h"
+#include "WarriorClass.h"
 #include "../Inventory/Inventory.h"
 
 
 class Hero:public Character{
     public:
 
-    //TODO std::vector<WarriorClass> HeroClasses
+    std::vector<WarriorClass> HeroClasses;
     Hero(OBJMesh* _characterMesh,Stats& _stats, Inventory& _inventory,
         const std::string& _name);
 

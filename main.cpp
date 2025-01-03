@@ -90,7 +90,7 @@ int main(int, char**)
 #endif
 
     Renderer renderer;
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL3 example", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "Verdura RPG", nullptr, nullptr);
 
     glfwMakeContextCurrent(window);
     //glfwSetMouseButtonCallback(window, mouseCallback);
@@ -185,7 +185,20 @@ int main(int, char**)
     Stats stats;
     Inventory inventory;
     Hero hero1(&mesh2,stats,inventory,"Le Héros");
+
+
     Enemy enemy1(&mesh);
+    Attack attack(enemy1.characterMesh->position,
+        enemy1.characterMesh->facingDirection,
+        "/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/fireball.png",
+        10.0f,3.0f,&programFire);
+    DefenseStrategy defenseStrategy;
+    float fireDelayBase = 1.0f;
+    WarriorClass warriorClass(&attack,&defenseStrategy,fireDelayBase);
+    enemy1.setClass(&warriorClass);
+
+
+
     DamageManager damageManager;
     EventManager eventManager;
 
@@ -276,13 +289,18 @@ int main(int, char**)
         // opengl render ici, when DearImGUI is done
 
         // RENDERER TAKE OVER
-        lastFrame = glfwGetTime();
-        deltaTime = glfwGetTime() - lastFrame;
+        double currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+
         
         hero1.characterMesh->handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
         //mesh2.handleInputs(camera.camera_front(),camera.camera_right(),deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
 
-        enemy1.alignToHero(hero1.characterMesh->position,deltaTime);
+        //TODO dans Enemy.update
+        enemy1.alignToHero(hero1.characterMesh->position);
+        enemy1.doAttack(deltaTime,soundManager);
+
+        //std::cout << deltaTime << std::endl;
         camera.handleInputs(deltaTime);
 
 
@@ -292,25 +310,26 @@ int main(int, char**)
         // If GameState == UI_INTERRUPT // Render but not update
         //mesh.Render(camera,deltaTime);
         //mesh2.Render(camera,deltaTime);
-        renderer.renderMeshOBJ(mesh,deltaTime);
+        renderer.renderMeshOBJ(*enemy1.characterMesh,deltaTime);
+
         renderer.renderMeshOBJ(*hero1.characterMesh,deltaTime);
 
 
         if (ImGui::IsKeyPressed(ImGuiKey_M,false))
         {
-            particleManager.releaseFromObjectPool(hero1.characterMesh->position,hero1.characterMesh->facingDirection);
+            particleManager.releaseFromObjectPool(hero1.characterMesh->position,hero1.characterMesh->facingDirection,soundManager);
             soundManager.playSound("fireSound");//TODO Travail de la classe Attack, Qui a besoin d'un soundManager
             //std::cout << "Position: (" << mesh2.position.x << ", " << mesh2.position.y << ", " << mesh2.position.z << ")\n";
         }
 
-        //particleFire.update(deltaTime);
-        //particleFire.renderParticle(&programFire,deltaTime);
 
         //TODO Travail de la class DamageManager; qui va le faire sur Attack
         // puis lancer le HitEvent avec le soundManager et la position de la
         // particule
 
         particleManager.update(deltaTime);
+        //TODO dans Enemy.update
+        enemy1.warriorClass->attack->particleManager.update(deltaTime);
         //Sans la ref c'est une copie
         for (Particle& particle :particleManager.particlesObjectPool)
             if (particle.isActive)
@@ -320,12 +339,14 @@ int main(int, char**)
                     soundManager.playSound("pain1");
                     eventManager.addEvent(std::make_unique<HitEvent>(hero1, enemy1, soundManager));
                 }
+
         renderer.renderParticles(particleManager);
+        renderer.renderParticles(enemy1.warriorClass->attack->particleManager);
         eventManager.handleEvents();
 
         glBindVertexArray(0);
         glfwSwapBuffers(window);
-        //TODO ICI Le Renderer GLFW a terminé
+        lastFrame = currentFrame;
     }
 #ifdef __EMSCRIPTEN__
     EMSCRIPTEN_MAINLOOP_END;

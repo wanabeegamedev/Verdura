@@ -9,7 +9,7 @@
 
 class RetourALEnvoyeurStrategy: public DefenseStrategy
 {
-    void doDefense(Attack *attack) override;
+    void doDefense(Attack *attack) override{};
 };
 
 
