@@ -18,6 +18,7 @@ class Game {
         GameState state{};
         Renderer* renderer{};
 
+
     Game();
     virtual ~Game();// TODO :  JE SUIS FICHU
 

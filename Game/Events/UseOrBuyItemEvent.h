@@ -6,6 +6,7 @@
 #define USEORBUYITEMEVENT_H
 #include "../../Engine/Events/EventManager.h"
 #include "../Inventory/Item.h"
+#include "../UI/GameUI.h"
 
 class UseOrBuyItemEvent:public Event{
     public:

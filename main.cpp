@@ -44,6 +44,7 @@
 #include "Game/Character/Enemy.h"
 #include "Game/Character/Hero.h"
 #include "Game/Events/HitEvent.h"
+#include "Game/Events/UIInterruptEvent.h"
 #include "Game/UI/GameUI.h"
 
 
@@ -207,10 +208,7 @@ int main(int, char**)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // Main loop
 #ifdef __EMSCRIPTEN__
-    // For an Emscripten build we are disabling file-system access, so let's not attempt to do a fopen() of the imgui.ini file.
-    // You may manually call LoadIniSettingsFromMemory() to load settings from your own storage.
     io.IniFilename = nullptr;
     EMSCRIPTEN_MAINLOOP_BEGIN
 #else
@@ -218,49 +216,49 @@ int main(int, char**)
 #endif
     {
         glfwPollEvents();
-//      GameUI.Initialize();
-        // Start the Dear ImGui frame
+        //      GameUI.Initialize();
+
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        // END GameUI.Initialize();
-/*
-        // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-        if (show_demo_window)
-            ImGui::ShowDemoWindow(&show_demo_window);
-        // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
-        {
-            static float f = 0.0f;
-            static int counter = 0;
 
-            ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+        /*
+                // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+                if (show_demo_window)
+                    ImGui::ShowDemoWindow(&show_demo_window);
+                // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
+                {
+                    static float f = 0.0f;
+                    static int counter = 0;
 
-            ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-            ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-            ImGui::Checkbox("Another Window", &show_another_window);
+                    ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+                    ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+                    ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+                    ImGui::Checkbox("Another Window", &show_another_window);
 
-            if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-                counter++;
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
+                    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+                    ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-            ImGui::End();
-        }
+                    if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+                        counter++;
+                    ImGui::SameLine();
+                    ImGui::Text("counter = %d", counter);
 
-        // 3. Show another simple window.
-        if (show_another_window)
-        {
-            ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-            ImGui::Text("Hello from another window!");
-            if (ImGui::Button("Close Me"))
-                show_another_window = false;
-            ImGui::End();
-        }
-*/
+                    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+                    ImGui::End();
+                }
+
+                // 3. Show another simple window.
+                if (show_another_window)
+                {
+                    ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+                    ImGui::Text("Hello from another window!");
+                    if (ImGui::Button("Close Me"))
+                        show_another_window = false;
+                    ImGui::End();
+                }
+        */
         //GameUI.handleInputs(); // va hériter de UI qui manage des GameObjects et va elle, manager des Objets concrets;
         /*if (show_inventory)
         {
@@ -271,62 +269,46 @@ int main(int, char**)
             ImGui::End();
         }*/
         gameUI.handleInputs();
+
         ImGui::Render();
 
 
         //TODO Rendering; ICI Le Renderer GLFW Intervient
-
-        int display_w, display_h;
+        int display_w=1280, display_h=720;
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        // opengl render ici, when DearImGUI is done
-
-        // RENDERER TAKE OVER
+        // opengl render ici,
         double currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
 
-        
-        hero1.characterMesh->handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
-        //mesh2.handleInputs(camera.camera_front(),camera.camera_right(),deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
 
-        //TODO dans Enemy.update
-        enemy1.alignToHero(hero1.characterMesh->position);
-        enemy1.doAttack(deltaTime,soundManager);
-
-        //std::cout << deltaTime << std::endl;
         camera.handleInputs(deltaTime);
 
-
-        camera.updateCameraVectors();
-        camera.update();
-
+        if (gameUI.stateFlag == 0)
+        {
+            camera.updateCameraVectors();
+            camera.update();
+        }
         // If GameState == UI_INTERRUPT // Render but not update
-        //mesh.Render(camera,deltaTime);
-        //mesh2.Render(camera,deltaTime);
-        renderer.renderMeshOBJ(*enemy1.characterMesh,deltaTime);
 
-        renderer.renderMeshOBJ(*hero1.characterMesh,deltaTime);
-
-
+    if (gameUI.stateFlag == 0)
+    {
         if (ImGui::IsKeyPressed(ImGuiKey_M,false))
         {
             particleManager.releaseFromObjectPool(hero1.characterMesh->position,hero1.characterMesh->facingDirection,soundManager);
             soundManager.playSound("fireSound");//TODO Travail de la classe Attack, Qui a besoin d'un soundManager
             //std::cout << "Position: (" << mesh2.position.x << ", " << mesh2.position.y << ", " << mesh2.position.z << ")\n";
         }
-
-
+        hero1.characterMesh->handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
+        //TODO dans Enemy.update
+        enemy1.alignToHero(hero1.characterMesh->position);
+        enemy1.doAttack(deltaTime,soundManager);
         //TODO Travail de la class DamageManager; qui va le faire sur Attack
         // puis lancer le HitEvent avec le soundManager et la position de la
         // particule
-
         particleManager.update(deltaTime);
         //TODO dans Enemy.update
         enemy1.warriorClass->attack->particleManager.update(deltaTime);
@@ -338,11 +320,16 @@ int main(int, char**)
                     particle.isActive = false;
                     soundManager.playSound("pain1");
                     eventManager.addEvent(std::make_unique<HitEvent>(hero1, enemy1, soundManager));
+                    eventManager.addEvent(std::make_unique<UIInterruptEvent>(&gameUI,&soundManager));
                 }
 
+        eventManager.handleEvents();
+
+    }
         renderer.renderParticles(particleManager);
         renderer.renderParticles(enemy1.warriorClass->attack->particleManager);
-        eventManager.handleEvents();
+        renderer.renderMeshOBJ(*enemy1.characterMesh,deltaTime);
+        renderer.renderMeshOBJ(*hero1.characterMesh,deltaTime);
 
         glBindVertexArray(0);
         glfwSwapBuffers(window);
