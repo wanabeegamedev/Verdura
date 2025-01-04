@@ -11,15 +11,19 @@ class UIInterruptEvent:public Event {
     public:
     GameUI* gameUI;
     SoundManager* soundManager{};
-    explicit UIInterruptEvent(GameUI* _gameUI,
-        SoundManager* _soundManager): gameUI(_gameUI),
-    soundManager(_soundManager){}
+    std::string text;
+    UIInterruptEvent(GameUI* _gameUI,
+        SoundManager* _soundManager,const std::string& _text): gameUI(_gameUI),
+    soundManager(_soundManager),text(_text){}
 
     ~UIInterruptEvent() override = default;
-    void handle() override {
-        gameUI->stateFlag = 1;//UI_INTERRUPT
-        gameUI->toggle_info_once_window("Ceci est une info");
-        soundManager->playSound("InterruptSound");
-  }
+    void handle() override;
 };
+
+inline void UIInterruptEvent::handle() {
+    gameUI->stateFlag = 1;//UI_INTERRUPT
+    gameUI->toggle_info_once_window(text);
+    soundManager->playSound("InterruptSound");
+
+}
 #endif //UIINTERRUPTEVENT_H

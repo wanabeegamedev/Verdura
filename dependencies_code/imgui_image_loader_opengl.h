@@ -2,13 +2,13 @@
 //NOTE IMPORTANT
 /**
  * https://github.com/ocornut/imgui/wiki/Image-Loading-and-Displaying-Examples#example-for-opengl-users
- * Credits DearImGui by Omar Cornut
+ * Credits UI Library DearImGui by Omar Cornut
  */
 
 #ifndef IMGUI_IMAGE_LOADER_OPENGL_H
 #define IMGUI_IMAGE_LOADER_OPENGL_H
-#define _CRT_SECURE_NO_WARNINGS
-#define STB_IMAGE_IMPLEMENTATION
+//#define _CRT_SECURE_NO_WARNINGS
+//#define STB_IMAGE_IMPLEMENTATION
 #include "glad.h"
 #include "imgui.h"
 #include "stb_image.h"
@@ -61,21 +61,18 @@ bool LoadTextureFromFile(const char* file_name, GLuint* out_texture, int* out_wi
     IM_FREE(file_data);
     return ret;
 }
+
 /*
-* int my_image_width = 0;
+int my_image_width = 0;
 int my_image_height = 0;
 GLuint my_image_texture = 0;
-bool ret = LoadTextureFromFile("../../MyImage01.jpg", &my_image_texture, &my_image_width, &my_image_height);
+bool ret = LoadTextureFromFile("/home/hous/CLionProjects/Verdura/Game/UI/sword-10-48.png",
+    &my_image_texture, &my_image_width, &my_image_height);
 IM_ASSERT(ret);
-
-In the snippet of code above, we added an assert IM_ASSERT(ret) to check if the image file was loaded correctly.
-You may also use your Debugger and confirm that my_image_texture is not zero and that my_image_width my_image_height are correct.
-
-Now that we have an OpenGL texture and its dimensions, we can display it in our main loop:
-
 ImGui::Begin("OpenGL Texture Text");
 ImGui::Text("pointer = %x", my_image_texture);
 ImGui::Text("size = %d x %d", my_image_width, my_image_height);
 ImGui::Image((ImTextureID)(intptr_t)my_image_texture, ImVec2(my_image_width, my_image_height));
-ImGui::End();*/
+ImGui::End();
+*/
 #endif //IMGUI_IMAGE_LOADER_OPENGL_H

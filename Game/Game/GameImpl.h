@@ -29,8 +29,7 @@ class GameImpl:public Game {
         //TODO 2 Warrior Classes
         //TODO 3 UI update
         //TODO 4 LevelUp
-        //TODO 6 UI Image Inventory
-        //TODO 5 Shop
+        //TODO 6 UI Image
         //TODO 7 Sounds
         void setRenderer(Renderer&);
         void setGameUI(GameUI&);

@@ -11,78 +11,59 @@
 #include <vector>
 
 #include "imgui.h"
+#include "../Character/Stats.h"
+#include "../Character/WarriorClass.h"
+
+#define UI_ELEMENT_IMG_WIDTH 48.0f;
 
 class GameUI {
 public:
-    GameUI() = default;
-    std::string text = "Hello UI";
-    bool show_welcome = true;
+    GameUI();
+
+    ImTextureID texture_width ;
+    ImVec2 texture_size;
+    ImVec2 uv0 ;
+    ImVec2 uv1 ;
+    ImVec4 bg_col ;
+    ImVec4 tint_col;
+
+    unsigned int sword_texture_id{};
+    unsigned int snow_texture_id{};
+    unsigned int fire_texture_id{};
+    unsigned int mana_texture_id{};
+    unsigned int health_texture_id{};
+    unsigned int loaded_texture_id{};
+
+    float delayWindow{6.0f};
+    float delayWindowAccumulator{};
+
+    bool show_welcome = false;
     bool show_help = false;
     bool show_info_log = true;
     bool show_quit = false;
     bool show_about = false;
     bool show_inventory = false;
     bool show_info_once = false;
+    bool show_reward_choice = false;
     int stateFlag{};
+    int choice{};
 
     std::string info;
+    std::vector<WarriorClass*> warriorClasses{};
+    Stats* stats;
+
     void show_welcome_window() ;
     void show_info_log_window();
-    void handleInputs();
-    void update();
+    void handleInputs(float);
+    void update(float);
+
     void show_info_once_window();
+    void show_stats();
     void toggle_info_once_window(const std::string &_info);
+
+
+    void show_reward_window();
+    void toggle_info_reward_window();
+    void load_ui_elements();
 };
-inline void GameUI::show_welcome_window() {
-    if (show_welcome)
-    {
-        ImGui::Begin("Welcome", &show_welcome);
-        ImGui::Text("Hello Adventurer, You must Fight !");
-        if (ImGui::Button("Close"))
-            show_welcome = false;
-        ImGui::End();
-    }
-}
-
-inline void GameUI::show_info_once_window(){
-    if (show_info_once)
-    {
-        ImGui::Begin("Info", &show_info_once);
-        ImGui::Text(info.c_str(),0);
-        if (ImGui::Button("Close"))
-        {
-            show_info_once = false;
-            stateFlag = 0;
-        }
-        ImGui::End();
-    }
-}
-
-inline void GameUI::show_info_log_window()
-{
-    if (show_info_log) {
-        ImGui::Begin("Welcome", &show_info_log);
-        ImGui::Text("Hello Adventurer, You must Fight !");
-        if (ImGui::Button("Close"))
-            show_info_log = false;
-        ImGui::End();
-    }
-}
-inline void GameUI::handleInputs() {
-    if (ImGui::IsKeyPressed(ImGuiKey_W))
-        show_welcome = !show_welcome;
-    update();
-}
-inline void GameUI::toggle_info_once_window(const std::string &_info) {
-    info = _info;
-    show_info_once = true;
-    ImGui::SetNextWindowPos(ImVec2(25, 25));
-    stateFlag = 1;
-}
-
-inline void GameUI::update() {
-    show_welcome_window();
-    show_info_once_window();
-    //show_inventory();
-}
 #endif //GAMEUI_H

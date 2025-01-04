@@ -203,6 +203,14 @@ int main(int, char**)
     DamageManager damageManager;
     EventManager eventManager;
 
+    eventManager.addEvent(std::make_unique<UIInterruptEvent>(&gameUI,&soundManager,
+        "Vous êtes un chevalier envoyé par la couronne pour vaincre la guilde des morts vivants!\n"
+        "En ces temps de guerres, ils peuvent envoyer un seul homme, mais vous êtes spécial\n"
+        "En tant que résultat d'une expérience magique menée sur vous, vous pouvez apprendre des enseignements\n"
+        "magiques et vous soignez avec des potions quand vous abbatez plusieurs morts vivants.\n"
+        "On va bien s'amuser, c\'est parti !"));
+
+
     glEnable(GL_DEPTH_TEST); //  depth testing
     glfwSwapInterval(1); // V-SYNC
     glEnable(GL_BLEND);
@@ -217,14 +225,15 @@ int main(int, char**)
     {
         glfwPollEvents();
         //      GameUI.Initialize();
+        double currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        /*
-                // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-                if (show_demo_window)
+
+                /*if (show_demo_window)
                     ImGui::ShowDemoWindow(&show_demo_window);
                 // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
                 {
@@ -248,27 +257,18 @@ int main(int, char**)
                     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
                     ImGui::End();
                 }
-
-                // 3. Show another simple window.
-                if (show_another_window)
-                {
-                    ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-                    ImGui::Text("Hello from another window!");
-                    if (ImGui::Button("Close Me"))
-                        show_another_window = false;
-                    ImGui::End();
-                }
-        */
+        /*
         //GameUI.handleInputs(); // va hériter de UI qui manage des GameObjects et va elle, manager des Objets concrets;
-        /*if (show_inventory)
+        if (show_inventory)
         {
             ImGui::Begin("Ma sacoche de héros", &show_inventory);
             ImGui::Text("Qu\'est-ce qu\'on a de beau ?'");
             if (ImGui::Button("J\'ai fini !"))
                 show_inventory = false;
             ImGui::End();
-        }*/
-        gameUI.handleInputs();
+        }
+        */
+        gameUI.handleInputs(deltaTime);
 
         ImGui::Render();
 
@@ -281,8 +281,6 @@ int main(int, char**)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         // opengl render ici,
-        double currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
 
 
         camera.handleInputs(deltaTime);
@@ -320,7 +318,7 @@ int main(int, char**)
                     particle.isActive = false;
                     soundManager.playSound("pain1");
                     eventManager.addEvent(std::make_unique<HitEvent>(hero1, enemy1, soundManager));
-                    eventManager.addEvent(std::make_unique<UIInterruptEvent>(&gameUI,&soundManager));
+                    //eventManager.addEvent(std::make_unique<UIInterruptEvent>(&gameUI,&soundManager));
                 }
 
         eventManager.handleEvents();
