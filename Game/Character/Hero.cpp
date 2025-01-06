@@ -6,9 +6,8 @@
 constexpr float ATTACK_XP_INCREASE = 10.0f;
 
 Hero::Hero(OBJMesh* _characterMesh,Stats& _stats, Inventory& _inventory,
-        const std::string& _name) {
+        const std::string& _name):stats(_stats) {
         characterMesh = _characterMesh;
-        stats = _stats;
         inventory = _inventory;
         name = _name;
         //TODO seed WarriorClasses

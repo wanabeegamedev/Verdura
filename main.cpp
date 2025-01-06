@@ -179,6 +179,7 @@ int main(int, char**)
     GameUI gameUI{};
 
     Stats stats;
+    stats.setHP(250.f);
     Inventory inventory;
     Hero hero1(&mesh2,stats,inventory,"Le Héros");
 
@@ -274,10 +275,8 @@ int main(int, char**)
         }*/
         // If GameState == UI_INTERRUPT // Render but not update
         // If GameState == PLAYING // Update && Render
-        //TODO Update Camera
-        renderer.camera.handleInputs(deltaTime);
-        renderer.camera.updateCameraVectors();
-        renderer.camera.update();
+        //TODO updateCamera()
+        renderer.updateCamera(deltaTime);
 
     if (gameUI.stateFlag == GameState::PLAYING)//TOFO
     {
@@ -307,7 +306,7 @@ int main(int, char**)
                         if (damageManager.checkCollision(particle.position, hero1.characterMesh->position)) {
                             particle.isActive = false;
                             soundManager.playSound("pain1");
-                            eventManager.addEvent(std::make_unique<HitEvent>(hero1, enemy, soundManager));
+                            eventManager.addEvent(std::make_unique<HitEvent>(enemy, hero1, soundManager));
                         }
                     }
                 }

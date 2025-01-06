@@ -88,6 +88,11 @@ class Renderer {
                 renderParticle(particle);
         }
     }
+    void updateCamera(float deltaTime) {
+        camera.handleInputs(deltaTime);
+        camera.updateCameraVectors();
+        camera.update();
+    }
 
 };
 #endif //RENDERER_H

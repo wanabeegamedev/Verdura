@@ -12,6 +12,10 @@ public:
     float currentHp{};
     float currentExp{};
     int currentMana{};
+
+    inline void setHP(float _hp) {
+        currentHp = _hp;
+    }
 };
 
 

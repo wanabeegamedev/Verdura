@@ -32,7 +32,7 @@ inline void HitEvent::handle()
 {
     victime.attackReceived(20);
     agresseur.attackSuccessful();
-    std::cout << "Event OK";
+    //std::cout << "Event OK";
     //soundManager.playSound(attack.soundName);
 }
 #endif //HITEVENT_H

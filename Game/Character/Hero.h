@@ -21,7 +21,7 @@ class Hero:public Character{
 
     ~Hero() override;
     std::string name;
-    Stats stats;
+    Stats& stats;
     Inventory inventory;
 
 };
