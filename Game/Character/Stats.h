@@ -4,14 +4,13 @@
 
 #ifndef STATS_H
 #define STATS_H
-
-
+#include <cstdint>
 
 class Stats {
 public:
-    int currentExp{};
+    uint8_t currentLvl{};
     float currentHp{};
-    int currentCoins{};
+    float currentExp{};
     int currentMana{};
 };
 

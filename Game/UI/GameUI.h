@@ -56,6 +56,7 @@ public:
     void show_info_log_window();
     void handleInputs(float);
     void update(float);
+    void setStats(Stats*);
 
     void show_info_once_window();
     void show_stats();
@@ -65,5 +66,7 @@ public:
     void show_reward_window();
     void toggle_info_reward_window();
     void load_ui_elements();
+    void add_class_to_track(WarriorClass*);
 };
+
 #endif //GAMEUI_H

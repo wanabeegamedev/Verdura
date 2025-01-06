@@ -4,8 +4,9 @@
 
 #include "Enemy.h"
 #include <cassert>
-Enemy::Enemy(OBJMesh* _characterMesh) {
+Enemy::Enemy(OBJMesh* _characterMesh,OBJMeshFlyWeight* _flyweightMesh) {
    characterMesh = _characterMesh;
+   flyweightMesh = _flyweightMesh;
 }
 
 void Enemy::setClass(WarriorClass* _class)
@@ -19,10 +20,9 @@ void Enemy::attackReceived(float damage)
       throw std::runtime_error("Enemy attack forgotten!");*/
    currentHp-=damage;
 }
-
 void Enemy::alignToHero(const glm::vec3& heroPosition) {
 
-   glm::vec3 direction = heroPosition - characterMesh->position;
+   glm::vec3 direction = heroPosition - flyweightMesh->position;
    //std::cout<<"(" << direction.x << ", "<< direction.y << ", "<< direction.z << ")"<<std::endl;
    float absX = std::fabs(direction.x);
    float absZ = std::fabs(direction.z);
@@ -41,17 +41,19 @@ void Enemy::alignToHero(const glm::vec3& heroPosition) {
    }
    //movementDirection = glm::normalize(movementDirection);
 
-   float speed = 300000.f;
-   /*characterMesh.position += movementDirection * speed*deltatime;*/
+   /*flyweightMesh.position += movementDirection * speed*deltatime;*/
 
-   characterMesh->model = glm::mat4(1.0f);
-   characterMesh->model = glm::translate(characterMesh->model, characterMesh->position);
-   characterMesh->rotate(glm::radians(90.0f * static_cast<float>(newFacingDirection)), movementRotate);
+   flyweightMesh->model = glm::mat4(1.0f);
+   flyweightMesh->model = glm::translate(flyweightMesh->model, flyweightMesh->position);
+   flyweightMesh->rotate(glm::radians(90.0f * static_cast<float>(newFacingDirection)), movementRotate);
 
-   characterMesh->facingDirection = newFacingDirection;
+   flyweightMesh->facingDirection = newFacingDirection;
 }
 void Enemy::doAttack(float deltatime,SoundManager& soundManager) {
-   warriorClass->doAttack(deltatime,characterMesh->position,
-      characterMesh->facingDirection,soundManager);
+   warriorClass->doAttack(deltatime,flyweightMesh->position,
+      flyweightMesh->facingDirection,soundManager);
+}
+bool Enemy::isCloseEnough(const glm::vec3& toPoint) const {
+   return glm::distance(flyweightMesh->position,toPoint) < 10.f;
 }
 Enemy::~Enemy()= default;

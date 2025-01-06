@@ -42,19 +42,21 @@ class MeshLoader
             LoadObjMesh(mesh);
     };
 
+    [[maybe_unused]] // UNUSED , trop tard
     static inline void LoadProgram(
-        Mesh &mesh,
-        const std::string& vertexShaderFilePath,
-        const std::string& fragmentShaderFilePath,
-        const std::string& programName)
+    Mesh &mesh,
+    const std::string &vertexShaderFilePath,
+    const std::string &fragmentShaderFilePath,
+    const std::string &programName)
     {
+        Shader vShader(vertexShaderFilePath, GL_VERTEX_SHADER);
+        Shader fShader(fragmentShaderFilePath, GL_FRAGMENT_SHADER);
+        //auto program = std::make_shared<Program>(vShader.shader_id(), fShader.shader_id());
+        auto program = new Program(vShader.shader_id(), fShader.shader_id());
+        program->setName(programName);
+        mesh.addProgram(program);
+    }
 
-        Shader vShader(vertexShaderFilePath,GL_VERTEX_SHADER);
-        Shader fShader(fragmentShaderFilePath,GL_FRAGMENT_SHADER);
-        Program program(vShader.shader_id(),fShader.shader_id());
-        program.setName(programName);
-        mesh.addProgram(&program);
-    };
     inline void LoadTexture(const std::string& textureFile, GLuint textureID)
     {
         //  TODO

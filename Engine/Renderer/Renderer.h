@@ -9,6 +9,8 @@
 #include "../Camera/Camera.h"
 #include "error_codes.h"
 #include "../Engine/Mesh/OBJMesh.h"
+#include "../Mesh/OBJMeshFlyWeight.h"
+
 class Renderer {
     public:
         //GLFWwindow* window;
@@ -35,7 +37,22 @@ class Renderer {
         mesh.MeshPrograms.at(mesh.currentProgramName)->setUniformMat4("projection",camera.projectionMatrix);
         glBindVertexArray(mesh.VAO);
         glDrawElements(GL_TRIANGLES, mesh.indicesCount, GL_UNSIGNED_INT, nullptr);
-        glBindVertexArray(0);
+        //glBindVertexArray(0);
+    }
+    void renderMeshOBJFromFlyWeight(const OBJMesh& mesh,const OBJMeshFlyWeight& flyweight,float deltaTime) const
+    {
+        if (mesh.currentTextureID != 0)
+        {
+            glBindTexture(GL_TEXTURE_2D, mesh.currentTextureID);
+        }
+        mesh.MeshPrograms.at(mesh.currentProgramName)->bind();
+        mesh.MeshPrograms.at(mesh.currentProgramName)->setUniform1f("uTime", deltaTime);
+        mesh.MeshPrograms.at(mesh.currentProgramName)->setUniform1i("texture1", 0);
+        mesh.MeshPrograms.at(mesh.currentProgramName)->setUniformMat4("model",flyweight.model);
+        mesh.MeshPrograms.at(mesh.currentProgramName)->setUniformMat4("view",camera.viewMatrix);
+        mesh.MeshPrograms.at(mesh.currentProgramName)->setUniformMat4("projection",camera.projectionMatrix);
+        glBindVertexArray(mesh.VAO);
+        glDrawElements(GL_TRIANGLES, mesh.indicesCount, GL_UNSIGNED_INT, nullptr);
     }
      void renderParticle(Particle& particle) const {
         if (!particle.program) {
@@ -52,15 +69,15 @@ class Renderer {
         particle.program->setUniformMat4("model",particle.model);
         particle.program->setUniformMat4("view",camera.viewMatrix);
         particle.program->setUniformMat4("projection",camera.projectionMatrix);
-        if (!glIsTexture(particle.texture)) {
+        /*if (!glIsTexture(particle.texture)) {
             std::cerr << "Error: Invalid texture ID." << std::endl;
             return;
-        }
+        }*/
         glBindTexture(GL_TEXTURE_2D, particle.texture);
-        if (!glIsVertexArray(particle.VAO)) {
+        /*if (!glIsVertexArray(particle.VAO)) {
             std::cerr << "Error: Invalid VAO ID." << std::endl;
             return;
-        }
+        }*/
         glBindVertexArray(particle.VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);

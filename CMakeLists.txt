@@ -105,6 +105,8 @@ add_executable(
         Game/Events/UIInterruptEvent.h
         Game/Character/WarriorClass.cpp
         Game/Character/WarriorClass.h
+        Engine/Mesh/OBJMeshFlyWeight.h
+        Engine/Common/math_helper.h
 
 )
 

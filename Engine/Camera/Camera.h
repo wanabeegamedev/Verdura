@@ -23,7 +23,7 @@ facing
 #include <imgui.h>
 
 
-#define INITIAL_SPEED 500000.0f
+#define INITIAL_SPEED 50.0f
 #define INITIAL_NEAR 0.1f
 #define INITIAL_SENSITIVITY 0.08f
 #define INITIAL_FOV 60.0f
@@ -32,9 +32,9 @@ facing
 
 
 //top down
-#define INITIAL_POS glm::vec3(0.0f, 20.0f, 0.0f) // Camera is 20 units above the origin
-#define INITIAL_FRONT glm::vec3(0.0f, -1.0f, 0.0f) // Camera looks straight down
-#define INITIAL_UP glm::vec3(0.0f, 0.0f, -1.0f)   // Z-axis is "up" for this perspective
+#define INITIAL_POS glm::vec3(0.0f, 20.0f, 0.0f)
+#define INITIAL_FRONT glm::vec3(0.0f, -1.0f, 0.0f)
+#define INITIAL_UP glm::vec3(0.0f, 0.0f, -1.0f)
 
 
 
@@ -122,28 +122,27 @@ public:
     void handleInputs(double deltaTime) {
         ImGuiIO& io = ImGui::GetIO();
 
-        float velocity = speed * static_cast<float>(deltaTime);
+        float velocity =  speed*static_cast<float>(deltaTime);
+        //  directions pour top-down camera
+        glm::vec3 forward = glm::vec3(0.0f, 0.0f, 1.0f);
+        glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);
 
-        // Movement directions for top-down camera
-        glm::vec3 forward = glm::vec3(0.0f, 0.0f, 1.0f); // Forward in top-down view (positive Z)
-        glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);   // Right in top-down view (positive X)
+       // if (!io.WantCaptureKeyboard) {
 
-        if (!io.WantCaptureKeyboard) {
-            // Check movement key inputs
             if (ImGui::IsKeyPressed(ImGuiKey_Q)) {
-                cameraPosition -= right * velocity; // Move left (along the X-axis)
+                cameraPosition -= right * velocity; // X gauche
             }
             if (ImGui::IsKeyPressed(ImGuiKey_D)) {
-                cameraPosition += right * velocity; // Move right (along the X-axis)
-            }
-            if (ImGui::IsKeyPressed(ImGuiKey_Z)) {
-                cameraPosition += forward * velocity; // Move forward (along the Z-axis)
+                cameraPosition += right * velocity;
             }
             if (ImGui::IsKeyPressed(ImGuiKey_S)) {
-                cameraPosition -= forward * velocity; // Move backward (along the Z-axis)
+                cameraPosition += forward * velocity; //Z bas
+            }
+            if (ImGui::IsKeyPressed(ImGuiKey_Z)) {
+                cameraPosition -= forward * velocity;
             }
         }
-    }
+    //}
 
     void update() {
         projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, near, far); //TODO

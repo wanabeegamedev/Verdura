@@ -22,6 +22,7 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <random>
 #include <vector>
 #include <set>
 #include <glm/glm.hpp>
@@ -32,9 +33,12 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Engine/Camera/Camera.h"
+#include "Engine/Common/Game.h"
+#include "Engine/Common/math_helper.h"
 #include "Engine/Events/EventManager.h"
 #include "Engine/Mesh/MeshLoader.h"
 #include "Engine/Mesh/OBJMesh.h"
+#include "Engine/Mesh/OBJMeshFlyWeight.h"
 #include "Engine/ParticleEffect/ParticleManager.h"
 #include "Engine/Renderer/Renderer.h"
 #include "Engine/Shader/program.h"
@@ -95,7 +99,7 @@ int main(int, char**)
 
     glfwMakeContextCurrent(window);
     //glfwSetMouseButtonCallback(window, mouseCallback);
-    glfwSwapInterval(1);
+    //glfwSwapInterval(1);
 
     //  Dear ImGui
     IMGUI_CHECKVERSION();
@@ -123,9 +127,11 @@ int main(int, char**)
             std::cerr << "Failed to initialize GLAD" << std::endl;
             return -1;
         }
-    // After Initialization of glew and glfw
+    // Fin Initialization de glew &  glfw
 
     MeshLoader loader;
+
+
 
     OBJMesh mesh("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/Mage.obj");
     mesh.set_current_texture_path("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/mage_texture.png");
@@ -140,31 +146,22 @@ int main(int, char**)
 
     Shader vShader("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex_character.txt",GL_VERTEX_SHADER);
     Shader fShader("/home/hous/CLionProjects/Verdura/Game/Shaders/fragment_character.txt",GL_FRAGMENT_SHADER);
-    Program program(vShader.shader_id(),fShader.shader_id());
-    program.setName("t_pose_j1");
+    //std::shared_ptr<Program> program = std::make_shared<Program>(vShader.shader_id(), fShader.shader_id());
 
+    auto* program = new Program(vShader.shader_id(), fShader.shader_id());
+    program->setName("t_pose_j1");
 
-    mesh.addProgram(&program);
+    mesh.addProgram(program);
     mesh.setCurrentProgram("t_pose_j1");
-    mesh2.scale(glm::vec3(1.f, 1.f, 1.f)); // Scaler
-
-    mesh2.addProgram(&program);
+    //mesh2.scale(glm::vec3(1.f, 1.f, 1.f));
+    mesh2.addProgram(program);
     mesh2.setCurrentProgram("t_pose_j1");
-
-
-    /*TODO Move to checkProgram, all values in uniformCache must be Positive
-     *if (modelLoc == -1 || viewLoc == -1 || projectionLoc == -1 || textureLoc == -1) {
-        std::cerr << "One or more uniforms not found in the shader program!" << std::endl;
-    }*/
-
 
     SoundManager soundManager;
     soundManager.loadSound("gameStart", "/home/hous/CLionProjects/Verdura/Engine/Sound/gamestart-272829.mp3");
-    //soundManager.playSound("gameStart");
     soundManager.loadSound("fireSound", "/home/hous/CLionProjects/Verdura/Engine/Sound/8-bit-laser-151672.mp3");
     soundManager.loadSound("pain1", "/home/hous/CLionProjects/Verdura/Engine/Sound/088436_hurt-1-82785.mp3");
     soundManager.loadSound("music1", "/home/hous/CLionProjects/Verdura/Engine/Sound/8bit-music-for-game-68698.mp3");
-    //soundManager.playSound("music1");
 
     soundManager.playSequential("gameStart","music1");
     Shader vShaderFire("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex_fire_ice_particle.txt",GL_VERTEX_SHADER);
@@ -176,8 +173,6 @@ int main(int, char**)
                         mesh2.position,
                         mesh2.facingDirection,
                         &programFire);
-    //particleFire.isActive = true;
-    //particleFire.scale(glm::vec3(0.07f));
     particleFire.load();
     ParticleManager particleManager{};
     particleManager.prepareObjectPool(particleFire);
@@ -187,16 +182,40 @@ int main(int, char**)
     Inventory inventory;
     Hero hero1(&mesh2,stats,inventory,"Le Héros");
 
+    std::vector<OBJMeshFlyWeight> enemiesMeshes;
+    std::vector<Enemy> enemies;
+    enemiesMeshes.reserve(24);
+    enemies.reserve(24);
+    Attack* attack = new Attack(
+            glm::vec3(0.0f),
+            0,
+            "/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/fireball.png",
+            10.0f,
+            3.0f,
+            &programFire
+        );
+    float fireDelayBase = 2.0f;
 
-    Enemy enemy1(&mesh);
-    Attack attack(enemy1.characterMesh->position,
-        enemy1.characterMesh->facingDirection,
-        "/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/fireball.png",
-        10.0f,3.0f,&programFire);
-    DefenseStrategy defenseStrategy;
-    float fireDelayBase = 1.0f;
-    WarriorClass warriorClass(&attack,&defenseStrategy,fireDelayBase);
-    enemy1.setClass(&warriorClass);
+    std::vector<glm::vec3> enemyPositions = generateEnemyPositions(0.0f, 100.0f, -8.0f, 8.0f, 40, 20);
+    for (int i = 0; i < 20; i++) {
+        OBJMeshFlyWeight _mesh(enemyPositions[i]);
+        //_mesh.position = glm::vec3(i,.0f,.0f);
+        enemiesMeshes.push_back(_mesh);
+
+        //std::cout << "Position: (" << _mesh.position.x << ", " << _mesh.position.y << ", " << _mesh.position.z << ")\n";
+        Enemy enemy(&mesh,&enemiesMeshes.back());
+        DefenseStrategy* defenseStrategy = new DefenseStrategy();
+        WarriorClass* warriorClass = new WarriorClass(attack, defenseStrategy, fireDelayBase);
+        warriorClass->setName(WIZARD_CLASS_NAME);
+        enemy.setClass(warriorClass);
+        enemies.push_back(enemy);
+    }
+
+
+    //TODO
+    /*WarriorClass heroClassFire(&attack,&defenseStrategy,fireDelayBase);*/
+    //gameUI.add_class_to_track(&heroClassFire);*/
+    gameUI.setStats(&stats);
 
 
 
@@ -204,10 +223,14 @@ int main(int, char**)
     EventManager eventManager;
 
     eventManager.addEvent(std::make_unique<UIInterruptEvent>(&gameUI,&soundManager,
-        "Vous êtes un chevalier envoyé par la couronne pour vaincre la guilde des morts vivants!\n"
+        "Vous êtes un chevalier envoyé par la couronne pour vaincre la guilde des sorciers rebelles!\n"
         "En ces temps de guerres, ils peuvent envoyer un seul homme, mais vous êtes spécial\n"
         "En tant que résultat d'une expérience magique menée sur vous, vous pouvez apprendre des enseignements\n"
-        "magiques et vous soignez avec des potions quand vous abbatez plusieurs morts vivants.\n"
+        "magiques et vous soignez avec des potions quand vous abbatez plusieurs enemy.\n"
+        "ZSQD : Caméra (cela vous aidera à lire ce texte, mais pas que).\n"
+        "Flèches directionnelles: Bougez .\n"
+        "L : Attaque de classe 1, chevalier .\n"
+        "M : Attaque de classe 2, si vous debloquez la classe sorcier (pas rebelle!)\n"
         "On va bien s'amuser, c\'est parti !"));
 
 
@@ -224,110 +247,88 @@ int main(int, char**)
 #endif
     {
         glfwPollEvents();
-        //      GameUI.Initialize();
+
         double currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-
-
-                /*if (show_demo_window)
-                    ImGui::ShowDemoWindow(&show_demo_window);
-                // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
-                {
-                    static float f = 0.0f;
-                    static int counter = 0;
-
-                    ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-                    ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-                    ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-                    ImGui::Checkbox("Another Window", &show_another_window);
-
-                    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-                    ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-                    if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-                        counter++;
-                    ImGui::SameLine();
-                    ImGui::Text("counter = %d", counter);
-
-                    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-                    ImGui::End();
-                }
-        /*
-        //GameUI.handleInputs(); // va hériter de UI qui manage des GameObjects et va elle, manager des Objets concrets;
-        if (show_inventory)
-        {
-            ImGui::Begin("Ma sacoche de héros", &show_inventory);
-            ImGui::Text("Qu\'est-ce qu\'on a de beau ?'");
-            if (ImGui::Button("J\'ai fini !"))
-                show_inventory = false;
-            ImGui::End();
-        }
-        */
         gameUI.handleInputs(deltaTime);
-
         ImGui::Render();
 
 
-        //TODO Rendering; ICI Le Renderer GLFW Intervient
+        //Le Renderer GLFW Intervient
         int display_w=1280, display_h=720;
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        // opengl render ici,
 
 
-        camera.handleInputs(deltaTime);
-
-        if (gameUI.stateFlag == 0)
+        /*if (gameUI.stateFlag == 0)
         {
             camera.updateCameraVectors();
             camera.update();
-        }
+        }*/
         // If GameState == UI_INTERRUPT // Render but not update
+        // If GameState == PLAYING // Update && Render
+        //TODO Update Camera
+        renderer.camera.handleInputs(deltaTime);
+        renderer.camera.updateCameraVectors();
+        renderer.camera.update();
 
-    if (gameUI.stateFlag == 0)
+    if (gameUI.stateFlag == GameState::PLAYING)//TOFO
     {
+
         if (ImGui::IsKeyPressed(ImGuiKey_M,false))
         {
             particleManager.releaseFromObjectPool(hero1.characterMesh->position,hero1.characterMesh->facingDirection,soundManager);
             soundManager.playSound("fireSound");//TODO Travail de la classe Attack, Qui a besoin d'un soundManager
             //std::cout << "Position: (" << mesh2.position.x << ", " << mesh2.position.y << ", " << mesh2.position.z << ")\n";
+            //std::cout << gameUI.stateFlag;
         }
         hero1.characterMesh->handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
-        //TODO dans Enemy.update
-        enemy1.alignToHero(hero1.characterMesh->position);
-        enemy1.doAttack(deltaTime,soundManager);
-        //TODO Travail de la class DamageManager; qui va le faire sur Attack
+        // TODO dans Enemy.update
+        // TODO Travail de la class DamageManager; qui va le faire sur Attack
         // puis lancer le HitEvent avec le soundManager et la position de la
         // particule
         particleManager.update(deltaTime);
-        //TODO dans Enemy.update
-        enemy1.warriorClass->attack->particleManager.update(deltaTime);
-        //Sans la ref c'est une copie
-        for (Particle& particle :particleManager.particlesObjectPool)
-            if (particle.isActive)
-                if (damageManager.checkCollision(particle.position,mesh.position))
-                {
-                    particle.isActive = false;
-                    soundManager.playSound("pain1");
-                    eventManager.addEvent(std::make_unique<HitEvent>(hero1, enemy1, soundManager));
-                    //eventManager.addEvent(std::make_unique<UIInterruptEvent>(&gameUI,&soundManager));
+       for (Enemy& enemy : enemies) {
+            //TODO Enemy.update();
+            enemy.alignToHero(hero1.characterMesh->position);
+            if (enemy.isCloseEnough(hero1.characterMesh->position))
+                 enemy.doAttack(deltaTime, soundManager);
+            if (enemy.warriorClass && enemy.warriorClass->attack) {
+                enemy.warriorClass->attack->particleManager.update(deltaTime);
+                for (Particle& particle : enemy.warriorClass->attack->particleManager.particlesObjectPool) {
+                    if (particle.isActive) {
+                        if (damageManager.checkCollision(particle.position, hero1.characterMesh->position)) {
+                            particle.isActive = false;
+                            soundManager.playSound("pain1");
+                            eventManager.addEvent(std::make_unique<HitEvent>(hero1, enemy, soundManager));
+                        }
+                    }
                 }
-
+            }
+        }
         eventManager.handleEvents();
 
+
     }
+        //PARTIE RENDER
         renderer.renderParticles(particleManager);
-        renderer.renderParticles(enemy1.warriorClass->attack->particleManager);
-        renderer.renderMeshOBJ(*enemy1.characterMesh,deltaTime);
         renderer.renderMeshOBJ(*hero1.characterMesh,deltaTime);
+        //les Enemies
+        for (Enemy& enemy : enemies) {
+            if (enemy.warriorClass && enemy.warriorClass->attack) {
+                renderer.renderParticles(enemy.warriorClass->attack->particleManager);
+            }
+           renderer.renderMeshOBJFromFlyWeight(mesh, *enemy.flyweightMesh, deltaTime);
+           //enemy.characterMesh->Render(camera,deltaTime);
+        }
+
 
         glBindVertexArray(0);
         glfwSwapBuffers(window);

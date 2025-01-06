@@ -13,7 +13,7 @@
 #include "Mesh.h"
 #include "../Engine/Camera/Camera.h"
 
-const glm::vec3 movementRotate = glm::vec3(.0f, 1.f, .0f);
+constexpr glm::vec3 movementRotate = glm::vec3(.0f, 1.f, .0f);
 inline int stride = 8 * sizeof(float);
 class OBJMesh : public Mesh
 {
@@ -28,10 +28,7 @@ public:
     glm::vec3 position;
     int facingDirection{};
     int newFacingDirection{};
-    float rotationAngle{};
-
     glm::vec3 movementDirection = glm::vec3(.0f, 1.0f, .0f);
-    float movementSpeed = 1.0f;
     glm::mat4 model;
     bool Initialize(const std::vector<glm::vec3>& vertices,
                     const std::vector<glm::vec3>& normals,
@@ -97,30 +94,6 @@ public:
     return true;
 }
 
-    // TODO Move to Renderer
-    void Render(const Camera& camera,float deltaTime) const
-    {
-        //TODO std::string programName ="Basic";
-        //TODO glUseProgram(MeshPrograms.at(programName));
-        if (currentTextureID != 0)
-        {
-            glBindTexture(GL_TEXTURE_2D, currentTextureID);
-        }
-        MeshPrograms.at(currentProgramName)->bind();
-        //MeshPrograms.at(currentProgramName)->setUniform3f("offsetPos", position);// TODO = GET RID
-        //MeshPrograms.at(currentProgramName)->setUniform3f("movementDirection", movementDirection);// TODO = GET RID
-        //MeshPrograms.at(currentProgramName)->setUniform1f("movementSpeed", movementSpeed);// TODO = GET RID
-        MeshPrograms.at(currentProgramName)->setUniform1f("uTime", deltaTime);// TODO = GET RID
-        MeshPrograms.at(currentProgramName)->setUniform1i("texture1", 0);
-        MeshPrograms.at(currentProgramName)->setUniformMat4("model",model);
-        MeshPrograms.at(currentProgramName)->setUniformMat4("view",camera.viewMatrix);
-        MeshPrograms.at(currentProgramName)->setUniformMat4("projection",camera.projectionMatrix);
-        // TODO Offseter la Position ICI
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, nullptr);
-        glBindVertexArray(0);
-    }
-
     ~OBJMesh() {
         if (VAO != 0) glDeleteVertexArrays(1, &VAO);
         if (VBO != 0) glDeleteBuffers(1, &VBO);
@@ -163,7 +136,6 @@ public:
     }
 
     float speed = 10.0f*1;
-
     void handleInputs(float deltaTime) {
         glm::vec3 forward = glm::vec3(0.0f, 0.0f, 1.0f); //  Z+
         glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);

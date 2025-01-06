@@ -7,7 +7,8 @@
 #include "../Ability/Attack.h"
 #include "../Ability/DefenseStrategy.h"
 
-
+#define WIZARD_CLASS_NAME "Wizard"
+#define KNIGHT_CLASS_NAME "Knight"
 class WarriorClass {
 public:
     Attack* attack;
@@ -15,8 +16,11 @@ public:
     // Je les mets ici au cas de levelUp
     float delayBetweenAttack;
     float delayAccumulator;
+
     WarriorClass(Attack* _attack,DefenseStrategy* _defenseStrategy,float _delayBetweenAttack);
     void doAttack(float deltatime,glm::vec3& position,int facingDirection,SoundManager&);
+    void setName(std::string _name);
+    const char* name;
 };
 
 

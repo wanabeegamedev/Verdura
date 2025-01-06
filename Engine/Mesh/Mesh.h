@@ -7,7 +7,7 @@
 #include <map>
 
 #include "../Shader/program.h"
-
+#include <memory>
 enum MeshType {
     OBJ = 0,
 };
@@ -22,12 +22,17 @@ public:
     std::map<std::string, GLuint> MeshTextures ;
     std::map<std::string, Program*> MeshPrograms ;
 
+   // std::map<std::string, std::shared_ptr<Program>> MeshPrograms;
 
     Mesh()= default;
     MeshType meshType{};
-    void addProgram(Program* _program){
+    /*void addProgram(const std::shared_ptr<Program>& _program) {
+        MeshPrograms[_program->program_name()] = _program;
+    }*/
+    void addProgram(Program * _program) {
         MeshPrograms[_program->program_name()] = _program;
     }
+
     void addTexture(GLuint textureID,const std::string& _textureName) {
         MeshTextures[_textureName] = textureID;
     }

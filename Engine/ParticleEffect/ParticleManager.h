@@ -16,9 +16,9 @@
 #include "../Sound/SoundManager.h"
 
 
-constexpr float PARTICLE_SPEED = 12.f; // Je la garde constante
+constexpr float PARTICLE_SPEED = .25f; // Je la garde constante
 constexpr float MAX_NB_PARTICLES = 100;
-constexpr float LIFETIME = 3.f;
+constexpr float LIFETIME = 45.f;
 inline constexpr float vertices[] = {
     // positions        // texture coords
     -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, //bas-gauche
@@ -41,7 +41,7 @@ public:
     void update(double);//move up a little bit, also at every update the billboard follow its mesh(the burning character)
     void load(); // load the billboard, png, Used Once for every type of particle
 
-    float lifetime; // particle set to inactive if lifetime hit 0
+    double lifetime; // particle set to inactive if lifetime hit 0
     glm::vec3 position{}; // initialize to mesh.position() which is the position of the mesh
     float velocity{PARTICLE_SPEED}; // particle speed
     int facingDirection;
@@ -122,6 +122,11 @@ inline void Particle::load() {
 }
 inline void Particle::update(double deltaTime)
 {
+    lifetime -= deltaTime;
+    if (lifetime <= 0.0f) {
+        isActive = false;
+        return;
+    }
     position += glm::normalize(movementDirection) * velocity *(float)deltaTime;
     model  = glm::mat4(1.0f);
     model = glm::translate(model, position);
@@ -189,6 +194,7 @@ inline void ParticleManager::releaseFromObjectPool(const glm::vec3& _position,
     for (Particle& particle : particlesObjectPool)
     {
         if (!particle.isActive) {
+            particle.lifetime = LIFETIME;
             particle.facingDirection = _facingDirection;
             particle.position = _position;//+glm::vec3(2.5f,0.f,2.5f);
             particle.model = glm::mat4(1.0f);
@@ -206,10 +212,9 @@ inline void ParticleManager::releaseFromObjectPool(const glm::vec3& _position,
                     particle.movementDirection = glm::vec3(-0.01f, 0.0f, 0.0f);
                 break;
                 default:
-                    particle.movementDirection = glm::vec3(0.0f); // Default to stationary
+                    particle.movementDirection = glm::vec3(0.0f);
             }
 
-            // Normalize movement direction
             //particle.movementDirection = glm::normalize(particle.movementDirection) * 0.01f;
 
             // Activate particle
@@ -233,6 +238,8 @@ inline void ParticleManager::releaseFromObjectPool(const glm::vec3& _position,
     }
 }
 inline void ParticleManager::returnToObjectPool(Particle &particle) {
+    particle.lifetime = LIFETIME;
+    particle.isActive = false;
 }
 
 

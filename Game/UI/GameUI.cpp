@@ -19,16 +19,21 @@ GameUI::GameUI() {
 }
 void GameUI::show_stats() {
     if (stats!=nullptr) {
-        ImGui::Begin("Stats");
+        ImGui::Begin("Etat de votre Héro : ");
         ImGui::Text("HP");
         ImGui::SameLine();
-
+        ImGui::Text(std::to_string(stats->currentHp).c_str());
         ImGui::Text("MP");
         ImGui::SameLine();
+        ImGui::Text(std::to_string(stats->currentMana).c_str());
+        ImGui::Text("Unlocked classes:");
+        for (auto& _class:warriorClasses) {
+            ImGui::Text(_class->name);
+        }
+        ImGui::End();
 
     }
 }
-
 void GameUI::show_welcome_window() {
     if (show_welcome)
     {
@@ -39,7 +44,9 @@ void GameUI::show_welcome_window() {
         ImGui::End();
     }
 }
-
+void GameUI::setStats(Stats* _stats) {
+    stats = _stats;
+}
 void GameUI::show_info_once_window(){
     if (show_info_once)
     {
@@ -76,13 +83,15 @@ void GameUI::toggle_info_once_window(const std::string &_info) {
     ImGui::SetNextWindowPos(ImVec2(500, 200));
     stateFlag = 1;
 }
-
 void GameUI::load_ui_elements() {
     int my_image_width = 0;
     int my_image_height = 0;
     bool ret = LoadTextureFromFile("/home/hous/CLionProjects/Verdura/Game/UI/sword-10-48.png",
         &sword_texture_id, &my_image_width, &my_image_height);
     IM_ASSERT(ret);
+}
+void GameUI::add_class_to_track(WarriorClass *_class) {
+    warriorClasses.push_back(_class);
 }
 
 void GameUI::show_reward_window() {
@@ -98,6 +107,7 @@ void GameUI::show_reward_window() {
         if (ImGui::Button("Confirmer"))
         {
             show_reward_choice = false;
+            stateFlag = 0 ;
         }
         ImGui::End();
     }
@@ -112,4 +122,5 @@ inline void GameUI::update(float deltatime) {
     show_welcome_window();
     show_info_once_window();
     show_reward_window();
+    show_stats();
 }
