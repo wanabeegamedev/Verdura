@@ -8,12 +8,11 @@
 #if defined(IMGUI_IMPL_OPENGL_ES2)
 #include <GLES2/gl2.h>
 #endif
-#include <GLFW/glfw3.h> // Will drag system OpenGL headers
+#include <GLFW/glfw3.h>
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
 
-// This example can also compile and run with Emscripten! See 'Makefile.emscripten' for details.
 #ifdef __EMSCRIPTEN__
 #include "../libs/emscripten/emscripten_mainloop_stub.h"
 #endif
@@ -44,6 +43,7 @@
 #include "Engine/Shader/program.h"
 #include "Engine/Shader/shader.h"
 #include "Engine/Sound/SoundManager.h"
+#include "Game/Ability/DamageReductionStrategy.h"
 #include "Game/Character/DamageManager.h"
 #include "Game/Character/Enemy.h"
 #include "Game/Character/Hero.h"
@@ -57,12 +57,8 @@ static void glfw_error_callback(int error, const char* description)
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
 
-// Map dimensions
-const float mapWidth = 2000.0f, mapHeight = 720.0f;
 
-
-Camera camera; // Belongs to RENDERER
-// Global variables for timing (RENDERER)
+Camera camera;
 double lastFrame = 0.0; // Time of the last frame // Belongs to RENDERER
 double deltaTime = 0.0; // Time between current and last frame // Belongs to RENDERER
 
@@ -72,8 +68,6 @@ int main(int, char**)
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return 1;
-    // PARTIE IMGUI
-    // Decide GL+GLSL versions
 #if defined(IMGUI_IMPL_OPENGL_ES2)
     // GL ES 2.0 + GLSL 100
     const char* glsl_version = "#version 100";
@@ -88,7 +82,6 @@ int main(int, char**)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
 #else
-    // GL 3.0 + GLSL 130
     const char* glsl_version = "#version 130";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
@@ -98,8 +91,6 @@ int main(int, char**)
     GLFWwindow* window = glfwCreateWindow(1280, 720, "Verdura RPG", nullptr, nullptr);
 
     glfwMakeContextCurrent(window);
-    //glfwSetMouseButtonCallback(window, mouseCallback);
-    //glfwSwapInterval(1);
 
     //  Dear ImGui
     IMGUI_CHECKVERSION();
@@ -115,9 +106,7 @@ int main(int, char**)
     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
 #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
-    // Our state
-    bool show_demo_window = true;
-    bool show_another_window = false;
+
     //ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     ImVec4 clear_color = ImVec4(0.f, 0.f, 0.f, 1.00f);
 
@@ -146,7 +135,7 @@ int main(int, char**)
 
     Shader vShader("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex_character.txt",GL_VERTEX_SHADER);
     Shader fShader("/home/hous/CLionProjects/Verdura/Game/Shaders/fragment_character.txt",GL_FRAGMENT_SHADER);
-    //std::shared_ptr<Program> program = std::make_shared<Program>(vShader.shader_id(), fShader.shader_id());
+
 
     auto* program = new Program(vShader.shader_id(), fShader.shader_id());
     program->setName("t_pose_j1");
@@ -164,12 +153,12 @@ int main(int, char**)
     soundManager.loadSound("music1", "/home/hous/CLionProjects/Verdura/Engine/Sound/8bit-music-for-game-68698.mp3");
 
     soundManager.playSequential("gameStart","music1");
+
     Shader vShaderFire("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex_fire_ice_particle.txt",GL_VERTEX_SHADER);
     Shader fShaderFire("/home/hous/CLionProjects/Verdura/Game/Shaders/fragment_fire_ice_particle.txt",GL_FRAGMENT_SHADER);
     Program programFire(vShaderFire.shader_id(),fShaderFire.shader_id());
     programFire.setName("fireProgram");
     Particle particleFire("/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/fireball.png",
-                        0.3f,
                         mesh2.position,
                         mesh2.facingDirection,
                         &programFire);
@@ -180,8 +169,7 @@ int main(int, char**)
 
     Stats stats;
     stats.setHP(250.f);
-    Inventory inventory;
-    Hero hero1(&mesh2,stats,inventory,"Le Héros");
+    Hero hero1(&mesh2,stats,"Le Héros");
 
     std::vector<OBJMeshFlyWeight> enemiesMeshes;
     std::vector<Enemy> enemies;
@@ -192,15 +180,13 @@ int main(int, char**)
             0,
             "/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/fireball.png",
             10.0f,
-            3.0f,
             &programFire
         );
-    float fireDelayBase = 2.0f;
+    float fireDelayBase = 3.0f;
 
     std::vector<glm::vec3> enemyPositions = generateEnemyPositions(0.0f, 100.0f, -8.0f, 8.0f, 40, 20);
     for (int i = 0; i < 20; i++) {
         OBJMeshFlyWeight _mesh(enemyPositions[i]);
-        //_mesh.position = glm::vec3(i,.0f,.0f);
         enemiesMeshes.push_back(_mesh);
 
         //std::cout << "Position: (" << _mesh.position.x << ", " << _mesh.position.y << ", " << _mesh.position.z << ")\n";
@@ -214,9 +200,24 @@ int main(int, char**)
 
 
     //TODO
-    /*WarriorClass heroClassFire(&attack,&defenseStrategy,fireDelayBase);*/
-    //gameUI.add_class_to_track(&heroClassFire);*/
+    Attack* heroAttack = new Attack(
+            glm::vec3(0.0f),
+            0,
+            "/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/sword.png",
+            10.0f,
+            &programFire
+        );
+
+    for (Particle& particle : heroAttack->particleManager.particlesObjectPool) {
+        particle.velocity  = 7.0f;
+    }
+    float heroDelayBase = .0f;
+    DefenseStrategy* heroDefenseStrategy = new DamageReductionStrategy();
+    WarriorClass heroClassSword(heroAttack,heroDefenseStrategy,heroDelayBase);
+    heroClassSword.setName(KNIGHT_CLASS_NAME);
+    gameUI.add_class_to_track(&heroClassSword);
     gameUI.setStats(&stats);
+
 
 
 
@@ -233,9 +234,10 @@ int main(int, char**)
         "L : Attaque de classe 1, chevalier .\n"
         "M : Attaque de classe 2, si vous debloquez la classe sorcier (pas rebelle!)\n"
         "On va bien s'amuser, c\'est parti !"));
+    //std::cout << particleManager.particlesObjectPool[0].velocity << std::endl;
+    //std::cout << attack->particleManager.particlesObjectPool[0].velocity << std::endl;
 
-
-    glEnable(GL_DEPTH_TEST); //  depth testing
+    glEnable(GL_DEPTH_TEST);
     glfwSwapInterval(1); // V-SYNC
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -263,44 +265,53 @@ int main(int, char**)
         int display_w=1280, display_h=720;
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
-        glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
+        glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w,
+            clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-
-        /*if (gameUI.stateFlag == 0)
-        {
-            camera.updateCameraVectors();
-            camera.update();
-        }*/
         // If GameState == UI_INTERRUPT // Render but not update
         // If GameState == PLAYING // Update && Render
-        //TODO updateCamera()
+        // // If GameState == OVER // Render but not update
+
         renderer.updateCamera(deltaTime);
 
-    if (gameUI.stateFlag == GameState::PLAYING)//TOFO
+    if (gameUI.stateFlag == GameState::PLAYING)//TODO
     {
 
+        //hero1.handleInputs();
         if (ImGui::IsKeyPressed(ImGuiKey_M,false))
         {
-            particleManager.releaseFromObjectPool(hero1.characterMesh->position,hero1.characterMesh->facingDirection,soundManager);
-            soundManager.playSound("fireSound");//TODO Travail de la classe Attack, Qui a besoin d'un soundManager
-            //std::cout << "Position: (" << mesh2.position.x << ", " << mesh2.position.y << ", " << mesh2.position.z << ")\n";
-            //std::cout << gameUI.stateFlag;
+            heroAttack->particleManager.releaseFromObjectPool(hero1.characterMesh->position,
+                hero1.characterMesh->facingDirection,soundManager);
         }
         hero1.characterMesh->handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
         // TODO dans Enemy.update
         // TODO Travail de la class DamageManager; qui va le faire sur Attack
         // puis lancer le HitEvent avec le soundManager et la position de la
         // particule
-        particleManager.update(deltaTime);
+
+        //TODO hero
+        heroAttack->particleManager.update(deltaTime);
+        for (Particle& particle : heroAttack->particleManager.particlesObjectPool) {
+            for (Enemy& enemy : enemies)
+                if (particle.isActive) {
+                    if (damageManager.checkCollision(particle.position, enemy.flyweightMesh->position)) {
+                        particle.isActive = false;
+                        eventManager.addEvent(std::make_unique<HitEvent>(hero1, enemy, soundManager));
+                    }
+                }
+        }
+
+
+        //updateEnemies(hero,deltaTime,soundManager)
        for (Enemy& enemy : enemies) {
             //TODO Enemy.update();
             enemy.alignToHero(hero1.characterMesh->position);
             if (enemy.isCloseEnough(hero1.characterMesh->position))
                  enemy.doAttack(deltaTime, soundManager);
             if (enemy.warriorClass && enemy.warriorClass->attack) {
-                enemy.warriorClass->attack->particleManager.update(deltaTime);
+                //enemy.warriorClass->attack->particleManager.update(deltaTime);
                 for (Particle& particle : enemy.warriorClass->attack->particleManager.particlesObjectPool) {
                     if (particle.isActive) {
                         if (damageManager.checkCollision(particle.position, hero1.characterMesh->position)) {
@@ -312,22 +323,23 @@ int main(int, char**)
                 }
             }
         }
+
+        if (enemies.size() > 0)
+        enemies.back().warriorClass->attack->particleManager.update(deltaTime);
+
         eventManager.handleEvents();
 
 
     }
         //PARTIE RENDER
-        renderer.renderParticles(particleManager);
+        renderer.renderParticles(heroAttack->particleManager);
         renderer.renderMeshOBJ(*hero1.characterMesh,deltaTime);
-        //les Enemies
+        if (enemies.size() > 0)
+        renderer.renderParticles(enemies.back().warriorClass->attack->particleManager);
+       
         for (Enemy& enemy : enemies) {
-            if (enemy.warriorClass && enemy.warriorClass->attack) {
-                renderer.renderParticles(enemy.warriorClass->attack->particleManager);
-            }
-           renderer.renderMeshOBJFromFlyWeight(mesh, *enemy.flyweightMesh, deltaTime);
-           //enemy.characterMesh->Render(camera,deltaTime);
+            renderer.renderMeshOBJFromFlyWeight(mesh, *enemy.flyweightMesh, deltaTime);
         }
-
 
         glBindVertexArray(0);
         glfwSwapBuffers(window);

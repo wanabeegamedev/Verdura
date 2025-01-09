@@ -57,33 +57,20 @@ add_executable(
         Engine/Common/Game.h
         Game/Character/Character.h
         Game/Character/Enemy.h
-        Game/Inventory/Inventory.h
         Game/Character/Leveling.cpp
         Game/Character/Leveling.h
         Game/Character/Character.cpp
         Game/Character/Character.h
-        Game/Inventory/Inventory.cpp
-        Game/Inventory/Inventory.h
         Game/Character/Enemy.cpp
         Game/Character/Enemy.h
         Game/UI/GameUI.cpp
         Game/UI/GameUI.h
-        Game/Inventory/Shop.cpp
-        Game/Inventory/Shop.h
-        Game/Inventory/Item.cpp
-        Game/Inventory/Item.h
-        Game/Ability/Ability.cpp
-        Game/Ability/Ability.h
         Game/Ability/Attack.cpp
         Game/Ability/Attack.h
-        Game/Character/CharacterMovement.cpp
-        Game/Character/CharacterMovement.h
         Game/Character/Stats.cpp
         Game/Character/Stats.h
         Game/Ability/DefenseStrategy.cpp
         Game/Ability/DefenseStrategy.h
-        Game/Ability/RetourALEnvoyeurStrategy.cpp
-        Game/Ability/RetourALEnvoyeurStrategy.h
         Game/Ability/DamageReductionStrategy.cpp
         Game/Ability/DamageReductionStrategy.h
         Engine/Sound/SoundManager.h
@@ -92,7 +79,6 @@ add_executable(
         Game/Character/DamageManager.h
         Game/UI/GameUI.h
         Game/UI/GameUI.cpp
-        Engine/Physics/Movement.h
         Game/Game/GameImpl.cpp
         Game/Game/GameImpl.h
         Engine/Events/EventManager.h

@@ -4,41 +4,33 @@
 
 #ifndef ATTACK_H
 #define ATTACK_H
-#include "Ability.h"
 #include "../../Engine/ParticleEffect/ParticleManager.h"
 #include <string>
 
-//#include "../../Engine/Mesh/OBJMesh.h"
-//#include "../Character/Character.h"
 
-class  Attack : public Ability {
+class  Attack {
     public:
         double damagePoints{};
         ParticleManager particleManager;
         Particle particlePrototype;
         std::string particlePath;
-        float attackDuration;
-        Program* program;// TODO Specifier que jai utiliser les pointeurs avant de comprendre les ref et que quand j'ai compris j'ai arreté
-        //Character& Owner;
+        Program* program;
         Attack(glm::vec3 position,int facingDirection,
             const std::string& ParticlePath,double _damagePoints,
-        float _attackDuration,Program* _program);//_Owner est un identifiant reservé
+        Program* _program);
 };
 
-inline Attack::Attack(/*Character& _owner,*/
-                      glm::vec3 position,int facingDirection,
+inline Attack::Attack(glm::vec3 position,int facingDirection,
                       const std::string &ParticlePath,
-                      const double _damagePoints,float _attackDuration,
+                      const double _damagePoints,
                       Program* _program):
-Ability(),
-particlePrototype(ParticlePath, _attackDuration,position,
+particlePrototype(ParticlePath,position,
                           facingDirection,_program)
 {
     particlePath = ParticlePath;
     damagePoints = _damagePoints;
-    attackDuration = _attackDuration;
     program = _program;
-    particlePrototype.setSound("fireSound");//tous les sorciers tirent du feu,c'est bien connu
+    particlePrototype.setSound("fireSound");
     particlePrototype.load();
     particleManager = ParticleManager();
     particleManager.prepareObjectPool(particlePrototype);

@@ -39,7 +39,7 @@
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 114,
+				"line" : 100,
 				"parent" : 0
 			},
 			{
@@ -109,24 +109,18 @@
 			[
 				0,
 				2,
-				16,
+				15,
+				17,
 				18,
 				19,
-				20,
 				21,
 				23,
 				25,
 				27,
-				29,
 				31,
 				33,
-				35,
-				37,
-				39,
-				43,
-				46,
-				51,
-				56
+				38,
+				43
 			]
 		},
 		{
@@ -245,24 +239,18 @@
 				0,
 				1,
 				2,
-				16,
+				15,
+				17,
 				18,
 				19,
-				20,
 				21,
 				23,
 				25,
 				27,
-				29,
 				31,
 				33,
-				35,
-				37,
-				39,
-				43,
-				46,
-				51,
-				56
+				38,
+				43
 			]
 		},
 		{
@@ -281,33 +269,26 @@
 				12,
 				13,
 				14,
-				15,
-				17,
+				16,
+				20,
 				22,
 				24,
 				26,
 				28,
+				29,
 				30,
 				32,
 				34,
+				35,
 				36,
-				38,
+				37,
+				39,
 				40,
 				41,
 				42,
 				44,
 				45,
-				47,
-				48,
-				49,
-				50,
-				52,
-				53,
-				54,
-				55,
-				57,
-				58,
-				59
+				46
 			]
 		}
 	],
@@ -393,11 +374,6 @@
 		},
 		{
 			"backtrace" : 1,
-			"path" : "Game/Inventory/Inventory.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "Game/Character/Leveling.cpp",
 			"sourceGroupIndex" : 0
@@ -411,12 +387,6 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "Game/Character/Character.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "Game/Inventory/Inventory.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
@@ -439,56 +409,12 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "Game/Inventory/Shop.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Game/Inventory/Shop.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "Game/Inventory/Item.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Game/Inventory/Item.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "Game/Ability/Ability.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Game/Ability/Ability.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
 			"path" : "Game/Ability/Attack.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"path" : "Game/Ability/Attack.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "Game/Character/CharacterMovement.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Game/Character/CharacterMovement.h",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -511,17 +437,6 @@
 		{
 			"backtrace" : 1,
 			"path" : "Game/Ability/DefenseStrategy.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "Game/Ability/RetourALEnvoyeurStrategy.cpp",
-			"sourceGroupIndex" : 0
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Game/Ability/RetourALEnvoyeurStrategy.h",
 			"sourceGroupIndex" : 1
 		},
 		{
@@ -554,11 +469,6 @@
 		{
 			"backtrace" : 1,
 			"path" : "Game/Character/DamageManager.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"path" : "Engine/Physics/Movement.h",
 			"sourceGroupIndex" : 1
 		},
 		{

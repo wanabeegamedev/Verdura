@@ -19,6 +19,9 @@ void Enemy::attackReceived(float damage)
    /*if (warriorClass == nullptr)
       throw std::runtime_error("Enemy attack forgotten!");*/
    currentHp-=damage;
+   if (currentHp<=0.f) {
+      toRemove = true;
+   }
 }
 void Enemy::alignToHero(const glm::vec3& heroPosition) {
 
@@ -39,9 +42,6 @@ void Enemy::alignToHero(const glm::vec3& heroPosition) {
       movementDirection.z = (direction.z > 0.0f) ? 1.0f : -1.0f;
       newFacingDirection = (movementDirection.z > 0.0f) ? 0 : 2;
    }
-   //movementDirection = glm::normalize(movementDirection);
-
-   /*flyweightMesh.position += movementDirection * speed*deltatime;*/
 
    flyweightMesh->model = glm::mat4(1.0f);
    flyweightMesh->model = glm::translate(flyweightMesh->model, flyweightMesh->position);

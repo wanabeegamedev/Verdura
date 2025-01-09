@@ -15,7 +15,8 @@
 class Enemy  :public Character
 {
 public:
-    float currentHp{};
+    float currentHp{40.f};// Mettons les en constants car je
+    // fais une seule classe d'enemy par manque de temps
     WarriorClass* warriorClass{};
     float delayBetweenAttack{};
     OBJMeshFlyWeight* flyweightMesh;
@@ -29,6 +30,7 @@ public:
     void alignToHero(const glm::vec3& heroPosition);
     void doAttack(float deltatime,SoundManager&);
     bool isCloseEnough(const glm::vec3&) const;
+    bool toRemove{false};
     ~Enemy() override;
 
 };

@@ -11,8 +11,6 @@
 #include "../Character/Enemy.h"
 #include "../Character/Hero.h"
 #include "../Character/Leveling.h"
-#include "../Inventory/Shop.h"
-
 
 class GameImpl:public Game {
     public:
@@ -23,7 +21,7 @@ class GameImpl:public Game {
         SoundManager soundManager;
         Leveling levelingManager;// J'aurais dû l'appeler LevelingManager
         EventManager eventManager;
-        Shop shop;
+
 
         //TODO 2 UI Stats
         //TODO 2 Warrior Classes

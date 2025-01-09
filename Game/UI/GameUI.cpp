@@ -28,6 +28,7 @@ void GameUI::show_stats() {
         ImGui::Text(std::to_string(stats->currentMana).c_str());
         ImGui::Text("Unlocked classes:");
         for (auto& _class:warriorClasses) {
+            //static_assert()
             ImGui::Text(_class->name);
         }
         ImGui::End();

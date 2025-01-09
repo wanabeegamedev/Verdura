@@ -16,9 +16,9 @@
 #include "../Sound/SoundManager.h"
 
 
-constexpr float PARTICLE_SPEED = .25f; // Je la garde constante
+constexpr float PARTICLE_SPEED = 2.f; // Je la garde constante
 constexpr float MAX_NB_PARTICLES = 100;
-constexpr float LIFETIME = 45.f;
+constexpr float LIFETIME = 4.f;
 inline constexpr float vertices[] = {
     // positions        // texture coords
     -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, //bas-gauche
@@ -38,15 +38,15 @@ public:
     Program * program;
     std::string pathToFile;
     std::string sound;
-    void update(double);//move up a little bit, also at every update the billboard follow its mesh(the burning character)
-    void load(); // load the billboard, png, Used Once for every type of particle
+    void update(double);
+    void load();
 
-    double lifetime; // particle set to inactive if lifetime hit 0
-    glm::vec3 position{}; // initialize to mesh.position() which is the position of the mesh
-    float velocity{PARTICLE_SPEED}; // particle speed
+    double lifetime;
+    glm::vec3 position{};
+    float velocity{PARTICLE_SPEED};
     int facingDirection;
     bool isActive  = false;
-    glm::mat4 model{}; // billboard never rotate, it always face camera
+    glm::mat4 model{};
     void translate(const glm::vec3& translation)
     {
         //position += translation;
@@ -60,7 +60,7 @@ public:
     void rotate(float angleRadians, const glm::vec3& axis) {
         model = glm::rotate(model, angleRadians, axis);
     }
-    Particle(const std::string& _path,float _lifetime, glm::vec3 _position,
+    Particle(const std::string& _path, glm::vec3 _position,
     int _facingDirection,Program * _program);
 };
 inline void Particle::setSound(std::string const& _sound) {
@@ -79,7 +79,6 @@ class ParticleManager {
         const glm::vec3& _position,
         int _facingDirection,
         SoundManager&);
-    void returnToObjectPool(Particle& particle);
 };
 inline void Particle::load() {
     int width, height, nrChannels;
@@ -132,13 +131,12 @@ inline void Particle::update(double deltaTime)
     model = glm::translate(model, position);
 }
 inline Particle::Particle(
-    const std::string& _path,float _lifetime,
+    const std::string& _path,
     const glm::vec3 _position,
     int _facingDirection,Program * _program)
 {
     pathToFile = _path;
     program = _program;
-    lifetime = _lifetime;
     position = _position;
     sound ="";
     model = glm::mat4(1.0f);
@@ -236,10 +234,6 @@ inline void ParticleManager::releaseFromObjectPool(const glm::vec3& _position,
             break;
         }
     }
-}
-inline void ParticleManager::returnToObjectPool(Particle &particle) {
-    particle.lifetime = LIFETIME;
-    particle.isActive = false;
 }
 
 
