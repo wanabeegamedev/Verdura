@@ -47,7 +47,9 @@
 #include "Game/Character/DamageManager.h"
 #include "Game/Character/Enemy.h"
 #include "Game/Character/Hero.h"
+#include "Game/Character/Leveling.h"
 #include "Game/Events/HitEvent.h"
+#include "Game/Events/LevelingEvent.h"
 #include "Game/Events/UIInterruptEvent.h"
 #include "Game/UI/GameUI.h"
 
@@ -223,6 +225,8 @@ int main(int, char**)
 
     DamageManager damageManager;
     EventManager eventManager;
+    Leveling leveling;
+
 
     eventManager.addEvent(std::make_unique<UIInterruptEvent>(&gameUI,&soundManager,
         "Vous êtes un chevalier envoyé par la couronne pour vaincre la guilde des sorciers rebelles!\n"
@@ -275,10 +279,16 @@ int main(int, char**)
         // // If GameState == OVER // Render but not update
 
         renderer.updateCamera(deltaTime);
-
+    if (gameUI.readReward) {
+        if (gameUI.choice == 1 ) {
+            std::cout << "Leveling OK";
+            gameUI.readReward = false;
+        }
+        //else if (gameUI.choice == 3 )
+        //else if  (gameUI.choice == 3 )
+    }
     if (gameUI.stateFlag == GameState::PLAYING)//TODO
     {
-
         //hero1.handleInputs();
         if (ImGui::IsKeyPressed(ImGuiKey_M,false))
         {
@@ -299,34 +309,39 @@ int main(int, char**)
                     if (damageManager.checkCollision(particle.position, enemy.flyweightMesh->position)) {
                         particle.isActive = false;
                         eventManager.addEvent(std::make_unique<HitEvent>(hero1, enemy, soundManager));
+                        eventManager.addEvent(std::make_unique<LevelingEvent>(&hero1,&gameUI,&soundManager,&leveling));
+
                     }
                 }
         }
+        enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
+            [](const Enemy& enemy) { return enemy.toRemove; }), enemies.end());
 
 
         //updateEnemies(hero,deltaTime,soundManager)
-       for (Enemy& enemy : enemies) {
-            //TODO Enemy.update();
-            enemy.alignToHero(hero1.characterMesh->position);
-            if (enemy.isCloseEnough(hero1.characterMesh->position))
-                 enemy.doAttack(deltaTime, soundManager);
-            if (enemy.warriorClass && enemy.warriorClass->attack) {
-                //enemy.warriorClass->attack->particleManager.update(deltaTime);
-                for (Particle& particle : enemy.warriorClass->attack->particleManager.particlesObjectPool) {
-                    if (particle.isActive) {
-                        if (damageManager.checkCollision(particle.position, hero1.characterMesh->position)) {
-                            particle.isActive = false;
-                            soundManager.playSound("pain1");
-                            eventManager.addEvent(std::make_unique<HitEvent>(enemy, hero1, soundManager));
+        if (enemies.size() > 0)
+            for (Enemy& enemy : enemies) {
+                //TODO Enemy.update();
+                enemy.alignToHero(hero1.characterMesh->position);
+                if (enemy.isCloseEnough(hero1.characterMesh->position))
+                     enemy.doAttack(deltaTime, soundManager);
+                if (enemy.warriorClass && enemy.warriorClass->attack) {
+                    //enemy.warriorClass->attack->particleManager.update(deltaTime);
+                    for (Particle& particle : enemy.warriorClass->attack->particleManager.particlesObjectPool) {
+                        if (particle.isActive) {
+                            if (damageManager.checkCollision(particle.position, hero1.characterMesh->position)) {
+                                particle.isActive = false;
+                                soundManager.playSound("pain1");
+                                eventManager.addEvent(std::make_unique<HitEvent>(enemy, hero1, soundManager));
+                            }
                         }
                     }
                 }
             }
-        }
-
         if (enemies.size() > 0)
         enemies.back().warriorClass->attack->particleManager.update(deltaTime);
-
+       /* else
+            eventManager.addEvent(std::make_unique<GameEndEvent>(true, soundManager));//success*/
         eventManager.handleEvents();
 
 
@@ -336,7 +351,7 @@ int main(int, char**)
         renderer.renderMeshOBJ(*hero1.characterMesh,deltaTime);
         if (enemies.size() > 0)
         renderer.renderParticles(enemies.back().warriorClass->attack->particleManager);
-       
+
         for (Enemy& enemy : enemies) {
             renderer.renderMeshOBJFromFlyWeight(mesh, *enemy.flyweightMesh, deltaTime);
         }

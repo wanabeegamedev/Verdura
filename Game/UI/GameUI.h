@@ -47,6 +47,7 @@ public:
     bool show_reward_choice = false;
     int stateFlag{};
     int choice{};
+    bool readReward{false};
 
     std::string info;
     std::vector<WarriorClass*> warriorClasses{};

@@ -117,6 +117,7 @@ void GameUI::show_reward_window() {
 void GameUI::toggle_info_reward_window() {
     show_reward_choice = true;
     stateFlag = 1;
+    readReward = true;
 }
 inline void GameUI::update(float deltatime) {
 
