@@ -15,21 +15,24 @@ public:
     GameUI* gameUI;
     SoundManager* soundManager{};
     Leveling* leveling;
+    int XP;
 
-    LevelingEvent(Hero* _hero,GameUI* _gameUI,SoundManager* _soundManager,Leveling* _leveling):
+    LevelingEvent(Hero* _hero,GameUI* _gameUI,SoundManager* _soundManager,Leveling* _leveling,int _XP):
         hero(_hero), gameUI(_gameUI),
         soundManager(_soundManager),
-        leveling(_leveling){}
+        leveling(_leveling),
+    XP(_XP){}
     void handle() override;
 };
 
 inline void LevelingEvent::handle() {
-//TODO
-    // if (Leveling.checkLevelFromEXP)
-    gameUI->stateFlag = 1;
-    gameUI->toggle_info_reward_window();
 
-    //soundManager.playSound("winsquare");
+    if (leveling->checkXP(XP)) {
+
+        gameUI->stateFlag = 1;
+        gameUI->toggle_info_reward_window();
+        soundManager->playSound("winsquare");
+    }
 
 }
 

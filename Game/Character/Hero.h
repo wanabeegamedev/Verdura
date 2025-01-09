@@ -10,7 +10,7 @@
 class Hero:public Character{
     public:
 
-    std::vector<WarriorClass> HeroClasses;
+    std::vector<WarriorClass*> HeroClasses;
     Hero(OBJMesh* _characterMesh,Stats& _stats,
         const std::string& _name);
 

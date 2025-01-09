@@ -3,13 +3,14 @@
 //
 
 #include "Hero.h"
-constexpr float ATTACK_XP_INCREASE = 10.0f;
+constexpr float ATTACK_XP_INCREASE = 20.0f;
 
 Hero::Hero(OBJMesh* _characterMesh,Stats& _stats,
         const std::string& _name):stats(_stats) {
         characterMesh = _characterMesh;
         name = _name;
-        //TODO seed WarriorClasses
+        // TODO seed WarriorClasses
+        // Here
 }
 
 void Hero::attackSuccessful()

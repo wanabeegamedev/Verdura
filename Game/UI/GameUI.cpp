@@ -48,6 +48,9 @@ void GameUI::show_welcome_window() {
 void GameUI::setStats(Stats* _stats) {
     stats = _stats;
 }
+void GameUI::setHero(Hero* _hero) {
+    hero = _hero;
+}
 void GameUI::show_info_once_window(){
     if (show_info_once)
     {
@@ -87,8 +90,15 @@ void GameUI::toggle_info_once_window(const std::string &_info) {
 void GameUI::load_ui_elements() {
     int my_image_width = 0;
     int my_image_height = 0;
-    bool ret = LoadTextureFromFile("/home/hous/CLionProjects/Verdura/Game/UI/sword-10-48.png",
-        &sword_texture_id, &my_image_width, &my_image_height);
+    bool ret;
+    ret = LoadTextureFromFile("/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/fireball.png",
+        &fire_texture_id, &my_image_width, &my_image_height);
+    IM_ASSERT(ret);
+    LoadTextureFromFile("/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/mana.png",
+        &mana_texture_id, &my_image_width, &my_image_height);
+    IM_ASSERT(ret);
+    LoadTextureFromFile("/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/potion.png",
+        &health_texture_id, &my_image_width, &my_image_height);
     IM_ASSERT(ret);
 }
 void GameUI::add_class_to_track(WarriorClass *_class) {
@@ -98,17 +108,55 @@ void GameUI::add_class_to_track(WarriorClass *_class) {
 void GameUI::show_reward_window() {
     if (show_reward_choice)
     {
-        ImGui::Begin("Choose a reward !");
-        if (ImGui::ImageButton("choice1", sword_texture_id, texture_size, uv0, uv1, bg_col, tint_col))
-            choice = 1;
-        ImGui::SameLine();
-        if (ImGui::ImageButton("choice2", sword_texture_id, texture_size, uv0, uv1, bg_col, tint_col))
+        std::string last_text;
+        ImGui::Begin("Vous Gagnez un niveau pour vos effort, une récompense aussi !");
+        if (ImGui::ImageButton("choice2", mana_texture_id, texture_size, uv0, uv1, bg_col, tint_col)) {
             choice = 2;
-        ImGui::Text("choice = %d", choice);
+        text  = "Obtenez un peu de mana ! ";
+        }
+        ImGui::SameLine();
+        if (ImGui::ImageButton("choice3", health_texture_id, texture_size, uv0, uv1, bg_col, tint_col))
+        {
+            choice = 3;
+            text = "Obtenez un peu de santé ! ";
+        }
+        ImGui::SameLine();
+        if (warriorClasses.size() < WARRIOR_CLASSES_COUNT)
+        {
+            if (ImGui::ImageButton("choice1", fire_texture_id, texture_size, uv0, uv1, bg_col, tint_col)) {
+                choice = 1;
+                text = "Débloquez la classe Sorcier! ";
+            }
+        }
+        last_text = text;
+        ImGui::Text(last_text.c_str());
+        /*ImGui::Text("choice=%d",choice);
+        ImGui::Text("confirmed choice=%d",confirmed_choice);*/
+
         if (ImGui::Button("Confirmer"))
         {
             show_reward_choice = false;
             stateFlag = 0 ;
+            confirmed_choice = choice;
+            if (confirmed_choice == 1 ) {
+                hero->HeroClasses.push_back(rewardClass);
+                add_class_to_track(rewardClass);
+            }
+            /*
+            if (gameUI.confirmed_choice == 2 ) {
+                hero1.stats.currentMana += 50;
+                gameUI.readReward = false;
+            }
+            if (gameUI.confirmed_choice == 3 ) {
+                hero1.stats.currentHp += 50;
+
+            }
+            */
+            //gameUI.readReward = false;
+            stats->currentLvl++;//TODO show lvl
+            //TODO defense
+            confirmed_choice = 0;
+            choice = 0;
         }
         ImGui::End();
     }

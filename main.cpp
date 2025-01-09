@@ -206,17 +206,34 @@ int main(int, char**)
             glm::vec3(0.0f),
             0,
             "/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/sword.png",
-            10.0f,
+            15.0f,
             &programFire
         );
-
+    Attack* heroAttackWizard = new Attack(
+            glm::vec3(0.0f),
+            0,
+            "/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/fireball.png",
+            20.0f,//TODO use damage points in attack received
+            &programFire
+        );
     for (Particle& particle : heroAttack->particleManager.particlesObjectPool) {
         particle.velocity  = 7.0f;
     }
+    for (Particle& particle : heroAttackWizard->particleManager.particlesObjectPool) {
+        particle.velocity  = 9.0f;
+    }
     float heroDelayBase = .0f;
-    DefenseStrategy* heroDefenseStrategy = new DamageReductionStrategy();
+    DefenseStrategy* heroDefenseStrategy = new DamageReductionStrategy();//TODO use
     WarriorClass heroClassSword(heroAttack,heroDefenseStrategy,heroDelayBase);
     heroClassSword.setName(KNIGHT_CLASS_NAME);
+    hero1.HeroClasses.push_back(&heroClassSword);
+
+    WarriorClass heroClassFire(heroAttackWizard,heroDefenseStrategy,heroDelayBase);
+
+    heroClassFire.setName(WIZARD_CLASS_NAME);
+    gameUI.rewardClass = &heroClassFire;
+
+
     gameUI.add_class_to_track(&heroClassSword);
     gameUI.setStats(&stats);
 
@@ -279,21 +296,25 @@ int main(int, char**)
         // // If GameState == OVER // Render but not update
 
         renderer.updateCamera(deltaTime);
-    if (gameUI.readReward) {
-        if (gameUI.choice == 1 ) {
-            std::cout << "Leveling OK";
-            gameUI.readReward = false;
-        }
-        //else if (gameUI.choice == 3 )
-        //else if  (gameUI.choice == 3 )
-    }
+
+
+
+
     if (gameUI.stateFlag == GameState::PLAYING)//TODO
     {
         //hero1.handleInputs();
+        if (ImGui::IsKeyPressed(ImGuiKey_L,false))
+        {
+            hero1.HeroClasses[0]->doAttack(deltaTime,hero1.characterMesh->position,
+                hero1.characterMesh->facingDirection,soundManager);
+        }
         if (ImGui::IsKeyPressed(ImGuiKey_M,false))
         {
-            heroAttack->particleManager.releaseFromObjectPool(hero1.characterMesh->position,
-                hero1.characterMesh->facingDirection,soundManager);
+            if (hero1.HeroClasses[1]!=nullptr)
+                hero1.HeroClasses[1]->doAttack(deltaTime,hero1.characterMesh->position,
+                    hero1.characterMesh->facingDirection,soundManager);
+            else
+                std::cout << "pas encore";
         }
         hero1.characterMesh->handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
         // TODO dans Enemy.update
@@ -309,7 +330,7 @@ int main(int, char**)
                     if (damageManager.checkCollision(particle.position, enemy.flyweightMesh->position)) {
                         particle.isActive = false;
                         eventManager.addEvent(std::make_unique<HitEvent>(hero1, enemy, soundManager));
-                        eventManager.addEvent(std::make_unique<LevelingEvent>(&hero1,&gameUI,&soundManager,&leveling));
+                        eventManager.addEvent(std::make_unique<LevelingEvent>(&hero1,&gameUI,&soundManager,&leveling,stats.currentExp));
 
                     }
                 }
@@ -347,7 +368,9 @@ int main(int, char**)
 
     }
         //PARTIE RENDER
-        renderer.renderParticles(heroAttack->particleManager);
+        //renderer.renderParticles(heroAttack->particleManager);
+        for (WarriorClass*& wc : hero1.HeroClasses )
+            renderer.renderParticles(wc->attack->particleManager);
         renderer.renderMeshOBJ(*hero1.characterMesh,deltaTime);
         if (enemies.size() > 0)
         renderer.renderParticles(enemies.back().warriorClass->attack->particleManager);
@@ -368,7 +391,7 @@ int main(int, char**)
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
-    glfwDestroyWindow(window); // Renderer.window, //RENDERER class attributes
+    glfwDestroyWindow(window);
     glfwTerminate();
 
     return 0;

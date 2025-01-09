@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "imgui.h"
+#include "../Character/Hero.h"
 #include "../Character/Stats.h"
 #include "../Character/WarriorClass.h"
 
@@ -26,9 +27,7 @@ public:
     ImVec2 uv1 ;
     ImVec4 bg_col ;
     ImVec4 tint_col;
-
-    unsigned int sword_texture_id{};
-    unsigned int snow_texture_id{};
+    std::string text;
     unsigned int fire_texture_id{};
     unsigned int mana_texture_id{};
     unsigned int health_texture_id{};
@@ -47,17 +46,21 @@ public:
     bool show_reward_choice = false;
     int stateFlag{};
     int choice{};
+    int confirmed_choice{};
     bool readReward{false};
 
     std::string info;
     std::vector<WarriorClass*> warriorClasses{};
     Stats* stats;
+    Hero* hero;
+    WarriorClass* rewardClass{};
 
     void show_welcome_window() ;
     void show_info_log_window();
     void handleInputs(float);
     void update(float);
     void setStats(Stats*);
+    void setHero(Hero*);
 
     void show_info_once_window();
     void show_stats();
@@ -67,7 +70,7 @@ public:
     void show_reward_window();
     void toggle_info_reward_window();
     void load_ui_elements();
-    void add_class_to_track(WarriorClass*);
+    void add_class_to_track(WarriorClass* );
 };
 
 #endif //GAMEUI_H

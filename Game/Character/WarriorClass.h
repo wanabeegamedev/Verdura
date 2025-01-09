@@ -9,6 +9,7 @@
 
 #define WIZARD_CLASS_NAME "Wizard"
 #define KNIGHT_CLASS_NAME "Knight"
+#define WARRIOR_CLASSES_COUNT 2
 class WarriorClass {
 public:
     Attack* attack;
