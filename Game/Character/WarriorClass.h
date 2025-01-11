@@ -21,7 +21,7 @@ public:
     WarriorClass(Attack* _attack,DefenseStrategy* _defenseStrategy,float _delayBetweenAttack);
     void doAttack(float deltatime,glm::vec3& position,int facingDirection,SoundManager&);
     void setName(std::string _name);
-    const char* name;
+    std::string name;
 };
 
 

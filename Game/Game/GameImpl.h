@@ -6,6 +6,10 @@
 #define GAMEIMPL_H
 #include "../../Engine/Common/Game.h"
 #include "../../Engine/Events/EventManager.h"
+#include "../Game/Events/HitEvent.h"
+#include "../Game/Events/LevelingEvent.h"
+#include "../Game/Events/GameEndEvent.h"
+#include "../Game/Events/UIInterruptEvent.h"
 #include "../../Engine/Sound/SoundManager.h"
 #include "../Character/DamageManager.h"
 #include "../Character/Enemy.h"
@@ -14,35 +18,24 @@
 
 class GameImpl:public Game {
     public:
-        // Cette implementation utilise un seul hero; mais GameImpl est codé pour reussir à manager plusieurs
-        std::vector<Hero> heros;
+        Hero* hero{};
+        std::vector<OBJMeshFlyWeight> enemiesMeshes;
         std::vector<Enemy> enemies;
         DamageManager damageManager;
         SoundManager soundManager;
-        Leveling levelingManager;// J'aurais dû l'appeler LevelingManager
+        Leveling leveling;// J'aurais dû l'appeler LevelingManager
         EventManager eventManager;
-
-
-        //TODO 2 UI Stats
-        //TODO 2 Warrior Classes
-        //TODO 3 UI update
-        //TODO 4 LevelUp
-        //TODO 6 UI Image
-        //TODO 7 Sounds
-        void setRenderer(Renderer&);
-        void setGameUI(GameUI&);
-
-        void update();
-        void addHero(Hero& hero);
-        void addEnemy(Enemy& enemy);
-        void renderGame();
-        void computeDamage();// DAMAGE MANAGER DOES THAT
-        void updateGame();
-        void runGame();
-
+        void handleHeroInputs(float deltaTime);
+        void updateHero(float deltaTime);
+        void updateEnemies(float deltaTime);
+        void renderGame(float);
+        void runGame(float);
         GameImpl();
         void Initialize();
         ~GameImpl() override;
+
+        OBJMesh protoMeshEnemy;
+        OBJMesh protoMeshHero;
 
 };
 

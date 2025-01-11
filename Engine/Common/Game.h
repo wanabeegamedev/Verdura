@@ -19,8 +19,8 @@ class Game {
         Renderer* renderer{};
 
 
-    Game();
-    virtual ~Game();// TODO :  JE SUIS FICHU
+    Game(){};
+    virtual ~Game()=default;
 
 };
 

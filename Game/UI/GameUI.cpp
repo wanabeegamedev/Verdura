@@ -26,10 +26,14 @@ void GameUI::show_stats() {
         ImGui::Text("MP");
         ImGui::SameLine();
         ImGui::Text(std::to_string(stats->currentMana).c_str());
+        ImGui::Text("Level");
+        ImGui::SameLine();
+        ImGui::Text(std::to_string(stats->currentLvl).c_str());
+        //TODO
         ImGui::Text("Unlocked classes:");
         for (auto& _class:warriorClasses) {
             //static_assert()
-            ImGui::Text(_class->name);
+            ImGui::Text(_class->name.c_str());
         }
         ImGui::End();
 
@@ -77,9 +81,9 @@ void GameUI::show_info_log_window()
 void GameUI::handleInputs(float deltatime) {
     if (ImGui::IsKeyPressed(ImGuiKey_W))
         show_welcome = !show_welcome;
-    if (ImGui::IsKeyPressed(ImGuiKey_R))
-        show_reward_choice = !show_reward_choice;
-    update(deltatime);
+   /* if (ImGui::IsKeyPressed(ImGuiKey_R))
+        show_reward_choice = !show_reward_choice;*/
+    update();
 }
 void GameUI::toggle_info_once_window(const std::string &_info) {
     info = _info;
@@ -130,9 +134,6 @@ void GameUI::show_reward_window() {
         }
         last_text = text;
         ImGui::Text(last_text.c_str());
-        /*ImGui::Text("choice=%d",choice);
-        ImGui::Text("confirmed choice=%d",confirmed_choice);*/
-
         if (ImGui::Button("Confirmer"))
         {
             show_reward_choice = false;
@@ -142,19 +143,14 @@ void GameUI::show_reward_window() {
                 hero->HeroClasses.emplace_back(rewardClass);
                 add_class_to_track(rewardClass);
             }
-            /*
-            if (gameUI.confirmed_choice == 2 ) {
-                hero1.stats.currentMana += 50;
-                gameUI.readReward = false;
+            if (confirmed_choice == 2 ) {
+                stats->currentMana += 50;
             }
-            if (gameUI.confirmed_choice == 3 ) {
-                hero1.stats.currentHp += 50;
+            if (confirmed_choice == 3 ) {
+                stats->currentHp += 50;
 
             }
-            */
-            //gameUI.readReward = false;
-            stats->currentLvl++;//TODO show lvl
-            //TODO defense
+            stats->currentLvl++;
             confirmed_choice = 0;
             choice = 0;
         }
@@ -165,9 +161,8 @@ void GameUI::show_reward_window() {
 void GameUI::toggle_info_reward_window() {
     show_reward_choice = true;
     stateFlag = 1;
-    readReward = true;
 }
-inline void GameUI::update(float deltatime) {
+inline void GameUI::update() {
 
     show_welcome_window();
     show_info_once_window();

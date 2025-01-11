@@ -47,7 +47,6 @@ public:
     int stateFlag{};
     int choice{};
     int confirmed_choice{};
-    bool readReward{false};
 
     std::string info;
     std::vector<WarriorClass*> warriorClasses{};
@@ -58,7 +57,7 @@ public:
     void show_welcome_window() ;
     void show_info_log_window();
     void handleInputs(float);
-    void update(float);
+    void update();
     void setStats(Stats*);
     void setHero(Hero*);
 

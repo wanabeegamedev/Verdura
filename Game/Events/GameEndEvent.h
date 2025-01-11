@@ -5,4 +5,8 @@
 #ifndef GAMEENDEVENT_H
 #define GAMEENDEVENT_H
 
+class GameEndEvent : public Event {
+    public:
+
+};
 #endif //GAMEENDEVENT_H

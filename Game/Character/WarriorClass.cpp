@@ -5,7 +5,7 @@
 #include "WarriorClass.h"
 
 WarriorClass::WarriorClass(Attack *_attack, DefenseStrategy *_defenseStrategy,float _delayBetweenAttack): name(
-    nullptr) {
+    "undefined") {
     attack = _attack;
     delayBetweenAttack = _delayBetweenAttack;
     defenseStrategy = _defenseStrategy;
