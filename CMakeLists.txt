@@ -92,6 +92,7 @@ add_executable(
         Engine/Mesh/OBJMeshFlyWeight.h
         Engine/Common/math_helper.h
         Game/Events/LevelingEvent.h
+        Game/Events/GameEndEvent.h
 
 )
 

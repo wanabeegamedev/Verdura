@@ -12,7 +12,9 @@
 class DamageReductionStrategy:public DefenseStrategy
 {
 public:
-     void doDefense(Attack* attack) override{};
+     float doDefense(float _damage) override {
+          return _damage*0.80f;
+     };
 };
 
 

@@ -20,6 +20,10 @@ void Hero::attackSuccessful()
 }
 void Hero::attackReceived(float damage)
 {
+        //Les defenses stratégies
+        for (auto& heroClass: HeroClasses) {
+                damage = heroClass->defenseStrategy->doDefense(damage);
+        }
         stats.currentHp -= damage;
 }
 

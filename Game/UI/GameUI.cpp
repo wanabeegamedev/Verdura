@@ -139,7 +139,7 @@ void GameUI::show_reward_window() {
             stateFlag = 0 ;
             confirmed_choice = choice;
             if (confirmed_choice == 1 ) {
-                hero->HeroClasses.push_back(rewardClass);
+                hero->HeroClasses.emplace_back(rewardClass);
                 add_class_to_track(rewardClass);
             }
             /*

@@ -10,7 +10,7 @@
 class DefenseStrategy {
 public:
     virtual ~DefenseStrategy() = default;
-    virtual void  doDefense(Attack* attack){};
+    virtual float  doDefense(float _damage){};
     DefenseStrategy()= default;
 };
 

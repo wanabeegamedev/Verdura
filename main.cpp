@@ -229,12 +229,12 @@ int main(int, char**)
     hero1.HeroClasses.push_back(&heroClassSword);
 
     WarriorClass heroClassFire(heroAttackWizard,heroDefenseStrategy,heroDelayBase);
-
     heroClassFire.setName(WIZARD_CLASS_NAME);
     gameUI.rewardClass = &heroClassFire;
 
 
     gameUI.add_class_to_track(&heroClassSword);
+    gameUI.setHero(&hero1);
     gameUI.setStats(&stats);
 
 
@@ -313,8 +313,6 @@ int main(int, char**)
             if (hero1.HeroClasses[1]!=nullptr)
                 hero1.HeroClasses[1]->doAttack(deltaTime,hero1.characterMesh->position,
                     hero1.characterMesh->facingDirection,soundManager);
-            else
-                std::cout << "pas encore";
         }
         hero1.characterMesh->handleInputs(deltaTime); //TODO should use a specific InputHandler class to include imgui jsut once
         // TODO dans Enemy.update
@@ -323,18 +321,22 @@ int main(int, char**)
         // particule
 
         //TODO hero
-        heroAttack->particleManager.update(deltaTime);
-        for (Particle& particle : heroAttack->particleManager.particlesObjectPool) {
-            for (Enemy& enemy : enemies)
-                if (particle.isActive) {
-                    if (damageManager.checkCollision(particle.position, enemy.flyweightMesh->position)) {
-                        particle.isActive = false;
-                        eventManager.addEvent(std::make_unique<HitEvent>(hero1, enemy, soundManager));
-                        eventManager.addEvent(std::make_unique<LevelingEvent>(&hero1,&gameUI,&soundManager,&leveling,stats.currentExp));
+        //heroAttack->particleManager.update(deltaTime);
 
+        for (WarriorClass*& wc : hero1.HeroClasses )
+            wc->attack->particleManager.update(deltaTime);
+        for (WarriorClass*& wc : hero1.HeroClasses )
+            for (Particle& particle : wc->attack->particleManager.particlesObjectPool) {
+                for (Enemy& enemy : enemies)
+                    if (particle.isActive) {
+                        if (damageManager.checkCollision(particle.position, enemy.flyweightMesh->position)) {
+                            particle.isActive = false;
+                            eventManager.addEvent(std::make_unique<HitEvent>(hero1, enemy, soundManager));
+                            eventManager.addEvent(std::make_unique<LevelingEvent>(&hero1,&gameUI,&soundManager,&leveling,stats.currentExp));
+
+                        }
                     }
-                }
-        }
+            }
         enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
             [](const Enemy& enemy) { return enemy.toRemove; }), enemies.end());
 
