@@ -1,0 +1,19 @@
+#version 330 core
+
+layout (location = 0) in vec3 aPos;       
+layout (location = 1) in vec2 aTexCoord;
+
+out vec2 TexCoord;
+//uniform float uTime;
+uniform mat4 model;       // Model matrix
+uniform mat4 view;        // View matrix
+uniform mat4 projection;  // Projection matrix
+
+void main() {
+    mat3 viewRotation = mat3(view);
+    vec3 worldPosition = vec3(model[3]); 
+    vec3 billboardOffset = viewRotation * aPos;
+    vec4 finalPosition = vec4(worldPosition + billboardOffset, 1.0);
+    gl_Position = projection * view * finalPosition;
+    TexCoord = aTexCoord;
+}
