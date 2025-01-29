@@ -28,7 +28,7 @@ particlePrototype(ParticlePath,position,
                           facingDirection,_program)
 {
     particlePath = ParticlePath;
-    damagePoints = _damagePoints;// UNUSED
+    damagePoints = _damagePoints;
     program = _program;
     particlePrototype.setSound("fireSound");
     particlePrototype.load();

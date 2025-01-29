@@ -2,12 +2,12 @@
 // Created by hous on 11/7/24.
 //
 /*isometric
-#define INITIAL_POS glm::vec3(10.0f, 10.0f, 10.0f) // Camera is above and offset diagonally
-#define INITIAL_FRONT glm::normalize(glm::vec3(0.0f, 0.0f, 0.0f) - INITIAL_POS) // Point at origin
-#define INITIAL_UP glm::vec3(0.0f, 1.0f, 0.0f) // Y-axis remains "up"
+#define INITIAL_POS glm::vec3(10.0f, 10.0f, 10.0f)
+#define INITIAL_FRONT glm::normalize(glm::vec3(0.0f, 0.0f, 0.0f) - INITIAL_POS) 
+#define INITIAL_UP glm::vec3(0.0f, 1.0f, 0.0f) 
 */
 /*
-facing
+2D
 #define INITIAL_POS glm::vec3(.0f, .0f, 20.0f)
 #define INITIAL_FRONT  glm::normalize(glm::vec3(0.0f, 0.0f, 0.0f) - INITIAL_POS)
 #define INITIAL_UP glm::vec3(0.0f, 1.0f, 0.0f)
@@ -145,7 +145,7 @@ public:
     //}
 
     void update() {
-        projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, near, far); //TODO
+        projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, near, far); 
         //projectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near, far);
         viewMatrix = glm::lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp);
     }

@@ -14,10 +14,10 @@ void Enemy::setClass(WarriorClass* _class)
 void Enemy::attackSuccessful(){}
 void Enemy::attackReceived(float damage)
 {
-   //assert(attack!=nullptr && "Enemy attack forgotten !");
+   //assert(attack!=nullptr && "Enemy attack not set,forgotten !");
    //TODO Deplacer dans make attack
    /*if (warriorClass == nullptr)
-      throw std::runtime_error("Enemy attack forgotten!");*/
+      throw std::runtime_error("Enemy attack not set,forgotten!");*/
    currentHp-=damage;
    if (currentHp<=0.f) {
       toRemove = true;
@@ -54,6 +54,6 @@ void Enemy::doAttack(float deltatime,SoundManager& soundManager) {
       flyweightMesh->facingDirection,soundManager);
 }
 bool Enemy::isCloseEnough(const glm::vec3& toPoint) const {
-   return glm::distance(flyweightMesh->position,toPoint) < 10.f;
+   return glm::distance(flyweightMesh->position,toPoint) < 14.f;//fine-tunning un peu
 }
 Enemy::~Enemy()= default;

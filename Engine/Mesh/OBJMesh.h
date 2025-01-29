@@ -84,9 +84,7 @@ public:
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    // Unbind VAO
     glBindVertexArray(0);
-    //Initial Direction
         model  = glm::mat4(1.0f);
         model = glm::translate(model, position);
         rotate(glm::radians(90.0f*(float)(newFacingDirection)), movementRotate);
@@ -161,12 +159,12 @@ public:
             newFacingDirection  = 1;
             keyPressed = true;
         }
-        // Normalize movement vector to prevent diagonal speed boost
+        // il faut normalizer movement vector pour contrer le  diagonal speed boost
         if (glm::length(movementDirection) > 0.0f) {
             movementDirection = glm::normalize(movementDirection);
         }
         if (keyPressed) {
-            position += movementDirection * speed * deltaTime;//*1000000.0f;
+            position += movementDirection * speed * deltaTime;
             model  = glm::mat4(1.0f);
             model = glm::translate(model, position);
             rotate(glm::radians(90.0f*(float)(newFacingDirection)), movementRotate);

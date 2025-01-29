@@ -17,7 +17,7 @@
 #include "../libs/emscripten/emscripten_mainloop_stub.h"
 #endif
 
-// MY INCLUDES
+
 #include <iostream>
 #include <sstream>
 #include <glm/gtx/string_cast.hpp>
@@ -111,10 +111,16 @@ int main(int, char**)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        if (game.gameUI->over)// pour attendre le click,de ne pas passer par le Flag direct
+        {
+            game.soundManager.stopAll();
+            return(0);// l'os va appeller les destructeurs
+        }
+            
+
         game.gameUI->handleInputs(deltaTime);
 
         ImGui::Render();
-        //Le Renderer GLFW Intervient
         int display_w=1280, display_h=720;
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
@@ -123,9 +129,6 @@ int main(int, char**)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        // If GameState == UI_INTERRUPT // Render but not update
-        // If GameState == PLAYING // Update && Render
-        // // If GameState == OVER // Render but not update
 
         game.renderer->updateCamera(deltaTime);
         if (game.gameUI->stateFlag == GameState::PLAYING)

@@ -16,23 +16,22 @@ public:
     // Attack& attack;
     SoundManager& soundManager;
     HitEvent(Character& _agresseur,Character& _victime,
-        /*Attack& _attack,*/SoundManager& _soundManager);
+       SoundManager& _soundManager,float _damage);
+    float damage;
     void handle() override;
 };
 
 inline HitEvent::HitEvent(Character& _agresseur, Character& _victime,
-    /*Attack &_attack,*/ SoundManager& _soundManager):
+    SoundManager& _soundManager, float _damage):
     agresseur(_agresseur),
     victime(_victime),
-   // attack(_attack),
-    soundManager(_soundManager) {
+    soundManager(_soundManager),
+    damage(_damage){
 }
 
 inline void HitEvent::handle()
 {
-    victime.attackReceived(20);
+    victime.attackReceived(damage);
     agresseur.attackSuccessful();
-    //std::cout << "Event OK";
-    //soundManager.playSound(attack.soundName);
 }
 #endif //HITEVENT_H

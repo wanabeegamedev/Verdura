@@ -11,8 +11,8 @@
 
 class DamageManager {
 public:
-    std::vector<DefenseStrategy> DefensesActives;
-    //No need of a physics manager, this check is the only physics
+    std::vector<DefenseStrategy> DefensesActives; 
+    // need of a physics manager puisque this check is the only physics, 
     bool checkCollision(const glm::vec3 &,const glm::vec3 &) const;
 
 };

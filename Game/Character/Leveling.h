@@ -17,7 +17,7 @@ struct Level {
     xpNeeded(_xpNeeded),
     speedMultiplier(_speedMultiplier),scoreReward(_scoreReward) {}
 };
-// TODO Create Levels , Other option, read level stats from file (more precise)
+//  Other option, read  levesl stats from files (more precise)
 static Level level1(20,1.1,500);
 static Level level2(80,1.2,1500);
 static Level level3(200,1.3,2500);

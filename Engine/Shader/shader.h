@@ -57,7 +57,7 @@ class Shader {
 
     void compileShader(const GLenum shaderType) {
         shaderID = glCreateShader(shaderType);
-        const char* sourceCstr = shaderSource.c_str();// we need a lvalue for & operator
+        const char* sourceCstr = shaderSource.c_str();// seule lvalue pour & reference operator
         //std::cout << "Compiling shader.." << shaderSource.c_str() << std::endl;
         glShaderSource(shaderID, 1, &sourceCstr, nullptr);
         glCompileShader(shaderID);

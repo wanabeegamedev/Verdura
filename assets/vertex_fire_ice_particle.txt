@@ -1,0 +1,19 @@
+#version 330 core
+
+layout (location = 0) in vec3 aPos;       // Vertex position (local quad coordinates)
+layout (location = 1) in vec2 aTexCoord; // Texture coordinates
+
+out vec2 TexCoord;
+//uniform float uTime;
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
+void main() {
+    mat3 viewRotation = mat3(view);
+    vec3 worldPosition = vec3(model[3]);
+    vec3 billboardOffset = viewRotation * aPos; // faire face a la camera
+    vec4 finalPosition = vec4(worldPosition + billboardOffset, 1.0);
+    gl_Position = projection * view * finalPosition;
+    TexCoord = aTexCoord;
+}

@@ -28,6 +28,7 @@ public:
     ImVec4 bg_col ;
     ImVec4 tint_col;
     std::string text;
+    bool over{};
     unsigned int fire_texture_id{};
     unsigned int mana_texture_id{};
     unsigned int health_texture_id{};

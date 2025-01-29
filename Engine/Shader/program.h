@@ -53,7 +53,6 @@ class Program {
         checkProgram();
         glDeleteShader(currentFragmentShaderID);
         glDeleteShader(currentVertexShaderID);
-        // TODO in the main , call the shaders Destructors
     }
     void bind() const
     {

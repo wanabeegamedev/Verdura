@@ -9,7 +9,11 @@
 #include <string>
 #include <iostream>
 
+#ifdef _WIN32
+#include "SDL_mixer.h"
+#else//installée avec package manager ou pas, à gerer sur cmake 
 #include <SDL2/SDL_mixer.h>
+#endif
 
 class SoundManager {
 public:
@@ -28,7 +32,7 @@ public:
 
     void loadSound(const std::string& name, const std::string& path) {
         if (sounds.find(name) != sounds.end()) {
-            std::cerr << "Sound \"" << name << "\" already loaded.\n";
+            std::cerr << "Sound \"" << name << "\" already loaded.--Skipping\n";
             return;
         }
 
@@ -47,7 +51,7 @@ public:
             return;
         }
 
-        Mix_PlayChannel(-1, it->second, 0); // Play once on the first free channel
+        Mix_PlayChannel(-1, it->second, 0); 
     }
     void stopAll() {
         Mix_HaltChannel(-1);

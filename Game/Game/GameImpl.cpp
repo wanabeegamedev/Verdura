@@ -10,13 +10,18 @@
 #include "../../Engine/Mesh/MeshLoader.h"
 #include "../../Engine/Shader/shader.h"
 #include "../Ability/DamageReductionStrategy.h"
-
+#define NB_ENEMIES 15
 
 
 void GameImpl::handleHeroInputs(float deltaTime) {
     hero->handleInputs(deltaTime,soundManager);
 }
 void GameImpl::updateHero(float deltaTime) {
+
+    if (hero->stats->currentHp <= 0.f)
+    {
+        eventManager.addEvent(std::make_unique<GameEndEvent>(false, gameUI, soundManager));
+    }
 
     for (WarriorClass*& wc : hero->HeroClasses )
         wc->attack->particleManager.update(deltaTime);
@@ -26,7 +31,7 @@ void GameImpl::updateHero(float deltaTime) {
                 if (particle.isActive) {
                     if (damageManager.checkCollision(particle.position, enemy.flyweightMesh->position)) {
                         particle.isActive = false;
-                        eventManager.addEvent(std::make_unique<HitEvent>(*hero, enemy, soundManager));
+                        eventManager.addEvent(std::make_unique<HitEvent>(*hero, enemy, soundManager,wc->attack->damagePoints));
                         eventManager.addEvent(std::make_unique<LevelingEvent>(hero,gameUI,&soundManager,&leveling,hero->stats->currentExp));
 
                     }
@@ -45,7 +50,7 @@ void GameImpl::updateEnemies(float deltaTime) {
                         if (damageManager.checkCollision(particle.position, hero->characterMesh->position)) {
                             particle.isActive = false;
                             soundManager.playSound("pain1");
-                            eventManager.addEvent(std::make_unique<HitEvent>(enemy, *hero, soundManager));
+                            eventManager.addEvent(std::make_unique<HitEvent>(enemy, *hero, soundManager, enemy.warriorClass->attack->damagePoints));
                         }
                     }
                 }
@@ -55,9 +60,11 @@ void GameImpl::updateEnemies(float deltaTime) {
             [](const Enemy& enemy) { return enemy.toRemove; }), enemies.end());
     if (enemies.size() > 0)
         enemies.back().warriorClass->attack->particleManager.update(deltaTime);
-   /* else
-        eventManager.addEvent(std::make_unique<GameEndEvent>(true, soundManager));*/
-
+   /* else*/
+    else if (enemies.size() == 0)
+    {
+        eventManager.addEvent(std::make_unique<GameEndEvent>(true, gameUI, soundManager));
+    }
 }
 void GameImpl::renderGame(float deltaTime) {
     for (WarriorClass*& wc : hero->HeroClasses )
@@ -77,29 +84,28 @@ void GameImpl::runGame(float deltaTime) {
     eventManager.handleEvents();
 }
 
-GameImpl::GameImpl(): protoMeshEnemy("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/Mage.obj"),
-protoMeshHero("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj") {
+GameImpl::GameImpl(): protoMeshEnemy("assets/Mage/Mage.obj"),
+protoMeshHero("assets/Knight/Knight.obj") 
+{
+
     MeshLoader loader;
-
-    //protoMeshEnemy = OBJMesh("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/Mage.obj");
     protoMeshEnemy.set_current_texture_path(
-        "/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Mage/mage_texture.png");
-    protoMeshEnemy.set_position(glm::vec3(-8, .0f, .0f)); //TODO utiliser à la création de la mesh
+        "assets/Mage/mage_texture.png");
+    protoMeshEnemy.set_position(glm::vec3(-8, .0f, .0f));
     loader.LoadObjMesh(protoMeshEnemy);
-
-    //protoMeshHero = OBJMesh("/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/Knight.obj");
     protoMeshHero.set_current_texture_path(
-        "/home/hous/CLionProjects/Verdura/Game/Assets/Characters/Knight/texture_1.png");
-    protoMeshHero.set_position(glm::vec3(0, .0f, .0f));
+        "assets/Knight/texture_1.png");
+    protoMeshHero.set_position(glm::vec3(-10.f, .0f, .0f));
     loader.LoadObjMesh(protoMeshHero);
+
 }
 
 void GameImpl::Initialize() {
 
 
     renderer = new Renderer();
-    Shader vShader("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex_character.txt",GL_VERTEX_SHADER);
-    Shader fShader("/home/hous/CLionProjects/Verdura/Game/Shaders/fragment_character.txt",GL_FRAGMENT_SHADER);
+    Shader vShader("assets/vertex_character.txt",GL_VERTEX_SHADER);
+    Shader fShader("assets/fragment_character.txt",GL_FRAGMENT_SHADER);
 
 
     auto* program = new Program(vShader.shader_id(), fShader.shader_id());
@@ -109,21 +115,22 @@ void GameImpl::Initialize() {
     protoMeshEnemy.setCurrentProgram("t_pose_j1");
     protoMeshHero.addProgram(program);
     protoMeshHero.setCurrentProgram("t_pose_j1");
-
-    soundManager.loadSound("gameStart", "/home/hous/CLionProjects/Verdura/Engine/Sound/gamestart-272829.mp3");
-    soundManager.loadSound("fireSound", "/home/hous/CLionProjects/Verdura/Engine/Sound/8-bit-laser-151672.mp3");
-    soundManager.loadSound("pain1", "/home/hous/CLionProjects/Verdura/Engine/Sound/088436_hurt-1-82785.mp3");
-    soundManager.loadSound("music1", "/home/hous/CLionProjects/Verdura/Engine/Sound/8bit-music-for-game-68698.mp3");
-    // soundManager.loadSound("interruptSound", "/home/hous/CLionProjects/Verdura/Engine/Sound/8bit-music-for-game-68698.mp3");
-    // soundManager.loadSound("winsquare", "/home/hous/CLionProjects/Verdura/Engine/Sound/8bit-music-for-game-68698.mp3");
+    soundManager.loadSound("gameStart", "assets/gamestart-272829.mp3");
+    soundManager.loadSound("fireSound", "assets/8-bit-laser-151672.mp3");
+    soundManager.loadSound("pain1", "assets/088436_hurt-1-82785.mp3");
+    soundManager.loadSound("music1", "assets/8bit-music-for-game-68698.mp3");
+    soundManager.loadSound("InterruptSound", "assets/retro-jump-3-236683.mp3");
+    soundManager.loadSound("winsquare", "assets/winsquare-6993.mp3");
+    soundManager.loadSound("VictorySound", "assets/8-bit-heaven-26287.mp3");
+    soundManager.loadSound("DefeatSound", "assets/game-over-38511.mp3");
 
     soundManager.playSequential("gameStart","music1");
 
-    Shader vShaderFire("/home/hous/CLionProjects/Verdura/Game/Shaders/vertex_fire_ice_particle.txt",GL_VERTEX_SHADER);
-    Shader fShaderFire("/home/hous/CLionProjects/Verdura/Game/Shaders/fragment_fire_ice_particle.txt",GL_FRAGMENT_SHADER);
+    Shader vShaderFire("assets/vertex_fire_ice_particle.txt",GL_VERTEX_SHADER);
+    Shader fShaderFire("assets/fragment_fire_ice_particle.txt",GL_FRAGMENT_SHADER);
     Program* programFire = new Program(vShaderFire.shader_id(),fShaderFire.shader_id());
     programFire->setName("fireProgram");
-    Particle particleFire("/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/fireball.png",
+    Particle particleFire("assets/fireball.png",
                         protoMeshHero.position,
                         protoMeshHero.facingDirection,
                         programFire);
@@ -138,13 +145,13 @@ void GameImpl::Initialize() {
     Attack* attack = new Attack(
             glm::vec3(0.0f),
             0,
-            "/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/fireball.png",
+            "assets/fireball.png",
             10.0f,
             programFire
         );
-    float fireDelayBase = 3.0f;
+    float fireDelayBase = 5.0f;//enemy attack chaque 5s (autre test plus loin, distance proche isCloseEnough)
     std::vector<glm::vec3> enemyPositions = generateEnemyPositions(0.0f, 100.0f, -8.0f, 8.0f, 40, 20);
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < NB_ENEMIES; i++) {
         OBJMeshFlyWeight _mesh(enemyPositions[i]);
         enemiesMeshes.push_back(_mesh);
         Enemy enemy(&protoMeshEnemy,&enemiesMeshes.back());
@@ -158,15 +165,15 @@ void GameImpl::Initialize() {
     Attack* heroAttack = new Attack(
             glm::vec3(0.0f),
             0,
-            "/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/sword.png",
-            15.0f,
+            "assets/sword.png",
+            20.0f,
             programFire
         );
     Attack* heroAttackWizard = new Attack(
             glm::vec3(0.0f),
             0,
-            "/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/fireball.png",
-            20.0f,//TODO use damage points in attack received
+            "assets/fireball.png",
+            20.0f,
             programFire
         );
     for (Particle& particle : heroAttack->particleManager.particlesObjectPool) {
@@ -202,6 +209,7 @@ void GameImpl::Initialize() {
 
 GameImpl::~GameImpl() {
     // il y aura suppression auto des pointeurs intelligents partout
+    // pour le reste
     delete gameUI;
     delete renderer;
     delete hero;

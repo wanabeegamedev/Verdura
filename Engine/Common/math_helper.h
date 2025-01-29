@@ -11,7 +11,6 @@ inline std::vector<glm::vec3> generateEnemyPositions(float xMin, float xMax, flo
     float xStep = (xMax - xMin) / (cols - 1);
     float zStep = (zMax - zMin) / (rows - 1);
 
-    // TODO remove bricolage
     for (int row = 0; row < rows; ++row) {
         for (int col = 0; col < cols; ++col) {
             float x = xMin + col * xStep + (row%3==0?0:xStep/2)*(col%2==0?-1:1);

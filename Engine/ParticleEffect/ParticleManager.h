@@ -18,7 +18,7 @@
 
 constexpr float PARTICLE_SPEED = 2.f; // Je la garde constante
 constexpr float MAX_NB_PARTICLES = 100;
-constexpr float LIFETIME = 4.f;
+constexpr float LIFETIME = 7.f;
 inline constexpr float vertices[] = {
     // positions        // texture coords
     -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, //bas-gauche
@@ -142,20 +142,20 @@ inline Particle::Particle(
     model = glm::mat4(1.0f);
     facingDirection = _facingDirection;
     switch (_facingDirection) {
-        case 0: // Facing down
+        case 0: //  bas
             movementDirection = glm::vec3(0.0f, .00f, 0.01f);
         break;
-        case 1: // Facing right
+        case 1: // droite
             movementDirection = glm::vec3(.01f, 0.0f, 0.0f);
         break;
-        case 2: // Facing up
+        case 2: //haut
             movementDirection = glm::vec3(0.0f, .0f, -0.01f);
         break;
-        case 3: // Facing left
+        case 3: // gauche
             movementDirection = glm::vec3(-0.01f, 0.0f, 0.0f);
         break;
         default:
-            movementDirection = glm::vec3(0.0f); // Default to stationary
+            movementDirection = glm::vec3(0.0f); // ne pas faire mouvement
     }
 }
 inline void ParticleManager::particleFromPrototype(const Particle& original,
@@ -194,19 +194,19 @@ inline void ParticleManager::releaseFromObjectPool(const glm::vec3& _position,
         if (!particle.isActive) {
             particle.lifetime = LIFETIME;
             particle.facingDirection = _facingDirection;
-            particle.position = _position;//+glm::vec3(2.5f,0.f,2.5f);
+            particle.position = _position;
             particle.model = glm::mat4(1.0f);
             switch (_facingDirection) {
-                case 0: // Facing down
+                case 0: //bas
                     particle.movementDirection = glm::vec3(0.0f, .00f, 0.01f);
                 break;
-                case 1: // Facing right
+                case 1://droit
                     particle.movementDirection = glm::vec3(.01f, 0.0f, 0.0f);
                 break;
-                case 2: // Facing up
+                case 2: //haut
                     particle.movementDirection = glm::vec3(0.0f, .0f, -0.01f);
                 break;
-                case 3: // Facing left
+                case 3: // gauche
                     particle.movementDirection = glm::vec3(-0.01f, 0.0f, 0.0f);
                 break;
                 default:
@@ -215,7 +215,6 @@ inline void ParticleManager::releaseFromObjectPool(const glm::vec3& _position,
 
             //particle.movementDirection = glm::normalize(particle.movementDirection) * 0.01f;
 
-            // Activate particle
             particle.isActive = true;
 
             // TODO  Peut utiliser ParticleReleaseEvent sur SoundManager,
@@ -223,8 +222,8 @@ inline void ParticleManager::releaseFromObjectPool(const glm::vec3& _position,
             if (!particle.sound.empty())
                 soundManager.playSound(particle.sound);
 
-            // Debug: Log particle properties
-            /*std::cout << "Particle Released - Position: ("
+            //
+            /*std::cout << "Particle  - Position: ("
                       << particle.position.x << ", "
                       << particle.position.y << ", "
                       << particle.position.z << "), Facing: "

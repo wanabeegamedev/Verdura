@@ -16,6 +16,9 @@ public:
     void setHP(float _hp) {
         currentHp = _hp;
     }
+    void setMana(float _mana) {
+        currentMana = _mana;
+    }
 };
 
 

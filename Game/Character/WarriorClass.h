@@ -14,7 +14,7 @@ class WarriorClass {
 public:
     Attack* attack;
     DefenseStrategy* defenseStrategy;
-    // Je les mets ici au cas de levelUp
+    // Je les mets ici au cas de levelUp sur la classe
     float delayBetweenAttack;
     float delayAccumulator;
 

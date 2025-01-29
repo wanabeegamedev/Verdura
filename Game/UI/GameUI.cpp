@@ -63,7 +63,11 @@ void GameUI::show_info_once_window(){
         if (ImGui::Button("J'ai compris"))
         {
             show_info_once = false;
-            stateFlag = 0;
+            
+            if (stateFlag==2)
+                over=true;
+            else
+                stateFlag = 0;
         }
         ImGui::End();
     }
@@ -74,7 +78,11 @@ void GameUI::show_info_log_window()
         ImGui::Begin("Welcome", &show_info_log);
         ImGui::Text("Hello Adventurer, You must Fight !");
         if (ImGui::Button("Close"))
+        {
             show_info_log = false;
+            
+        }
+            
         ImGui::End();
     }
 }
@@ -89,19 +97,20 @@ void GameUI::toggle_info_once_window(const std::string &_info) {
     info = _info;
     show_info_once = true;
     ImGui::SetNextWindowPos(ImVec2(500, 200));
-    stateFlag = 1;
+    if (stateFlag != 2) // cas spécial game over
+        stateFlag = 1; //playing
 }
 void GameUI::load_ui_elements() {
     int my_image_width = 0;
     int my_image_height = 0;
     bool ret;
-    ret = LoadTextureFromFile("/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/fireball.png",
+    ret = LoadTextureFromFile("assets/fireball.png",
         &fire_texture_id, &my_image_width, &my_image_height);
     IM_ASSERT(ret);
-    LoadTextureFromFile("/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/mana.png",
+    LoadTextureFromFile("assets/mana.png",
         &mana_texture_id, &my_image_width, &my_image_height);
     IM_ASSERT(ret);
-    LoadTextureFromFile("/home/hous/CLionProjects/Verdura/Engine/ParticleEffect/potion.png",
+    LoadTextureFromFile("assets/potion.png",
         &health_texture_id, &my_image_width, &my_image_height);
     IM_ASSERT(ret);
 }
@@ -144,10 +153,10 @@ void GameUI::show_reward_window() {
                 add_class_to_track(rewardClass);
             }
             if (confirmed_choice == 2 ) {
-                stats->currentMana += 50;
+                stats->currentMana += 100;
             }
             if (confirmed_choice == 3 ) {
-                stats->currentHp += 50;
+                stats->currentHp += 150;
 
             }
             stats->currentLvl++;
@@ -160,6 +169,7 @@ void GameUI::show_reward_window() {
 
 void GameUI::toggle_info_reward_window() {
     show_reward_choice = true;
+
     stateFlag = 1;
 }
 inline void GameUI::update() {

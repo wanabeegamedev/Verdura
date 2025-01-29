@@ -33,8 +33,8 @@ class MeshLoader
     }
     public:
 
-    // TODO Utiliser Mesh Data en cache
-    // TODO Trouver un moyen d'abstraire cette méthode ??
+    //  Utiliser Mesh Data en cache
+    // TODO Trouver un moyen d'abstraire cette méthode ?
     inline void switchOBJMeshData(OBJMesh &mesh, const char *dataPath)
     {
         mesh.currentDataPath = dataPath;

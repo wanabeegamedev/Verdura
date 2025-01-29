@@ -10,10 +10,10 @@
 #include "../../Game/UI/GameUI.h"
 #include "../Renderer/Renderer.h"
 
-enum GameState {PLAYING, UI_INTERRUPT};
+enum GameState {PLAYING, UI_INTERRUPT, OVER};
 class Game {
     public:
-    //J'utilise des Pointeurs pour pouvoir delete
+
         GameUI* gameUI{};
         GameState state{};
         Renderer* renderer{};
